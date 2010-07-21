@@ -15,4 +15,11 @@ class Object
   end  
   alias_method :methods_without_sort, :methods  
   alias_method :methods, :methods_with_sort  
-end 
+  
+	def local_methods
+	 (methods - Object.instance_methods).sort
+	end
+
+end
+
+IRB.conf[:PROMPT_MODE] = :SIMPLE

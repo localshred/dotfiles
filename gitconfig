@@ -28,7 +28,6 @@
 	mine = !git log --author=`git config user.email`
 	difforigin = diff origin/master --name-only
 
-
 [github]
 	user = localshred
 	token = "PUBLIC_KEY_WITHOUT_USER@DOMAIN"
