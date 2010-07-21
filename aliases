@@ -1,0 +1,21 @@
+# General
+alias grep='grep --color';
+alias cate='cat';
+
+# Host management
+alias vihost='sudo vi /etc/hosts';
+alias cathost='cat /etc/hosts';
+
+# SSH management
+alias vissh='vi ~/.ssh/config';
+alias catssh='cat ~/.ssh/config';
+
+# Profile management
+alias viprof='vi ~/.zshrc';
+alias catprof='cat ~/.zshrc';
+alias srcprof='source ~/.zshrc';
+
+# Alias management
+alias vialias='vi $ZSH/lib/aliases';
+alias catalias='cat $ZSH/lib/aliases';
+alias srcalias='source $ZSH/lib/aliases';

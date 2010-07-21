@@ -1,0 +1,34 @@
+[core]
+	editor = vi
+[branch]
+	autosetuprebase = remote
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[user]
+	name = BJ Neilsen
+	email = bj.neilsen@gmail.com
+[alias]
+	st = status
+	di = diff
+	co = checkout
+	ci = commit
+	cia = commit -a
+	br = branch
+	sta = stash
+	ls = ls-remote .
+	pu = push
+	pom = push origin master
+	phm = push heroku master
+	logp = log --pretty='%h - %s'
+	unstage = reset HEAD --
+	softrm = rm --cached --
+	last = log -1 HEAD
+	mine = !git log --author=`git config user.email`
+	difforigin = diff origin/master --name-only
+
+
+[github]
+	user = localshred
+	token = "PUBLIC_KEY_WITHOUT_USER@DOMAIN"
