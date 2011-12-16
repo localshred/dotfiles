@@ -1,11 +1,11 @@
 [core]
 	editor = vi
-[branch]
-	autosetuprebase = remote
 [color]
-	diff = auto
 	status = auto
+	interactive = auto
+	grep = auto
 	branch = auto
+	diff = auto
 [user]
 	name = BJ Neilsen
 	email = bj.neilsen@gmail.com
@@ -20,14 +20,33 @@
 	ls = ls-remote .
 	pu = push
 	pom = push origin master
+	poq = push origin qa
+	pos = push origin stage
+	pop = push origin stable
+	pgm = push github master
+	pgq = push github qa
+	pgs = push github stage
+	pgp = push github stable
 	phm = push heroku master
-	logp = log --pretty='%h - %s'
 	unstage = reset HEAD --
 	softrm = rm --cached --
+	softrmdir = rm --cached -r --
+	logp = log --oneline
+	recent = log --oneline -10
 	last = log -1 HEAD
+	sha = log -1 --oneline HEAD
 	mine = !git log --author=`git config user.email`
 	difforigin = diff origin/master --name-only
-
+	cfg = config
+	cfgg = config --global
+	fl = flow
+	fli = flow init
+	flh = flow hotfix start
+	flr = flow release start
+	flf = flow feature start
+	fls = flow support start
+[branch]
+	autosetuprebase = remote
 [github]
 	user = localshred
 	token = "PUBLIC_KEY_WITHOUT_USER@DOMAIN"

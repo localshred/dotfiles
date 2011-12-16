@@ -1,0 +1,39 @@
+---
+url: http://ci.moneydesktop.com
+poll_interval: 300
+projects:
+  - 5-atlas-master
+  - 24-lit-master
+  - 8-combover-master
+  - 23-zeus-master
+  - SEP
+  - 1-amigo-master
+  - 2-amigo-stable
+  - SEP
+  - 3-abacus-master
+  - 4-abacus-stable
+  - SEP
+  - 6-ballista-master
+  - 7-ballista-stable
+  - SEP
+  - 9-morannon-master
+  - 10-morannon-stable
+  - SEP
+  - 11-newman-master
+  - 12-newman-stable
+  - SEP
+  - 13-peon-master
+  - 14-peon-stable
+  - SEP
+  - 15-persona-master
+  - 16-persona-stable
+  - SEP
+  - 17-toolbox-master
+  - 18-toolbox-stable
+  - SEP
+  - 19-trump-master
+  - 20-trump-stable
+  - SEP
+  - 21-tyrant-master
+  - 22-tyrant-stable
+
