@@ -9,19 +9,37 @@ class Dotfiles < Thor
 	method_option :out, :type => :string, :default => '~', :aliases => '-o', :banner => 'OUT_DIRECTORY'
 	def merge
 		DOTFILES.each do |file|
-			say "Syncing #{File.basename(file)}", Thor::Shell::Color::YELLOW
-			diff = `diff #{file} ~/.#{File.basename(file)}`
-			if diff.empty?
-				say 'No change', Thor::Shell::Color::GREEN
+		  base = "~/.#{File.basename(file)}"
+		  expanded_base = File.expand_path(base)
+			say "Syncing #{base}", :yellow
+			if File.exist?(expanded_base)
+  			diff = `diff #{file} #{base}`
+  			if diff.empty?
+  				say 'No change', :green
+  			else
+  				say "diff [A] #{file} [B] #{base}", :blue
+  				say diff
+  				case ask("Pick the winner: [abs]").upcase.strip
+  				when 'A' then
+  				  
+  				  FileUtils.rm(expanded_base)
+  				  FileUtils.copy(file, expanded_base)
+  				when 'B' then
+  				  FileUtils.rm(file)
+  				  FileUtils.copy(expanded_base, file)
+  				else
+  				  say "Skipping merge for file #{base}", :red
+  				end
+  			end
 			else
-				say "diff #{file} (A) ~/.#{File.basename(file)} (B)", Thor::Shell::Color::BLUE
-				say diff
-				case ask?("Pick the winner: [abn]").upcase.trim
-					when 'A' then FileUtils.copy(file, "~/.#{File.basename(file)}")
-					when 'B' then FileUtils.copy("~/.#{File.basename(file)}", file)
-					else say "Skipping merge for file #{File.basename(file)}", Thor::Shell::Color::RED
-				end
-			end
+			  if File.directory?(file)
+  			  say "Creating directory #{base}", :yellow
+			    FileUtils.cp_r(file, expanded_base)
+		    else
+		      say "Creating file #{base}", :yellow
+  			  FileUtils.copy(file, expanded_base)
+			  end
+		  end
 		end
 	end
 end
