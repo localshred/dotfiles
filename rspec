@@ -1,2 +1,3 @@
 --color
--fp 
+-fp
+--order rand

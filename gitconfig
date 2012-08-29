@@ -1,5 +1,5 @@
 [core]
-	editor = vi
+	editor = vim
 [color]
 	status = auto
 	interactive = auto
@@ -17,6 +17,7 @@
 	cia = commit -a
 	br = branch
 	sta = stash
+	ch = cherry
 	ls = ls-remote .
 	pu = push
 	pom = push origin master
@@ -37,16 +38,17 @@
 	sha = log -1 --oneline HEAD
 	mine = !git log --author=`git config user.email`
 	difforigin = diff origin/master --name-only
-	cfg = config
-	cfgg = config --global
-	fl = flow
-	fli = flow init
-	flh = flow hotfix start
-	flr = flow release start
-	flf = flow feature start
-	fls = flow support start
+	ctags = !.git/hooks/ctags
+  ribbon = tag --force _ribbon origin/master
+  catchup = log --patch --reverse --topo-order _ribbon..origin/master
 [branch]
 	autosetuprebase = remote
 [github]
 	user = localshred
 	token = "PUBLIC_KEY_WITHOUT_USER@DOMAIN"
+[push]
+	default = current
+[init]
+	templatedir = ~/.git_template
+[hub]
+	host = git.moneydesktop.com

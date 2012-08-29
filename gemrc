@@ -1,12 +1,10 @@
---- 
+---
 :benchmark: false
 :verbose: true
 :update_sources: true
 gem: --no-rdoc --no-ri
-:sources: 
+:sources:
 - http://gems.moneydesktop.com/
 - http://rubygems.org/
-- http://gems.rubyforge.org/
-- http://gems.github.com/
 :backtrace: false
 :bulk_threshold: 1000
