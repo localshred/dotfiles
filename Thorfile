@@ -1,8 +1,8 @@
 class Dotfiles < Thor
 	include Thor::Actions
-	
+
 	DOTFILES = Dir[File.join(File.dirname(__FILE__), '*')].delete_if{|file| file =~ /(README.md|Thorfile)$/ }
-	
+
 	desc 'merge', 'Merge dotfiles into home dir'
 	method_option :force, :type => :boolean, :default => false, :aliases => '-f'
 	method_option :in, :type => :string, :default => '.', :aliases => '-i', :banner => 'IN_DIRECTORY'
@@ -21,7 +21,7 @@ class Dotfiles < Thor
   				say diff
   				case ask("Pick the winner: [abs]").upcase.strip
   				when 'A' then
-  				  
+
   				  FileUtils.rm(expanded_base)
   				  FileUtils.copy(file, expanded_base)
   				when 'B' then
