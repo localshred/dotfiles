@@ -17,22 +17,18 @@
 	cia = commit -a
 	br = branch
 	sta = stash
+  stl = stash list
+  stp = stash pop
 	ch = cherry
 	ls = ls-remote .
 	pu = push
-	pom = push origin master
-	poq = push origin qa
-	pos = push origin stage
-	pop = push origin stable
 	pgm = push github master
-	pgq = push github qa
-	pgs = push github stage
-	pgp = push github stable
+	pum = push upstream master
 	phm = push heroku master
 	unstage = reset HEAD --
 	softrm = rm --cached --
 	softrmdir = rm --cached -r --
-	logp = log --oneline
+  logp = log --oneline --abbrev-commit --graph --decorate
 	recent = log --oneline -10
 	last = log -1 HEAD
 	sha = log -1 --oneline HEAD
@@ -52,3 +48,4 @@
 	templatedir = ~/.git_template
 [hub]
 	host = git.moneydesktop.com
+	protocol = https
