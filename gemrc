@@ -1,10 +1,10 @@
 ---
-:benchmark: false
-:verbose: true
-:update_sources: true
-gem: --no-rdoc --no-ri
-:sources:
-- http://gems.moneydesktop.com/
-- http://rubygems.org/
 :backtrace: false
+:benchmark: false
 :bulk_threshold: 1000
+:sources:
+- http://rubygems.org/
+:update_sources: true
+:verbose: true
+gem: --no-rdoc --no-ri
+:ssl_verify_mode: 0
