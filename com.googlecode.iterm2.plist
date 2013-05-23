@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AdjustWindowForFontSizeChange</key>
+	<true/>
+	<key>AllowClipboardAccess</key>
+	<false/>
 	<key>AnimateDimming</key>
 	<false/>
 	<key>AppleAntiAliasingThreshold</key>
@@ -244,7 +248,7 @@
 	<key>DimInactiveSplitPanes</key>
 	<true/>
 	<key>DimOnlyText</key>
-	<false/>
+	<true/>
 	<key>DisableFullscreenTransparency</key>
 	<false/>
 	<key>EnableRendezvous</key>
@@ -289,12 +293,16 @@
 	<true/>
 	<key>MaxVertically</key>
 	<false/>
+	<key>NSFontPanelAttributes</key>
+	<string>1, 4</string>
 	<key>NSNavLastRootDirectory</key>
 	<string>/code/src/utilities/dotfiles</string>
 	<key>NSQuotedKeystrokeBinding</key>
 	<string></string>
 	<key>NSRepeatCountBinding</key>
 	<string></string>
+	<key>NSScrollAnimationEnabled</key>
+	<false/>
 	<key>NSTableView Columns KeyBingingTable</key>
 	<array>
 		<data>
@@ -312,30 +320,41 @@
 	<array/>
 	<key>NSTableView Sort Ordering KeyBingingTable</key>
 	<array/>
+	<key>NSToolbar Configuration Terminal Toolbar</key>
+	<dict>
+		<key>TB Display Mode</key>
+		<integer>1</integer>
+		<key>TB Icon Size Mode</key>
+		<integer>1</integer>
+		<key>TB Is Shown</key>
+		<integer>0</integer>
+		<key>TB Size Mode</key>
+		<integer>1</integer>
+	</dict>
 	<key>NSWindow Frame Preferences</key>
-	<string>315 285 924 485 0 0 1440 878 </string>
+	<string>1107 575 924 485 0 0 2560 1600 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>155 594 592 584 0 0 1920 1178 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>718 4 717 874 0 0 1440 878 </string>
+	<string>180 118 1074 650 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>240 4 1431 874 0 0 1440 878 </string>
+	<string>0 0 1277 1578 0 0 2560 1578 </string>
 	<key>NSWindow Frame iTerm Window 10</key>
 	<string>0 0 955 1178 0 0 1920 1178 </string>
 	<key>NSWindow Frame iTerm Window 11</key>
 	<string>611 150 570 426 0 0 1920 1178 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>0 4 717 874 0 0 1440 878 </string>
+	<string>0 726 570 426 0 0 2560 1578 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>0 359 570 426 0 0 1920 1178 </string>
+	<string>702 683 570 426 0 0 2560 1578 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
-	<string>319 0 955 1178 0 0 1920 1178 </string>
+	<string>9 1152 570 426 0 0 2560 1578 </string>
 	<key>NSWindow Frame iTerm Window 5</key>
-	<string>958 0 955 1178 0 0 1920 1178 </string>
+	<string>958 752 570 426 0 0 1920 1178 </string>
 	<key>NSWindow Frame iTerm Window 6</key>
-	<string>240 157 1431 874 0 0 1920 1178 </string>
+	<string>865 48 927 730 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 7</key>
-	<string>639 15 633 378 0 0 1920 1178 </string>
+	<string>180 118 1074 650 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 8</key>
 	<string>1277 15 633 378 0 0 1920 1178 </string>
 	<key>NSWindow Frame iTerm Window 9</key>
@@ -1069,6 +1088,8 @@
 			<string>/code/src</string>
 		</dict>
 	</array>
+	<key>NoSyncNeverRemindPrefsChangesLost</key>
+	<true/>
 	<key>OnlyWhenMoreTabs</key>
 	<false/>
 	<key>OpenArrangementAtStartup</key>
@@ -1137,7 +1158,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2012-08-27T15:09:38Z</date>
+	<date>2013-05-21T17:10:28Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -1149,7 +1170,7 @@
 	<key>SmartPlacement</key>
 	<false/>
 	<key>SplitPaneDimmingAmount</key>
-	<real>0.40000000596046448</real>
+	<real>0.60000002384185791</real>
 	<key>SwitchTabModifier</key>
 	<integer>6</integer>
 	<key>SwitchWindowModifier</key>
@@ -1191,6 +1212,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>1.0.0.20120203</string>
+	<string>1.0.0.20130319</string>
 </dict>
 </plist>
