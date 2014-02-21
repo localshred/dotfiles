@@ -1,30 +1,33 @@
-function zsh_stats() {
-  history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl |  head -n20
+function git_cur_branch()
+{
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  "${ref#refs/heads/}"
 }
 
-function uninstall_oh_my_zsh() {
-  /usr/bin/env ZSH=$ZSH /bin/sh $ZSH/tools/uninstall.sh
+# Grep ps output
+function psgrep()
+{
+  ps aux | grep $@
 }
 
-function upgrade_oh_my_zsh() {
-  /usr/bin/env ZSH=$ZSH /bin/sh $ZSH/tools/upgrade.sh
-}
-
-function take() {
-  mkdir -p $1
-  cd $1
-}
-
-function pbc() {
-  cat $@ | pbcopy
-}
-
-function hgrep() {
+# Grep the history.
+function hgrep()
+{
   history | grep $@
 }
 
+# Cat the contents of the file and put it in
+# the pastboard.
+#
+#   `pbc foo.txt`
+function pbc()
+{
+  cat $@ | pbcopy
+}
+
 # Synchronize all local branches, reporting if any failed
-function reposync() {
+function reposync()
+{
   git status &> /dev/null
   if [ $? -eq 0 ]; then
     git diff-index --quiet HEAD --
@@ -59,6 +62,11 @@ function reposync() {
   else
     echo "Not a git repository"
   fi
+}
+
+function take() {
+  mkdir -p $1
+  cd $1
 }
 
 # Upstream out-of-date branch check (e.g. what does master have that qa doesn't)
@@ -137,21 +145,24 @@ function srvreposync()
   done
 }
 
-function sand() {
+function sand()
+{
   1=${1:=`basename $(pwd)`}
   2=${2:="1"}
   echo "ssh deployer@po-sand-$1$2"
   ssh deployer@po-sand-$1$2
 }
 
-function qa() {
+function qa()
+{
   1=${1:=`basename $(pwd)`}
   2=${2:="1"}
   echo "ssh deployer@po-qa-$1$2"
   ssh deployer@po-qa-$1$2
 }
 
-function int() {
+function int()
+{
   1=${1:=`basename $(pwd)`}
   2=${2:="sa"}
   3=${3:="1"}
@@ -159,17 +170,28 @@ function int() {
   ssh bj@${2}-int-$1$3
 }
 
-function stage() {
+function stage()
+{
   1=${1:=`basename $(pwd)`}
   3=${2:="1"}
   echo "ssh bj@sa-stage-$1$2"
   ssh bj@sa-stage-$1$2
 }
 
-function prod() {
+function prod()
+{
   1=${1:=`basename $(pwd)`}
-  2=${2:="sa"}
+  2=${2:="sb"}
   3=${3:="1"}
   echo "ssh bj@${2}-prod-$1$3"
   ssh bj@${2}-prod-$1$3
+}
+
+function zsh_stats()
+{
+  history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl |  head -n20
+}
+
+function ptreb() {
+  bin/treb "$@" > log/deploy.log | egrep '(=+\[\w+\]===|(Currently|^\s+\*) executing|^Group \d+|^cap |^ \*\* )'
 }

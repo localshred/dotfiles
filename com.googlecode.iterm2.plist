@@ -263,6 +263,8 @@
 	<false/>
 	<key>HideActivityIndicator</key>
 	<false/>
+	<key>HideMenuBarInFullscreen</key>
+	<true/>
 	<key>HideScrollbar</key>
 	<false/>
 	<key>HideTab</key>
@@ -293,8 +295,6 @@
 	<true/>
 	<key>MaxVertically</key>
 	<false/>
-	<key>NSFontPanelAttributes</key>
-	<string>1, 4</string>
 	<key>NSNavLastRootDirectory</key>
 	<string>/code/src/utilities/dotfiles</string>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -314,7 +314,7 @@
 		BAtzdHJlYW10eXBlZIHoA4QBQISEhAhOU1N0cmluZwGEhAhOU09iamVjdACF
 		hAErATGG
 		</data>
-		<string>198</string>
+		<string>302</string>
 	</array>
 	<key>NSTableView Hidden Columns KeyBingingTable</key>
 	<array/>
@@ -332,38 +332,20 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame Preferences</key>
-	<string>1107 575 924 485 0 0 2560 1600 </string>
-	<key>NSWindow Frame UKCrashReporter</key>
-	<string>155 594 592 584 0 0 1920 1178 </string>
+	<string>269 788 924 485 0 0 2560 1578 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>180 118 1074 650 0 0 1440 878 </string>
+	<string>0 450 570 426 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>0 0 1277 1578 0 0 2560 1578 </string>
-	<key>NSWindow Frame iTerm Window 10</key>
-	<string>0 0 955 1178 0 0 1920 1178 </string>
-	<key>NSWindow Frame iTerm Window 11</key>
-	<string>611 150 570 426 0 0 1920 1178 </string>
+	<string>24 452 570 426 0 0 2560 1578 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>0 726 570 426 0 0 2560 1578 </string>
-	<key>NSWindow Frame iTerm Window 3</key>
-	<string>702 683 570 426 0 0 2560 1578 </string>
-	<key>NSWindow Frame iTerm Window 4</key>
-	<string>9 1152 570 426 0 0 2560 1578 </string>
-	<key>NSWindow Frame iTerm Window 5</key>
-	<string>958 752 570 426 0 0 1920 1178 </string>
-	<key>NSWindow Frame iTerm Window 6</key>
-	<string>865 48 927 730 0 0 1440 878 </string>
-	<key>NSWindow Frame iTerm Window 7</key>
-	<string>180 118 1074 650 0 0 1440 878 </string>
-	<key>NSWindow Frame iTerm Window 8</key>
-	<string>1277 15 633 378 0 0 1920 1178 </string>
-	<key>NSWindow Frame iTerm Window 9</key>
-	<string>958 752 570 426 0 0 1920 1178 </string>
+	<string>718 450 570 426 0 0 1440 878 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
 			<key>ASCII Anti Aliased</key>
 			<true/>
+			<key>Allow Title Reporting</key>
+			<false/>
 			<key>Ambiguous Double Width</key>
 			<false/>
 			<key>Ansi 0 Color</key>
@@ -523,6 +505,8 @@
 				<key>Red Component</key>
 				<real>0.10588235408067703</real>
 			</dict>
+			<key>Background Image Is Tiled</key>
+			<false/>
 			<key>Background Image Location</key>
 			<string></string>
 			<key>Blend</key>
@@ -575,7 +559,7 @@
 			<key>Custom Command</key>
 			<string>No</string>
 			<key>Custom Directory</key>
-			<string>Yes</string>
+			<string>No</string>
 			<key>Default Bookmark</key>
 			<string>No</string>
 			<key>Disable Printing</key>
@@ -1078,6 +1062,10 @@
 			<true/>
 			<key>Use Bright Bold</key>
 			<true/>
+			<key>Use Canonical Parser</key>
+			<false/>
+			<key>Use Italic Font</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -1088,7 +1076,7 @@
 			<string>/code/src</string>
 		</dict>
 	</array>
-	<key>NoSyncNeverRemindPrefsChangesLost</key>
+	<key>NoSyncNeverRemindPrefsChangesCopy</key>
 	<true/>
 	<key>OnlyWhenMoreTabs</key>
 	<false/>
@@ -1154,11 +1142,11 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>http://iterm2.googlecode.com/svn/trunk/appcasts/testing.xml</string>
+	<string>http://iterm2.com/appcasts/testing.xml</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2013-05-21T17:10:28Z</date>
+	<date>2014-01-13T23:39:14Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -1181,14 +1169,14 @@
 	<false/>
 	<key>TmuxDashboardLimit</key>
 	<integer>10</integer>
+	<key>ToolbarVisible</key>
+	<false/>
 	<key>ToolbeltTools</key>
 	<array>
 		<string>Paste History</string>
 	</array>
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<false/>
-	<key>UKCrashReporterLastCrashReportDate</key>
-	<real>1336758400</real>
 	<key>URLHandlersByGuid</key>
 	<dict/>
 	<key>UseBorder</key>
@@ -1212,6 +1200,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>1.0.0.20130319</string>
+	<string>1.0.0.20131228</string>
 </dict>
 </plist>

@@ -94,24 +94,11 @@ else
             update_terminal_cwd() {};;
     esac
 fi
-# Prompt aliases for readability
-USER_NAME='%n'
-HOST_NAME='%m'
-DIR='%~'
-COLLAPSED_DIR() { # by Steve Losh
-    echo $(pwd | sed -e "s,^$HOME,~,")
-    local PWD_URL="file://$HOST_NAME${PWD// /%20}"
-}
 
-# Functions
-prompts() {
-    PROMPT=$1
-    RPROMPT=$2
-}
 prompt_char() { # by Steve Losh
     git branch >/dev/null 2>/dev/null && echo '±' && return
     hg root >/dev/null 2>/dev/null && echo '☿' && return
-    echo '$'
+    echo '%{$fg[magenta]%}%%%{$reset_colors%}'
 }
 virtualenv_info() {
     [ $VIRTUAL_ENV ] && echo ' ('`basename $VIRTUAL_ENV`')'
@@ -163,19 +150,6 @@ path() {
            sub(\"/sbin\",  \"$fg_no_bold[magenta]/sbin$reset_color\"); \
            sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
            print }"
-}
-up() { # https://gist.github.com/1474072
-    if [ "$1" != "" -a "$2" != "" ]; then
-        local DIR=$1
-        local TARGET=$2
-    elif [ "$1" ]; then
-        local DIR=$PWD
-        local TARGET=$1
-    fi
-    while [ ! -e $DIR/$TARGET -a $DIR != "/" ]; do
-        DIR=$(dirname $DIR)
-    done
-    test $DIR != "/" && echo $DIR/$TARGET
 }
 if has_brew; then
     gimme() { brew install $1 }
@@ -256,26 +230,6 @@ load_aliases() {
     alias beep='echo -n "\a"'
     alias lst="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
 }
-load_lol_aliases() {
-    # Source: http://aur.archlinux.org/packages/lolbash/lolbash/lolbash.sh
-    alias wtf='dmesg'
-    alias onoz='cat /var/log/errors.log'
-    alias rtfm='man'
-    alias visible='echo'
-    alias invisible='cat'
-    alias moar='more'
-    alias icanhas='mkdir'
-    alias donotwant='rm'
-    alias dowant='cp'
-    alias gtfo='mv'
-    alias hai='cd'
-    alias plz='pwd'
-    alias inur='locate'
-    alias nomz='ps aux | less'
-    alias nomnom='killall'
-    alias cya='reboot'
-    alias kthxbai='halt'
-}
 
 # Completion
 load_completion() {
@@ -329,5 +283,6 @@ load_correction() {
     alias cake='nocorrect cake'
     alias lessc='nocorrect lessc'
     alias lunchy='nocorrect lunchy'
-    SPROMPT="$fg[red]%R →$reset_color $fg[green]%r?$reset_color (Yes, No, Abort, Edit) "
+    alias sb='nocorrect sb'
+    SPROMPT="zsh: correct $fg[red]%R$reset_color to $fg[green]%r$reset_color [nyae]? "
 }
