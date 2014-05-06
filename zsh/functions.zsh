@@ -174,8 +174,8 @@ function stage()
 {
   1=${1:=`basename $(pwd)`}
   3=${2:="1"}
-  echo "ssh bj@sa-stage-$1$2"
-  ssh bj@sa-stage-$1$2
+  echo "ssh bj@sc-stage-$1$2"
+  ssh bj@sc-stage-$1$2
 }
 
 function prod()
