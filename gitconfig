@@ -1,5 +1,6 @@
 [core]
 	editor = vim
+  excludesfile = ~/.gitignore
 [color]
 	status = auto
 	interactive = auto
@@ -20,6 +21,8 @@
   stl = stash list
   stp = stash pop
 	ch = cherry
+  cpk = cherry-pick
+	yoink = cherry-pick
 	ls = ls-remote .
 	pu = push
 	pgm = push github master
@@ -41,7 +44,7 @@
 	autosetuprebase = remote
 [github]
 	user = localshred
-	token = "PUBLIC_KEY_WITHOUT_USER@DOMAIN"
+	token = "some token"
 [push]
 	default = current
 [init]
@@ -49,3 +52,6 @@
 [hub]
 	host = git.moneydesktop.com
 	protocol = https
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f

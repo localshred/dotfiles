@@ -1,3 +1,4 @@
 --color
--fp
+--profile
+--format progress
 --order rand

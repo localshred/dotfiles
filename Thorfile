@@ -1,3 +1,5 @@
+require 'thor'
+
 class Dotfiles < Thor
 	include Thor::Actions
 
@@ -28,7 +30,7 @@ class Dotfiles < Thor
   				  FileUtils.rm(file)
   				  FileUtils.copy(expanded_base, file)
   				else
-  				  say "Skipping merge for file #{base}", :red
+  				  say "Skipping merge for file #{base}", :yellow
   				end
   			end
 			else

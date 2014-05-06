@@ -11,17 +11,19 @@ Bundle 'bronson/vim-trailing-whitespace'
 Bundle 'danchoi/ruby_bashrockets.vim'
 Bundle 'edsono/vim-matchit'
 Bundle 'ervandew/supertab'
+Bundle 'guns/ultisnips'
+Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'majutsushi/tagbar'
 Bundle 'mileszs/ack.vim'
 " color picker
-Bundle 'Rykka/ColorV'
+Bundle 'Rykka/colorv.vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/snipmate-snippets'
 Bundle 'scrooloose/syntastic'
+Bundle 'sunaku/vim-ruby-minitest'
 Bundle 'tpope/vim-bundler'
 Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-fugitive'
@@ -32,7 +34,9 @@ Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-rvm'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-unimpaired'
+Bundle 'thoughtbot/vim-rspec'
 Bundle 'vim-scripts/Align'
+Bundle 'vim-scripts/a'
 
 " Colorscheme Bundles
 Bundle 'altercation/vim-colors-solarized'
@@ -42,17 +46,23 @@ Bundle 'tomasr/molokai'
 Bundle 'Arduino-syntax-file'
 Bundle 'cespare/dtd.vim'
 Bundle 'cespare/mxml.vim'
+Bundle 'glsl.vim'
+Bundle 'eraserhd/ios.vim'
 Bundle 'jamestomasino/actionscript-vim-bundle'
 Bundle 'jdevera/vim-protobuf-syntax'
 Bundle 'juvenn/mustache.vim'
 Bundle 'kana/vim-textobj-user'
 Bundle 'leshill/vim-json'
+Bundle 'msanders/cocoa.vim'
 Bundle 'nelstrom/vim-textobj-rubyblock'
+Bundle 'octol/vim-cpp-enhanced-highlight'
+Bundle 'Rip-Rip/clang_complete'
 Bundle 'tclem/vim-arduino'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-markdown'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'vim-scripts/Io-programming-language-syntax'
+Bundle 'vim-scripts/Match-Bracket-for-Objective-C'
 Bundle 'vim-scripts/scala.vim'
 Bundle 'vim-scripts/vim-scala'
 Bundle 'vim-scripts/yaml.vim'
@@ -130,6 +140,22 @@ let g:Powerline_dividers_override = ['', '', '', '']
 call Pl#Theme#RemoveSegment('fileformat')
 call Pl#Theme#RemoveSegment('fileencoding')
 
+" Disable auto completion, always <c-x> <c-o> to complete
+let g:clang_complete_auto = 0
+let g:clang_use_library = 1
+let g:clang_periodic_quickfix = 0
+let g:clang_close_preview = 1
+
+" For Objective-C, this needs to be active, otherwise multi-parameter methods won't be completed correctly
+let g:clang_snippets = 1
+
+" Snipmate does not work anymore, ultisnips is the recommended plugin
+let g:clang_snippets_engine = 'ultisnips'
+
+" This might change depending on your installation
+let g:clang_exec = '/usr/bin/clang'
+let g:clang_library_path = '/usr/local/lib/libclang.dylib'
+
 silent! sign define SyntasticError text=!>
 silent! sign define SyntasticWarning text=W>
 
@@ -137,8 +163,8 @@ silent! sign define SyntasticWarning text=W>
 nnoremap <leader>ntt :NERDTreeToggle<cr>
 nnoremap <leader>ntf :NERDTreeFind<cr>
 
-" Ack.vim mappings
-nnoremap <leader>fi :Ack --ruby 
+" Ack.vim mappingS
+nnoremap <leader>fi :Ack --ruby -i 
 nnoremap <leader>f/ :AckFromSearch --ruby<cr>
 nnoremap <leader>fq :cclose<cr>
 nnoremap <leader>fo :copen<cr>
@@ -174,7 +200,7 @@ nnoremap <silent> <S-Tab> :wincmd W<cr>
 " Disable command mode
 nnoremap Q <nop>
 " Disable lookups
-nnoremap K <nop>
+"nnoremap K <nop>
 
 " Disable arrow keys
 map <up> <nop>
@@ -250,9 +276,15 @@ vnoremap <leader># 0<C-V>I# <esc>
 " Bundle open equivalent
 noremap <leader>bo :Bvsplit 
 
+" rails.vim mappings
+nnoremap <leader>m :Rmodel 
+nnoremap <leader>c :Rcontroller 
+
 " Command-mode mispellings
 cnoremap Qa qa
 cnoremap QA qa
+cnoremap Wq wq
+cnoremap WQ wq
 cnoremap Vs vs
 cnoremap Sp sp
 
@@ -266,71 +298,11 @@ endfunction
 :command! PromoteToLet :call PromoteToLet()
 :map <leader>p :PromoteToLet<cr>
 
-function! WhenIsLunch()
-  :normal! !lunch
-endfunction
-:command! WhenIsLunch :call WhenIsLunch()
-
-"--------------------------------------------------------[Abbreviations]----
-" Expand hashrocket
-iabbrev hh =>
-
-"---------------------------------------------------------------------------
-"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%[Specs/Tests]%%%%
-"---------------------------------------------------------------------------
-function! RunCurrentTest()
-  let in_test_file = match(expand("%"), '\(.feature\|_spec.rb\|_test.rb\)$') != -1
-  if in_test_file
-    call SetTestFile()
-
-    if match(expand('%'), '\.feature$') != -1
-      call SetTestRunner("!cucumber")
-      exec g:bjo_test_runner g:bjo_test_file
-    elseif match(expand('%'), '_spec\.rb$') != -1
-      call SetTestRunner("!rspec")
-      exec g:bjo_test_runner g:bjo_test_file
-    else
-      call SetTestRunner("!ruby -Itest")
-      exec g:bjo_test_runner g:bjo_test_file
-    endif
-  else
-    exec g:bjo_test_runner g:bjo_test_file
-  endif
-endfunction
-
-function! SetTestRunner(runner)
-  let g:bjo_test_runner=a:runner
-endfunction
-
-function! RunCurrentLineInTest()
-  let in_test_file = match(expand("%"), '\(.feature\|_spec.rb\|_test.rb\)$') != -1
-  if in_test_file
-    call SetTestFileWithLine()
-  end
-
-  exec "!rspec" g:bjo_test_file . ":" . g:bjo_test_file_line
-endfunction
-
-function! SetTestFile()
-  let g:bjo_test_file=@%
-endfunction
-
-function! SetTestFileWithLine()
-  let g:bjo_test_file=@%
-  let g:bjo_test_file_line=line(".")
-endfunction
-
-function! CorrectTestRunner()
-  if match(expand('%'), '\.feature$') != -1
-    return "cucumber"
-  elseif match(expand('%'), '_spec\.rb$') != -1
-    return "bx rspec"
-  else
-    return "bx ruby"
-  endif
-endfunction
-
-"---------------------------------------------------------------------------
+" Rspec.vim mappings
+map <Leader>sf :call RunCurrentSpecFile()<CR>
+map <Leader>sc :call RunNearestSpec()<CR>
+map <Leader>sl :call RunLastSpec()<CR>
+map <Leader>sa :call RunAllSpecs()<CR>
 
 "---------------------------------------------------------------------------
 "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%[File Types]%%%%
@@ -347,7 +319,7 @@ au BufNewFile,BufRead *.haml set filetype=haml
 au FileType haml set makeprg=haml\ %:p\ %:p:s?haml?html?
 
 "-----------------------------------------------------------------[Ruby]----
-au BufNewFile,BufRead *.rb,*.rbw,*.gem,*.gemspec,[rR]akefile,Thorfile,Capfile,*.jbuilder,*.rake,*.thor set filetype=ruby
+au BufNewFile,BufRead *.rb,*.rbw,*.gem,*.gemspec,[rR]akefile,Gemfile,Podfile,Thorfile,Capfile,*.jbuilder,*.rake,*.thor set filetype=ruby
 "au Filetype,BufNewFile *_spec.rb nmap <leader>r :!bundle exec rspec %<cr>
 "au Filetype,BufNewFile *_spec.rb nmap <leader>R :exe "!bundle exec rspec %\:" . line(".")<cr>
 
@@ -382,6 +354,9 @@ au! Syntax scala source ~/.vim/bundle/scala.vim/syntax/scala.vim
 
 "-----------------------------------------------------------------[ Io ]----
 au BufNewFile,BufRead *.io set filetype=io
+
+"--------------------------------------------------------[ OpenGL glsl ]----
+au BufNewFile,BufRead *.glsl setlocal filetype=glsl
 
 "------------------------------------------------------------[ Arduino ]----
 au BufNewFile,BufRead *.ino,*.pde setlocal filetype=arduino

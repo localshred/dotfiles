@@ -2,10 +2,10 @@
 --ignore-dir=doc
 --ignore-dir=log
 --ignore-dir=tmp
---type-add=ruby=.haml,.rake,.rsel,.builder,.jbuilder,.thor,Gemfile,Rakefile,Thorfile
+--type-add=ruby=.haml,.rake,.rsel,.builder,.jbuilder,.thor,Gemfile,Rakefile,Thorfile,.rabl
 --type-add=html=.html.erb,.html.haml,.mustache
 --type-add=js=.js.erb
---type-add=css=.sass
+--type-add=css=.sass,.scss
 --type-set=cucumber=.feature
 --type-set=jquery=jquery*.js
 --type-set=proto=.proto
