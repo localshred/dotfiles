@@ -1,18 +1,22 @@
-export dotfiles=/code/src/utilities/dotfiles
+export utilities=/code/src/utilities
+export mydotfiles=$utilities/mydotfiles
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/usr/local/heroku/bin:/code/src/utilities/nuvidotfiles/bin
+export UNIXNUVIS=/code/src/services/nuvis
+export VISIONBOARD=~/Dropbox/BJ/vision/vision.md
 
-source $dotfiles/zshuery/zshuery.sh
-source $dotfiles/zsh/git.zsh
-source $dotfiles/zsh/aliases.zsh
-source $dotfiles/zsh/functions.zsh
+source $mydotfiles/zshuery/zshuery.sh
+source $mydotfiles/zsh/aliases.zsh
+source $mydotfiles/zsh/functions.zsh
+source $utilities/nuvidotfiles/nuvi.sh
+source $UNIXNUVIS/scripts/bash/buildx
 
 load_defaults
 load_aliases
-load_completion $dotfiles/zshuery/completion
+load_completion /usr/local/share/zsh-completions
 load_correction
 
 export EDITOR=vim
-export NODE_PATH=/usr/local/lib/node_modules:./node_modules
-export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/usr/local/heroku/bin
+export JAVA_HOME=$(/usr/libexec/java_home)
 
 cdpath=(~ ~/Documents ~/Desktop /code /code/src /code/src/services /code/src/gems /code/src/apps /code/src/utilities /code/src/sites /code/learn)
 
@@ -24,4 +28,7 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}]%{$fg[red]%} ☭%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%}]"
 
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+source ~/perl5/perlbrew/etc/bashrc
+
+PERL_MB_OPT="--install_base \"/Users/bj/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/bj/perl5"; export PERL_MM_OPT;

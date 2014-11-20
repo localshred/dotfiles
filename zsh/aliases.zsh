@@ -53,14 +53,8 @@ alias foreman='nocorrect foreman'
 alias sourcezsh='source ~/.zshrc'
 alias vzsh='vim ~/.zshrc'
 
-# Network change commands
-alias wifioff='networksetup -setairportpower en0 off'
-alias wifion='networksetup -setairportpower en0 on'
-
 # Random
 alias lunch="ruby -e 't=Time.now; m=((Time.new(t.year,t.month,t.day,12,0,0)-t)/60).ceil.to_s; puts \"Hunger Satisfied in #{m} minutes\"'"
 alias eod="ruby -e 't=Time.now; m=((Time.new(t.year,t.month,t.day,18,0,0)-t)/60).ceil.to_s; puts \"Go home in #{m} minutes\"'"
-alias track="osascript /code/src/scripts/itunes_current_track.scpt"
-alias sb='nocorrect sb'
 
 alias railz='PB_CLIENT_TYPE=zmq PB_IGNORE_DEPRECATIONS=1 bin/rails s'

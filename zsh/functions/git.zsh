@@ -1,12 +1,22 @@
+#!/usr/bin/env sh
+
+# Get the current branch
+function git_cur_branch()
+{
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  "${ref#refs/heads/}"
+}
+
 # get the name of the branch we are on
-function git_prompt_info() {
+git_prompt_info()
+{
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
   echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
 }
 
-
 # Checks if working tree is dirty
-parse_git_dirty() {
+parse_git_dirty()
+{
   local SUBMODULE_SYNTAX=''
   if [[ $POST_1_7_2_GIT -gt 0 ]]; then
         SUBMODULE_SYNTAX="--ignore-submodules=dirty"
@@ -20,24 +30,28 @@ parse_git_dirty() {
 
 
 # Checks if there are commits ahead from remote
-function git_prompt_ahead() {
+git_prompt_ahead()
+{
   if $(echo "$(git log origin/$(current_branch)..HEAD 2> /dev/null)" | grep '^commit' &> /dev/null); then
     echo "$ZSH_THEME_GIT_PROMPT_AHEAD"
   fi
 }
 
 # Formats prompt string for current git commit short SHA
-function git_prompt_short_sha() {
+git_prompt_short_sha()
+{
   SHA=$(git rev-parse --short HEAD 2> /dev/null) && echo "$ZSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$ZSH_THEME_GIT_PROMPT_SHA_AFTER"
 }
 
 # Formats prompt string for current git commit long SHA
-function git_prompt_long_sha() {
+git_prompt_long_sha()
+{
   SHA=$(git rev-parse HEAD 2> /dev/null) && echo "$ZSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$ZSH_THEME_GIT_PROMPT_SHA_AFTER"
 }
 
 # Get the status of the working tree
-git_prompt_status() {
+git_prompt_status()
+{
   INDEX=$(git status --porcelain 2> /dev/null)
   STATUS=""
   if $(echo "$INDEX" | grep '^?? ' &> /dev/null); then
@@ -72,7 +86,8 @@ git_prompt_status() {
 #compare the provided version of git to the version installed and on path
 #prints 1 if input version <= installed version
 #prints -1 otherwise
-function git_compare_version() {
+git_compare_version()
+{
   local INPUT_GIT_VERSION=$1;
   local INSTALLED_GIT_VERSION
   INPUT_GIT_VERSION=(${(s/./)INPUT_GIT_VERSION});
@@ -90,6 +105,7 @@ function git_compare_version() {
 
 #this is unlikely to change so make it all statically assigned
 POST_1_7_2_GIT=$(git_compare_version "1.7.2")
+
 #clean up the namespace slightly by removing the checker function
 unset -f git_compare_version
 
