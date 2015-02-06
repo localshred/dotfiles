@@ -1,0 +1,27 @@
+" Comment line(s)
+noremap <leader># I# <esc>
+vnoremap <leader># 0<C-V>I# <esc>
+
+" Bundle open
+noremap <leader>bo :Bvsplit
+
+" Symbolize word
+nnoremap <leader>: viw<esc>bi:<esc>
+
+" Wrap parens around def method args
+nnoremap <leader>() ^welr(A)<esc>
+
+function! PromoteToLet()
+  :normal! dd
+  " :exec '?^\s*it\>'
+  :normal! P
+  :.s/\(\w\+\) = \(.*\)$/let(:\1) { \2 }/
+  :normal ==
+endfunction
+:command! PromoteToLet :call PromoteToLet()
+:map <leader>p :PromoteToLet<cr>
+
+" Ack.vim mappings
+nnoremap <leader>fi :Ack --ruby -i 
+nnoremap <leader>fs :AckFromSearch --ruby<cr>
+
