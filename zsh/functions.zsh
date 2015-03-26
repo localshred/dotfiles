@@ -10,6 +10,11 @@ function hgrep()
   history | grep $@
 }
 
+function ackvim()
+{
+    ack $@ --no-color | vim -
+}
+
 # Cat the contents of the file and put it in
 # the pastboard.
 #
