@@ -2,7 +2,7 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
-let mapleader=","
+let mapleader="\<Space>"
 
 set autoindent
 set backspace=indent,eol,start
@@ -20,6 +20,8 @@ set errorfile=~/.vim/errors.txt
 set expandtab
 set exrc "enable cwd .vimrc files
 set fileformats=unix,dos,mac
+set foldmethod=syntax
+set grepprg=ack\ -k
 set hidden
 set hlsearch
 set ignorecase
@@ -65,7 +67,7 @@ let g:airline#extensions#tabline#tab_min_count=2
 let g:airline#extensions#tagbar#flags='f'
 let g:airline_left_sep=''
 let g:airline_right_sep=''
-let g:airline_theme='lucius' " raven bubblegum
+let g:airline_theme='bubblegum' " raven lucius
 let g:clang_close_preview = 1
 let g:clang_complete_auto = 0
 let g:clang_exec = '/usr/bin/clang'
@@ -75,10 +77,17 @@ let g:clang_snippets = 1
 let g:clang_snippets_engine = 'ultisnips'
 let g:clang_use_library = 1
 let g:jsx_ext_required = 0
+let g:localvimrc_whitelist='/code/src/\(services\|gems\|utilities\)/.*'
+let g:rubytest_in_quickfix = 0
 let g:SuperTabSetDefaultCompletionType="context"
 let g:syntastic_cs_checkers=["syntax","issues"]
 let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 
+nnoremap <leader>pf :CtrlP<cr>
+nnoremap <leader>pb :CtrlPBuffer<cr>
+nnoremap <leader>pm :CtrlPMRU<cr>
+nnoremap <leader>pt :CtrlPTag<cr>
+nnoremap <leader>pd :CtrlPDir<cr>
 nnoremap <leader>fi :Ack -i 
 nnoremap <leader>fq :cclose<cr>
 nnoremap <leader>fs :AckFromSearch<cr>
@@ -91,6 +100,8 @@ nnoremap <silent> <S-Tab> :wincmd W<cr>
 nnoremap <leader>w <c-w>
 
 nnoremap Q <nop>
+
+vnoremap <leader>S :sort i<cr>
 
 map <up> <nop>
 map <down> <nop>
@@ -149,6 +160,7 @@ cnoremap Vs vs
 cnoremap Sp sp
 
 " Filetype mappings that need some help
+au BufNewFile,BufRead *.es6 setlocal filetype=javascript
 au BufNewFile,BufRead *.glsl setlocal filetype=glsl
 au BufNewFile,BufRead *.io set filetype=io
 au BufNewFile,BufRead *.scala set filetype=scala
