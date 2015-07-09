@@ -1,5 +1,27 @@
 #!/usr/bin/env sh
 
+# Upstream out-of-date branch check (e.g. what does master have that qa doesn't)
+function upcherry() {
+  echo 'Upstream out-of-date branch check'
+
+  echo '[master > stage]'
+  git ch -v stage master
+
+  echo '[stage > prod]'
+  git ch -v prod stage
+}
+
+# Downstream out-of-date branch check (e.g. what does stable have that master doesn't)
+function dncherry() {
+  echo 'Downstream out-of-date branch check'
+
+  echo '[master < stage]'
+  git ch -v master stage
+
+  echo '[stage < prod]'
+  git ch -v stage prod
+}
+
 # Get the current branch
 function git_cur_branch()
 {
