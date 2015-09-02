@@ -1,5 +1,5 @@
 " Comment line(s)
-noremap <leader># I/* <esc>A */<esc>0
+nnoremap <leader># I/* <esc>A */<esc>0
 vnoremap <leader># o<esc>O/*<esc>gvo<esc>o*/<esc>gvo<esc>0
 
 " Ack.vim mappings

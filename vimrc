@@ -54,12 +54,14 @@ set tabstop=2
 set vb
 set wildmenu
 
-colorscheme molokai
+"colorscheme molokai
+colorscheme spacegray
 
 silent! set colorcolumn=80
 silent! sign define SyntasticError text=!>
 silent! sign define SyntasticWarning text=W>
 
+let g:ackprg='ag --nogroup --nocolor --column'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#show_buffers=0
 let g:airline#extensions#tabline#show_close_button=0
@@ -83,6 +85,7 @@ let g:SuperTabSetDefaultCompletionType="context"
 let g:syntastic_cs_checkers=["syntax","issues"]
 let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 
+nnoremap <F9> :Dispatch<CR>
 nnoremap <leader>pf :CtrlP<cr>
 nnoremap <leader>pb :CtrlPBuffer<cr>
 nnoremap <leader>pm :CtrlPMRU<cr>
@@ -94,6 +97,8 @@ nnoremap <leader>fs :AckFromSearch<cr>
 nnoremap <leader>fw :FixWhitespace<cr>
 nnoremap <leader>ntf :NERDTreeFind<cr>
 nnoremap <leader>ntt :NERDTreeToggle<cr>
+nnoremap <leader>al :Align 
+vnoremap <leader>al :Align 
 
 nnoremap <silent> <Tab> :wincmd w<cr>
 nnoremap <silent> <S-Tab> :wincmd W<cr>
@@ -160,7 +165,7 @@ cnoremap Vs vs
 cnoremap Sp sp
 
 " Filetype mappings that need some help
-au BufNewFile,BufRead *.es6 setlocal filetype=javascript
+au BufNewFile,BufRead *.es6 setlocal filetype=javascript.jsx
 au BufNewFile,BufRead *.glsl setlocal filetype=glsl
 au BufNewFile,BufRead *.io set filetype=io
 au BufNewFile,BufRead *.scala set filetype=scala
