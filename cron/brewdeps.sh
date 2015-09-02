@@ -15,5 +15,5 @@ git diff-index --quiet HEAD --
 [ $? -eq 0 ] && echo "No changes to brew formulae" && exit
 
 git add $brew_formulae_file
-git commit -m "Update brew formulae file (cron)"
+git commit -m "Update brew formulae file (cron ${0})"
 git push origin master

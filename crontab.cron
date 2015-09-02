@@ -1,1 +1,2 @@
 35 12 * * Wed $mydotfiles/cron/brewdeps.sh
+45 12 * * Wed $mydotfiles/cron/vimplugins.sh
