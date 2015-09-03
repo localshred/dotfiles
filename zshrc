@@ -16,9 +16,9 @@ load_correction
 
 source $mydotfiles/zsh/aliases.zsh
 source $mydotfiles/zsh/functions.zsh
+source $mydotfiles/zsh/git.zsh
 source $utilities/nuvidotfiles/nuvi.sh
 source $UNIXNUVIS/scripts/bash/buildx
-#source /usr/local/share/zsh/site-functions
 
 cdpath=(~ ~/Documents ~/Desktop /code /code/src /code/src/services /code/src/gems /code/src/apps /code/src/utilities /code/src/sites /code/learn)
 
