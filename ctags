@@ -31,8 +31,12 @@
 --regex-coffee=/^[ \t]*(([A-Za-z][A-Za-z0-9_.]*)+):[^->\n]*$/\1/f,field/
 --regex-coffee=/((constructor|initialize):[ \t]*\()@(([A-Za-z][A-Za-z0-9_.]*)+)([ \t]*=[ \t]*[^,)]+)?/\3/f,field/
 
+--langmap=Ruby:+.rake
 
 --regex-ruby=/.*alias(_method)?[[:space:]]+:([[:alnum:]_=!?]+),?[[:space:]]+:([[:alnum:]_=!]+)/\2/f,function/
+--regex-ruby=/.*alias(_method)?[[:space:]]+:([[:alnum:]_=!?]+),?[[:space:]]+:([[:alnum:]_=!]+)/\2/f,function/
+--regex-ruby=/(^|[:;])[ \t]*namespace\(? *:([[:alnum:]_]+)/\2/m,module/
+--regex-ruby=/(^|[:;])[ \t]*task\(?\{? *:([[:alnum:]_]+)/\2/f,function/
 --regex-ruby=/(^|[:;])[ \t]*([A-Z][[:alnum:]_]+) *=/\2/c,class,constant/
 --regex-ruby=/(^|;)[ \t]*(has_many|belongs_to|has_one|has_and_belongs_to_many)\(? *:([[:alnum:]_]+)/\3/f,function,association/
 --regex-ruby=/(^|;)[ \t]*(named_)?scope\(? *:([[:alnum:]_]+)/\3/f,function,named_scope/
@@ -45,7 +49,7 @@
 
 --langdef=js
 --langmap=js:.js
---langmap=js:.es6
+--langmap=js:+.es6
 --langmap=js:+.jsx
 
 --regex-js=/[ \t.]([A-Z][A-Z0-9._$]+)[ \t]*[=:][ \t]*([0-9"'\[\{]|null)/\1/n,constant/
