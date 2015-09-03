@@ -39,6 +39,7 @@ vim-fugitive https://github.com/tpope/vim-fugitive.git c4713200f76550f3f310fe7e1
 vim-git https://github.com/tpope/vim-git.git 41c1d979faeb7addfacfed22639f51e915c7fa7f
 vim-haml https://github.com/tpope/vim-haml.git 18ff62828c1c2449b0da8c1a980dace3b4f73610
 vim-javascript https://github.com/pangloss/vim-javascript.git f8122fd1caca68b2592553e43dad45b3dc445a06
+vim-jdaddy git://github.com/tpope/vim-jdaddy.git fccddca8092ca3dfa843e9e33fc7be8c8ef1c727
 vim-json https://github.com/leshill/vim-json.git 3029554ee1619f478fc5222bf4c6c08909b1be9c
 vim-jsx https://github.com/mxw/vim-jsx.git 82773e7be94c558c2de6bc1e84054c3915a70cb3
 vim-leiningen git://github.com/tpope/vim-leiningen.git c165108680d83adcd53f7ee1dbf8ef14f7111255
@@ -51,6 +52,7 @@ vim-protobuf-syntax https://github.com/jdevera/vim-protobuf-syntax.git 6bca04587
 vim-ragtag git@github.com:tpope/vim-ragtag.git 07115a6dee0ae01b7c9c3d92e9ee3219b6780b77
 vim-rails https://github.com/tpope/vim-rails.git 98fe1d2abd325d29c608a60f1e8410d858a3e8e4
 vim-rake https://github.com/tpope/vim-rake.git 71e40762357e688b9df8e54c6f84de4c99e7956d
+vim-rbenv git://github.com/tpope/vim-rbenv.git 79a33164cade37f922cc1e2a16eaca3533aa0274
 vim-repeat https://github.com/tpope/vim-repeat.git 2a3c5f8e3c26a57b8eb4cfc4be79615a1c508ef6
 vim-rspec https://github.com/thoughtbot/vim-rspec.git 94a256b7e02f5056cab197d9b079901858737324
 vim-ruby https://github.com/vim-ruby/vim-ruby.git 42b96accf3cd27612f4259b5604bff9055afea91
@@ -58,6 +60,8 @@ vim-ruby-minitest https://github.com/sunaku/vim-ruby-minitest.git e77ac79b6a0165
 vim-rubytest https://github.com/janx/vim-rubytest 58f7830cd9e4ac357d269826b7396594258e70ab
 vim-rvm https://github.com/tpope/vim-rvm.git 06bc52c308c27b6e4eb41c744494ffc6dbb30f49
 vim-scala https://github.com/vim-scripts/vim-scala.git 5abd181e0c0e3fff0913f8b698d24e9577936907
+vim-sexp git://github.com/guns/vim-sexp.git b4398689f7483b01684044ab6b55bf369744c9b3
+vim-sexp-mappings-for-regular-people git://github.com/tpope/vim-sexp-mappings-for-regular-people.git f5b66e73c81a3b4c0c8f5a8141fb09a5a213f711
 vim-surround https://github.com/tpope/vim-surround.git f85cb4e788356f664d033e8519abdd8e1bc26762
 vim-textobj-rubyblock https://github.com/nelstrom/vim-textobj-rubyblock.git b5b84e49e609439e81aa03fa8e605a6097185665
 vim-textobj-user https://github.com/kana/vim-textobj-user.git 96aeac30a586c7b55e4f408e2afa1f25862e3526
