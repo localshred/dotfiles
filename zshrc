@@ -17,6 +17,7 @@ load_correction
 source $mydotfiles/zsh/aliases.zsh
 source $mydotfiles/zsh/functions.zsh
 source $mydotfiles/zsh/git.zsh
+source $mydotfiles/zsh/functions/minaret.zsh
 source $utilities/nuvidotfiles/nuvi.sh
 source $UNIXNUVIS/scripts/bash/buildx
 
