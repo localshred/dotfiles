@@ -34,6 +34,7 @@ vim-cpp-enhanced-highlight https://github.com/octol/vim-cpp-enhanced-highlight.g
 vim-csharp https://github.com/OrangeT/vim-csharp.git a07516f11a125a38f8d8aaa1203cfcd4b02261fa
 vim-dispatch https://github.com/tpope/vim-dispatch.git 70d47ab198458cd0869283cd4252df4fee6e622d
 vim-easymotion https://github.com/Lokaltog/vim-easymotion.git bf093abbdf96d905edb9f137ff0a6f4d67930a53
+vim-elixir git@github.com:elixir-lang/vim-elixir.git 4515b070960a0483e5815dc69800bc59459e2a5a
 vim-fireplace git://github.com/tpope/vim-fireplace.git 5866d0017a7f544a27c3f60045958d6d7759b1a8
 vim-fugitive https://github.com/tpope/vim-fugitive.git c4713200f76550f3f310fe7e176925d3f4ec1809
 vim-git https://github.com/tpope/vim-git.git 41c1d979faeb7addfacfed22639f51e915c7fa7f
@@ -47,6 +48,7 @@ vim-less https://github.com/groenewege/vim-less 5d965c221b90fb168bf9f447a332c9ff
 vim-localvimrc git@github.com:embear/vim-localvimrc.git df7e3692c3415200707adb7634e8232487b6ed98
 vim-markdown https://github.com/tpope/vim-markdown.git b3cea72eea7d589000366c1911f8e5f041ff7845
 vim-matchit https://github.com/edsono/vim-matchit.git ceaf496a3763f3c20bc7f50c2135df4f1775ae05
+vim-phoenix git@github.com:avdgaag/vim-phoenix.git ad7b38db0903a969085bd5b39d4314a41f4c1345
 vim-projectionist git://github.com/tpope/vim-projectionist.git 2618d0bae8680f57bf7b199eb04e7d07c0bf78d6
 vim-protobuf-syntax https://github.com/jdevera/vim-protobuf-syntax.git 6bca045873f772d41a97bee7edfaa829d702d42c
 vim-ragtag git@github.com:tpope/vim-ragtag.git 07115a6dee0ae01b7c9c3d92e9ee3219b6780b77
