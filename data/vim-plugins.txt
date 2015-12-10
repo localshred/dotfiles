@@ -48,6 +48,7 @@ vim-less https://github.com/groenewege/vim-less 5d965c221b90fb168bf9f447a332c9ff
 vim-localvimrc git@github.com:embear/vim-localvimrc.git df7e3692c3415200707adb7634e8232487b6ed98
 vim-markdown https://github.com/tpope/vim-markdown.git b3cea72eea7d589000366c1911f8e5f041ff7845
 vim-matchit https://github.com/edsono/vim-matchit.git ceaf496a3763f3c20bc7f50c2135df4f1775ae05
+vim-multiple-cursors git@github.com:terryma/vim-multiple-cursors.git 73a78c926ad208bd1984e575ceece276d61a1404
 vim-phoenix git@github.com:avdgaag/vim-phoenix.git ad7b38db0903a969085bd5b39d4314a41f4c1345
 vim-projectionist git://github.com/tpope/vim-projectionist.git 2618d0bae8680f57bf7b199eb04e7d07c0bf78d6
 vim-protobuf-syntax https://github.com/jdevera/vim-protobuf-syntax.git 6bca045873f772d41a97bee7edfaa829d702d42c
