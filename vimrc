@@ -5,6 +5,7 @@ filetype plugin indent on
 let mapleader="\<Space>"
 
 set autoindent
+set background=dark
 set backspace=indent,eol,start
 set backup
 set backupdir=/tmp
@@ -54,7 +55,6 @@ set tabstop=2
 set vb
 set wildmenu
 
-"colorscheme molokai
 colorscheme spacegray
 
 silent! set colorcolumn=80
@@ -78,26 +78,49 @@ let g:clang_periodic_quickfix = 0
 let g:clang_snippets = 1
 let g:clang_snippets_engine = 'ultisnips'
 let g:clang_use_library = 1
+let g:ctrlp_custom_ignore = {
+      \ 'dir': '\v(node_modules/|tmp/|elm-stuff/)',
+      \ 'file': '\v\.(beam|o)$',
+      \ }
 let g:jsx_ext_required = 0
 let g:localvimrc_whitelist='/code/src/\(services\|gems\|utilities\)/.*'
 let g:rubytest_in_quickfix = 0
 let g:SuperTabSetDefaultCompletionType="context"
 let g:syntastic_cs_checkers=["syntax","issues"]
-let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+" let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+" let g:tagbar_type_elixir = {
+"     \ 'ctagstype' : 'elixir',
+"     \ 'kinds' : [
+"         \ 'f:functions',
+"         \ 'functions:functions',
+"         \ 'c:callbacks',
+"         \ 'd:delegates',
+"         \ 'e:exceptions',
+"         \ 'i:implementations',
+"         \ 'a:macros',
+"         \ 'o:operators',
+"         \ 'm:modules',
+"         \ 'p:protocols',
+"         \ 'r:records'
+"     \ ]
+" \ }
 
+cnoremap Q q
 nnoremap <F9> :Dispatch<CR>
-nnoremap <leader>pf :CtrlP<cr>
-nnoremap <leader>pb :CtrlPBuffer<cr>
-nnoremap <leader>pm :CtrlPMRU<cr>
-nnoremap <leader>pt :CtrlPTag<cr>
-nnoremap <leader>pd :CtrlPDir<cr>
+nnoremap <leader>al :Align 
+nnoremap <leader>cn :cnext<cr>
+nnoremap <leader>cp :cprevious<cr>
 nnoremap <leader>fi :Ack -i 
 nnoremap <leader>fq :cclose<cr>
 nnoremap <leader>fs :AckFromSearch<cr>
 nnoremap <leader>fw :FixWhitespace<cr>
 nnoremap <leader>ntf :NERDTreeFind<cr>
 nnoremap <leader>ntt :NERDTreeToggle<cr>
-nnoremap <leader>al :Align 
+nnoremap <leader>pb :CtrlPBuffer<cr>
+nnoremap <leader>pd :CtrlPDir<cr>
+nnoremap <leader>pf :CtrlP<cr>
+nnoremap <leader>pm :CtrlPMRU<cr>
+nnoremap <leader>pt :CtrlPTag<cr>
 vnoremap <leader>al :Align 
 
 nnoremap <silent> <Tab> :wincmd w<cr>
