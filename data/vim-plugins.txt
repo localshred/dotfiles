@@ -23,7 +23,6 @@ scala.vim https://github.com/vim-scripts/scala.vim.git 3289f46fdcb419265decd4f1c
 Spacegray.vim git://github.com/ajh17/Spacegray.vim.git 1c10d0da045609910e8fb03b33c043bbcff35d9e
 supertab https://github.com/ervandew/supertab.git c0992833e2b19dc02af4f10f1fcc24c36da86efb
 syntastic https://github.com/scrooloose/syntastic.git 4004c021af2fed1e30d22aeb28f6703dca652547
-tagbar https://github.com/majutsushi/tagbar.git 9bf4fd99e4b460c547207b0f0bc3557280874b61
 ultisnips https://github.com/guns/ultisnips.git 4cc1996f6c69b035414e1c0d24c3525096357f06
 vim-airline https://github.com/bling/vim-airline 446397e006d8cba9e1ac38d8c656ba39218c139b
 vim-arduino https://github.com/tclem/vim-arduino.git edabf5c2ace0957fc5e9edb84661757dd044f5df
