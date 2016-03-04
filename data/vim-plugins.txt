@@ -9,7 +9,7 @@ colorv.vim https://github.com/Rykka/colorv.vim.git 2d9b09b8294ca2bb18440cb38e4c3
 ctrlp.vim https://github.com/kien/ctrlp.vim.git b5d3fe66a58a13d2ff8b6391f4387608496a030f
 dash.vim https://github.com/rizzatti/dash.vim.git 23ba6b7e988a97c7dc43f96d720eccd6b20ccb8f
 dtd.vim https://github.com/cespare/dtd.vim.git 4424c249b722c51ddbf22f1674e91c0ed655b103
-elm-vim git@github.com:ElmCast/elm-vim.git aa8745fa8d328c488114152f8a67fd0dbd0c6bfa
+elm-vim git@github.com:ElmCast/elm-vim.git 2f68df6227ed342d3fb7583dc405d0d5d31966f3
 glsl.vim https://github.com/vim-scripts/glsl.vim.git 1af8aa50e33766bd558f853ba84f6f076a0ae6fc
 Io-programming-language-syntax https://github.com/vim-scripts/Io-programming-language-syntax.git 22cbb4780a20f68866b85f7594b5d466ea157f2a
 Match-Bracket-for-Objective-C https://github.com/vim-scripts/Match-Bracket-for-Objective-C.git 6d10978c04cc9e2d3d7cdf6ae7de9a60bec2d258
@@ -31,11 +31,11 @@ vim-coffee-script https://github.com/kchmck/vim-coffee-script.git 18c68524ab8a04
 vim-colors-solarized https://github.com/altercation/vim-colors-solarized.git 528a59f26d12278698bb946f8fb82a63711eec21
 vim-cpp-enhanced-highlight https://github.com/octol/vim-cpp-enhanced-highlight.git 7484a417c197f5fb2597b340df7e4bb79661fc35
 vim-csharp https://github.com/OrangeT/vim-csharp.git a07516f11a125a38f8d8aaa1203cfcd4b02261fa
-vim-dispatch https://github.com/tpope/vim-dispatch.git 70d47ab198458cd0869283cd4252df4fee6e622d
+vim-dispatch https://github.com/tpope/vim-dispatch.git eb3e564fb1edfee09fe6aeb57f3388e273da72c8
 vim-easymotion https://github.com/Lokaltog/vim-easymotion.git bf093abbdf96d905edb9f137ff0a6f4d67930a53
 vim-elixir git@github.com:elixir-lang/vim-elixir.git 4515b070960a0483e5815dc69800bc59459e2a5a
 vim-extest git@github.com:BjRo/vim-extest.git 767e7171c2c6228ebc122a19763bbd7b20c4955e
-vim-fireplace git://github.com/tpope/vim-fireplace.git 5866d0017a7f544a27c3f60045958d6d7759b1a8
+vim-fireplace git://github.com/tpope/vim-fireplace.git 2bab3373965b83b3f06cec9ca0c2308393db5d68
 vim-fugitive https://github.com/tpope/vim-fugitive.git c4713200f76550f3f310fe7e176925d3f4ec1809
 vim-git https://github.com/tpope/vim-git.git 41c1d979faeb7addfacfed22639f51e915c7fa7f
 vim-haml https://github.com/tpope/vim-haml.git 18ff62828c1c2449b0da8c1a980dace3b4f73610
