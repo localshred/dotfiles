@@ -80,7 +80,7 @@ let g:clang_snippets_engine = 'ultisnips'
 let g:clang_use_library = 1
 let g:ctrlp_custom_ignore = {
       \ 'dir': '\v(node_modules/|tmp/|elm-stuff/)',
-      \ 'file': '\v\.(beam|o)$',
+      \ 'file': '\v\.(beam|o|class)$',
       \ }
 let g:jsx_ext_required = 0
 let g:localvimrc_whitelist='/code/src/\(services\|gems\|utilities\)/.*'

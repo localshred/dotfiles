@@ -25,3 +25,5 @@ endfunction
 nnoremap <leader>fi :Ack --ruby -i 
 nnoremap <leader>fs :AckFromSearch --ruby<cr>
 
+nnoremap <leader>copf :!rubocop %<cr>
+nnoremap <leader>copa :!rubocop<cr>
