@@ -105,7 +105,6 @@ let g:syntastic_cs_checkers=["syntax","issues"]
 "     \ ]
 " \ }
 
-cnoremap Q q
 nnoremap <F9> :Dispatch<CR>
 nnoremap <leader>al :Align 
 nnoremap <leader>cn :cnext<cr>

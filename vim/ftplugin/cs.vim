@@ -3,8 +3,6 @@ set softtabstop=4
 set shiftwidth=4
 setlocal omnifunc=OmniSharp#Complete
 
-au BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
-
 " Comment line(s)
 noremap <leader># I// <esc>
 vnoremap <leader># 0<C-V>I// <esc>
