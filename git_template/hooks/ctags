@@ -1,6 +1,4 @@
 #!/bin/sh
 rm -f .git/*tags
-/usr/local/bin/ctags --tag-relative -Rf.git/tags --exclude=.git --languages=-javascript,sql
-/usr/local/bin/ctags --tag-relative -Rf.git/javascript.tags --exclude=.git --languages=javascript
-/bin/cp .git/javascript.tags .git/javascript.jsx.tags
+/usr/local/bin/ctags --tag-relative -Rf.git/tags --exclude=.git --exclude=node_modules --exclude=coverage --exclude=build
 
