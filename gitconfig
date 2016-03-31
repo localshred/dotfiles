@@ -1,15 +1,15 @@
 [core]
-	editor = vim
+  editor = vim
   excludesfile = ~/.gitignore
 [color]
-	status = auto
-	interactive = auto
-	grep = auto
-	branch = auto
-	diff = auto
+  status = auto
+  interactive = auto
+  grep = auto
+  branch = auto
+  diff = auto
 [user]
-	name = BJ Neilsen
-	email = bj.neilsen@gmail.com
+  name = BJ Neilsen
+  email = bj.neilsen@gmail.com
 [alias]
   amend      = commit --amend
   br         = branch
@@ -50,17 +50,17 @@
   stl        = stash list
   stp        = stash pop
 [branch]
-	autosetuprebase = remote
+  autosetuprebase = remote
 [github]
-	user = localshred
-	token = "some token"
+  user = localshred
+  token = "some token"
 [push]
-	default = current
+  default = current
 [init]
-	templatedir = ~/.git_template
+  templatedir = ~/.git_template
 [hub]
-	host = git.moneydesktop.com
-	protocol = https
+  host = git.moneydesktop.com
+  protocol = https
 [filter "media"]
-	clean = git-media-clean %f
-	smudge = git-media-smudge %f
+  clean = git-media-clean %f
+  smudge = git-media-smudge %f
