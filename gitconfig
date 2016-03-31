@@ -14,18 +14,22 @@
   amend      = commit --amend
   br         = branch
   bra        = branch -a
+  brd        = branch -d
   ch         = cherry
   ci         = commit
   cia        = commit -a
   co         = checkout
+  cob        = checkout -b
   ctags      = !.git/hooks/ctags
   di         = diff
+  diffc      = diff --cached --
   difforigin = diff origin/master --name-only
   last       = log -1 HEAD
   ls         = ls-remote .
   mine       = !git log --author=`git config user.email`
   pgm        = push github master
   phm        = push heroku master
+  pr         = pull-request
   pu         = push
   pum        = push upstream master
   recent     = log --oneline -10
