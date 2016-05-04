@@ -1,3 +1,7 @@
+let g:syntastic_javascript_eslint_exec="./node_modules/.bin/eslint"
+let g:syntastic_javascript_checkers=["eslint"]
+let g:syntastic_javascript_eslint_args="--config .eslintrc"
+
 " Comment line(s)
 noremap <leader># I// <esc>
 vnoremap <leader># 0<C-V>I// <esc>

@@ -49,19 +49,26 @@ set softtabstop=2
 set splitbelow
 set splitright
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 set swapfile
 set t_vb=""
 set tabstop=2
 set vb
 set wildmenu
 
-colorscheme spacegray
+colorscheme molokai
+"colorscheme spacegray
+"highlight CursorLine term=underline ctermbg=234 guibg=#293739
+"highlight CursorColumn ctermbg=234 guibg=#293739
 
 silent! set colorcolumn=80
 silent! sign define SyntasticError text=!>
 silent! sign define SyntasticWarning text=W>
 
 let g:ackprg='ag --nogroup --nocolor --column'
+let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#show_buffers=0
 let g:airline#extensions#tabline#show_close_button=0
@@ -69,7 +76,7 @@ let g:airline#extensions#tabline#tab_min_count=2
 let g:airline#extensions#tagbar#flags='f'
 let g:airline_left_sep=''
 let g:airline_right_sep=''
-let g:airline_theme='bubblegum' " raven lucius
+let g:airline_theme='lucius' " bubblegum raven lucius
 let g:clang_close_preview = 1
 let g:clang_complete_auto = 0
 let g:clang_exec = '/usr/bin/clang'
@@ -86,24 +93,30 @@ let g:jsx_ext_required = 0
 let g:localvimrc_whitelist='/code/src/\(services\|gems\|utilities\)/.*'
 let g:rubytest_in_quickfix = 0
 let g:SuperTabSetDefaultCompletionType="context"
+
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 let g:syntastic_cs_checkers=["syntax","issues"]
-" let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
-" let g:tagbar_type_elixir = {
-"     \ 'ctagstype' : 'elixir',
-"     \ 'kinds' : [
-"         \ 'f:functions',
-"         \ 'functions:functions',
-"         \ 'c:callbacks',
-"         \ 'd:delegates',
-"         \ 'e:exceptions',
-"         \ 'i:implementations',
-"         \ 'a:macros',
-"         \ 'o:operators',
-"         \ 'm:modules',
-"         \ 'p:protocols',
-"         \ 'r:records'
-"     \ ]
-" \ }
+
+let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+let g:tagbar_sort = 1
+let g:tagbar_type_elixir = {
+    \ 'ctagstype' : 'elixir',
+    \ 'kinds' : [
+        \ 'f:functions',
+        \ 'functions:functions',
+        \ 'c:callbacks',
+        \ 'd:delegates',
+        \ 'e:exceptions',
+        \ 'i:implementations',
+        \ 'a:macros',
+        \ 'o:operators',
+        \ 'm:modules',
+        \ 'p:protocols',
+        \ 'r:records'
+    \ ]
+\ }
 
 nnoremap <F9> :Dispatch<CR>
 nnoremap <leader>al :Align 
@@ -187,7 +200,7 @@ cnoremap Vs vs
 cnoremap Sp sp
 
 " Filetype mappings that need some help
-au BufNewFile,BufRead *.es6 setlocal filetype=javascript.jsx
+au BufNewFile,BufRead *.es6,*.jsx setlocal filetype=javascript.jsx
 au BufNewFile,BufRead *.glsl setlocal filetype=glsl
 au BufNewFile,BufRead *.io set filetype=io
 au BufNewFile,BufRead *.scala set filetype=scala
