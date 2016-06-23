@@ -1,3 +1,14 @@
+function agvim() {
+  args=$@
+  echo "vim \$(ag -l '${args}')"
+  vim $(ag -l "${args}")
+}
+
+function dash()
+{
+  open "dash://$@"
+}
+
 function git_cur_branch()
 {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
