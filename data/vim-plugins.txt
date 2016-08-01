@@ -67,6 +67,7 @@ vim-rvm https://github.com/tpope/vim-rvm.git 9bddeabcefe9a449dd45abf81489dfc9e26
 vim-scala https://github.com/vim-scripts/vim-scala.git 5abd181e0c0e3fff0913f8b698d24e9577936907
 vim-sexp git://github.com/guns/vim-sexp.git b4398689f7483b01684044ab6b55bf369744c9b3
 vim-sexp-mappings-for-regular-people git://github.com/tpope/vim-sexp-mappings-for-regular-people.git f5b66e73c81a3b4c0c8f5a8141fb09a5a213f711
+vim-spec git://github.com/geekjuice/vim-spec.git 0a15959bbbabb9d6312bf65428aad45f37b52d66
 vim-surround https://github.com/tpope/vim-surround.git 2d05440ad23f97a7874ebd9b5de3a0e65d25d85c
 vim-textobj-rubyblock https://github.com/nelstrom/vim-textobj-rubyblock.git b5b84e49e609439e81aa03fa8e605a6097185665
 vim-textobj-user https://github.com/kana/vim-textobj-user.git a3054162c09bcf732624f43ddacbd85dad09713b
