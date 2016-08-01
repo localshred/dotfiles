@@ -73,7 +73,7 @@ if [[ -s $HOME/.rvm/scripts/rvm ]]; then
     }
 elif [[ -d $HOME/.rbenv ]]; then
     export PATH=$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH
-    source $HOME/.rbenv/completions/rbenv.zsh
+    [[ -f $HOME/.rbenv/completions/rbenv.zsh ]] && source $HOME/.rbenv/completions/rbenv.zsh
     rbenv rehash 2>/dev/null
     ruby_version() { rbenv version-name }
 else

@@ -1,7 +1,12 @@
 function agvim() {
   args=$@
-  echo "vim \$(ag -l '${args}')"
-  vim $(ag -l "${args}")
+  files=$(ag -l "${args}")
+  echo $files
+  echo "Do you want to edit the preceding files? (y/n)"
+  read response
+  if [[ 'y' == "${response}" ]]; then
+    vim $(echo $files)
+  fi
 }
 
 function dash()
