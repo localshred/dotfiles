@@ -194,3 +194,12 @@ function zsh_stats()
 function ptreb() {
   bin/treb "$@" > log/deploy.log | egrep '(=+\[\w+\]===|(Currently|^\s+\*) executing|^Group \d+|^cap |^ \*\* )'
 }
+
+function lintchanged() {
+  git diff --name-only | xargs ./node_modules/.bin/eslint --quiet
+}
+
+function recent() {
+  period=${1:-15m}
+  find . -type f -mtime -$period | grep -v '\.git'
+}
