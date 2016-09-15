@@ -55,8 +55,11 @@ function reposync()
     [ $? -ne 0 ] && echo "${color_yellow}You have local changes that haven't been commited${reset_color}" && return
     git remote update origin --prune > /dev/null
 
-    startbranch=$(git branch  | grep '*' | sed -e 's/* //')
-    for branch in $(git branch | sed -e 's|* ||g' -e 's|^[ ]*||')
+    missing=()
+    up_to_date=()
+    updated=()
+    start_branch=$(git rev-parse --abbrev-ref HEAD)
+    for branch in $(git for-each-ref --format='%(refname:short)' refs/heads/)
     do
       git rev-parse origin/$branch &> /dev/null
       if [[ $? -eq 0 ]]
@@ -67,18 +70,21 @@ function reposync()
         then
           git checkout $branch --quiet
           commits_behind=$(git rev-list $remote_head "^$local_head" --count)
-          echo "[${branch}] rebase from ${local_head} to ${remote_head} ($commits_behind commits behind)"
+          updated+="[${branch}] rebase from ${local_head} to ${remote_head} ($commits_behind commits behind)"
           git rebase origin/$branch --quiet
         else
-          echo "${color_green}[${branch}] up to date${reset_color}"
+          up_to_date+=$branch
         fi
       else
-        echo "${color_yellow}[${branch}] missing on origin${reset_color}"
+        missing+=$branch
       fi
     done
 
-    curbranch=$(git branch | grep '*' | sed -e 's/* //')
-    [ $startbranch != $curbranch ] && git checkout $startbranch
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
+    [ $start_branch != $current_branch ] && git checkout $start_branch --quiet
+    [[ -n "${up_to_date}" ]] && for branch in $up_to_date; do echo "${color_green}[${branch}] up to date${reset_color}"; done
+    [[ -n "${updated}" ]] && for updated_description in $updated; do echo "${color_green}${updated_description}${reset_color}"; done
+    [[ -n "${missing}" ]] && for branch in $missing; do echo "${color_yellow}[${branch}] missing on origin${reset_color}"; done
   else
     echo "${red_color}Not a git repository${reset_color}"
   fi
