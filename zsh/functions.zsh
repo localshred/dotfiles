@@ -57,9 +57,9 @@ function reposync()
       git rev-parse origin/$branch &> /dev/null
       if [[ $? -eq 0 ]]
       then
-        currev=$(git rev-parse $branch)
-        syncrev=$(git rev-parse origin/$branch)
-        if [[ $currev != $syncrev ]]
+        local_head=$(git rev-parse $branch)
+        remote_head=$(git rev-parse origin/$branch)
+        if [[ $local_head != $remote_head ]]
         then
           echo " > Synchronizing branch $branch"
           git checkout $branch
