@@ -44,13 +44,17 @@ function pbc()
 # Synchronize all local branches, reporting if any failed
 function reposync()
 {
+  color_red="\e[31m"
+  color_green="\e[32m"
+  color_yellow="\e[33m"
+  color_reset="\e[39m"
+
   git status &> /dev/null
   if [ $? -eq 0 ]; then
     git diff-index --quiet HEAD --
-    [ $? -ne 0 ] && echo "You have local changes that haven't been commited" && return
-    git remote update origin --prune
+    [ $? -ne 0 ] && echo "${color_yellow}You have local changes that haven't been commited${reset_color}" && return
+    git remote update origin --prune > /dev/null
 
-    failedbranches=()
     startbranch=$(git branch  | grep '*' | sed -e 's/* //')
     for branch in $(git branch | sed -e 's|* ||g' -e 's|^[ ]*||')
     do
@@ -61,24 +65,22 @@ function reposync()
         remote_head=$(git rev-parse --short origin/$branch)
         if [[ $local_head != $remote_head ]]
         then
-          echo " > Synchronizing branch $branch"
           git checkout $branch --quiet
-          commits_behind=$(git log $local_head..$remote_head --pretty=oneline | wc -l | awk '{print $1 " commits behind"}')
-          echo "Updating ${branch} from ${local_head} to ${remote_head} ($commits_behind)"
+          commits_behind=$(git rev-list $remote_head "^$local_head" --count)
+          echo "[${branch}] rebase from ${local_head} to ${remote_head} ($commits_behind commits behind)"
           git rebase origin/$branch --quiet
+        else
+          echo "${color_green}[${branch}] up to date${reset_color}"
         fi
       else
-        echo " ! Branch $branch doesn't have an origin"
-        failedbranches+=$branch
+        echo "${color_yellow}[${branch}] missing on origin${reset_color}"
       fi
     done
-    [ "${#failedbranches}" -gt 0 ] && echo " ! Failed syncing branches" && echo " ! Delete: git branch -d $failedbranches"
 
     curbranch=$(git branch | grep '*' | sed -e 's/* //')
     [ $startbranch != $curbranch ] && git checkout $startbranch
-    echo "Local branches are up-to-date"
   else
-    echo "Not a git repository"
+    echo "${red_color}Not a git repository${reset_color}"
   fi
 }
 
@@ -215,8 +217,8 @@ function vimupdateplugins() {
     plugin_name=$(basename $plugin_dir)
     if [[ $local_head != $remote_head ]]
     then
-      commits_behind=$(git log $local_head..$remote_head --pretty=oneline | wc -l | awk '{print $1 " commits behind"}')
-      echo "Updating ${plugin_name} from ${local_head} to ${remote_head} ($commits_behind)"
+      commits_behind=$(git rev-list $remote_head "^$local_head" --count)
+      echo "Updating ${plugin_name} from ${local_head} to ${remote_head} ($commits_behind commits behind)"
       git rebase origin/master --quiet
     else
       echo "${plugin_name} is already up to date"
