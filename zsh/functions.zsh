@@ -57,13 +57,15 @@ function reposync()
       git rev-parse origin/$branch &> /dev/null
       if [[ $? -eq 0 ]]
       then
-        local_head=$(git rev-parse $branch)
-        remote_head=$(git rev-parse origin/$branch)
+        local_head=$(git rev-parse --short $branch)
+        remote_head=$(git rev-parse --short origin/$branch)
         if [[ $local_head != $remote_head ]]
         then
           echo " > Synchronizing branch $branch"
-          git checkout $branch
-          git rebase origin/$branch
+          git checkout $branch --quiet
+          commits_behind=$(git log $local_head..$remote_head --pretty=oneline | wc -l | awk '{print $1 " commits behind"}')
+          echo "Updating ${branch} from ${local_head} to ${remote_head} ($commits_behind)"
+          git rebase origin/$branch --quiet
         fi
       else
         echo " ! Branch $branch doesn't have an origin"
@@ -213,7 +215,7 @@ function vimupdateplugins() {
     plugin_name=$(basename $plugin_dir)
     if [[ $local_head != $remote_head ]]
     then
-      commits_behind=$(git cherry $local_head $remote_head | wc -l | awk '{print $1 " commits behind"}')
+      commits_behind=$(git log $local_head..$remote_head --pretty=oneline | wc -l | awk '{print $1 " commits behind"}')
       echo "Updating ${plugin_name} from ${local_head} to ${remote_head} ($commits_behind)"
       git rebase origin/master --quiet
     else
