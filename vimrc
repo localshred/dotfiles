@@ -10,6 +10,7 @@ set backspace=indent,eol,start
 set backup
 set backupdir=/tmp
 set backupskip=/tmp/*,/private/tmp/*
+set breakindent
 set cinoptions=(s,m1,)200,j1,J1
 set clipboard=unnamed
 set complete=.,w,k,b,u,t,i
@@ -54,15 +55,15 @@ set statusline+=%*
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 set swapfile
+set t_Co=256
+set t_ut=
 set t_vb=""
 set tabstop=2
+set termguicolors
 set vb
 set wildmenu
 
-colorscheme molokai
-"colorscheme spacegray
-"highlight CursorLine term=underline ctermbg=234 guibg=#293739
-"highlight CursorColumn ctermbg=234 guibg=#293739
+colorscheme one " molokai nova tender one(bg dark)
 
 silent! set colorcolumn=100
 silent! sign define SyntasticError text=!>
@@ -77,7 +78,7 @@ let g:airline#extensions#tabline#tab_min_count=2
 let g:airline#extensions#tagbar#flags='f'
 let g:airline_left_sep=''
 let g:airline_right_sep=''
-let g:airline_theme='bubblegum' " bubblegum raven lucius
+let g:airline_theme='one' " bubblegum raven lucius tender one
 let g:clang_close_preview = 1
 let g:clang_complete_auto = 0
 let g:clang_exec = '/usr/bin/clang'
@@ -90,16 +91,16 @@ let g:ctrlp_custom_ignore = {
       \ 'dir': '\v(node_modules/|tmp/|elm-stuff/|coverage/)',
       \ 'file': '\v\.(beam|o|class)$',
       \ }
+let g:elm_format_autosave=1
 let g:jsx_ext_required = 0
 let g:localvimrc_whitelist='/code/src/\(services\|gems\|utilities\)/.*'
+let g:rainbow_active = 1
 let g:rubytest_in_quickfix = 0
 let g:SuperTabSetDefaultCompletionType="context"
-
 let g:syntastic_always_populate_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_cs_checkers=["syntax","issues"]
-
 let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 let g:tagbar_sort = 1
 let g:tagbar_type_elixir = {
@@ -173,6 +174,7 @@ noremap gO ggO<esc><c-o>
 noremap go Go
 noremap H ^
 noremap L $
+nnoremap <leader>{s vi{S  
 vnoremap / /\v
 vnoremap <leader>al :Align 
 vnoremap <leader>S :sort i<cr>
@@ -183,3 +185,4 @@ au BufNewFile,BufRead *.glsl setlocal filetype=glsl
 au BufNewFile,BufRead *.io set filetype=io
 au BufNewFile,BufRead *.scala set filetype=scala
 au BufNewFile,BufRead *.y{,a}ml.sample set ft=yaml
+au BufNewFile,BufRead *.icss set ft=css

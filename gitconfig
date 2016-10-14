@@ -25,6 +25,7 @@
   cia         = commit -a
   civ         = commit -v
   co          = checkout
+  conflicts   = !vim $(git diff --name-only --diff-filter=U)
   cob         = checkout -b
   ctags       = !.git/hooks/ctags
   di          = diff
