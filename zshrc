@@ -13,8 +13,8 @@ load_aliases
 load_completion /usr/local/share/zsh-completions
 load_correction
 
-# Load all function files
-for function_file in $(find $mydotfiles/zsh/functions -type f -iname '*.zsh')
+# Load all aliases, functions
+for function_file in $(find $mydotfiles/zsh -type f -iname '*.zsh')
 do
   source $function_file
 done
