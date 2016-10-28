@@ -7,3 +7,7 @@ function hosts() {
   fi
   ssh mgr -q -tt -C $command
 }
+
+function kssh() {
+  ssh -t mgr ssh stu-cm-$1
+}
