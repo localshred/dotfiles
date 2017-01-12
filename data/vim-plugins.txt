@@ -16,6 +16,7 @@ ruby_bashrockets.vim https://github.com/danchoi/ruby_bashrockets.vim.git 20f6cb1
 scala.vim https://github.com/vim-scripts/scala.vim.git 3289f46fdcb419265decd4f1c689cc8ae78a8a8c
 setcolors https://github.com/felixhummel/setcolors.vim.git eef7a46d8313c22ba265cdbdfa1892060a33d758
 Spacegray.vim git://github.com/ajh17/Spacegray.vim.git 79936a4434bf57b64c2d73320e62b4e67d84af74
+splitjoin.vim git@github.com:AndrewRadev/splitjoin.vim 85f2b696cd4646ac31895f07093a3a0b87af456c
 stereokai.vim git@github.com:gummesson/stereokai.vim 1fdc42fcfb0fc23434f13a378f49e26655cac767
 supertab git@github.com:ervandew/supertab.git cdaa5c27c5a7f8b08a43d0b2e65929512299e33a
 syntastic https://github.com/scrooloose/syntastic.git dfb263775bbf1d43350591b84bc53c925dcb7430
