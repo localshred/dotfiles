@@ -9,50 +9,62 @@ elasticsearch17 1.7.5
 elixir 1.3.4
 elm 0.17.1
 erlang 19.1
-flow 0.33.0 0.34.0
+flow 0.33.0
 fortune 9708
+freetds 1.00.26
 gdbm 1.12
+ghostscript 9.20
 git 2.10.1 2.10.2
 givegif 1.0.0.0
 htop-osx 0.8.2.8
 hub 2.2.9
+icu4c 58.2
 jpeg 8d
 jq 1.5_2
 leiningen 2.7.1
+libevent 2.0.22
+libffi 3.0.13
 libpng 1.6.25 1.6.26
-libtiff 4.0.6_2 4.0.6_3
+libtiff 4.0.6_2 4.0.6_3 4.0.7_2
 libyaml 0.1.7
+little-cms2 2.8
 mas 1.3.1
 mongodb 3.2.10 3.2.8
 mutt 1.5.24 1.7.0 1.7.1
-node 6.9.1
+mysql 5.7.17
+node 6.9.1 7.3.0 7.4.0 7.5.0
+nvm 0.33.0
 oniguruma 5.9.6 6.0.0 6.1.1 6.1.1_1
-openssl 1.0.2j
+openssl 1.0.2j 1.0.2k
 ossp-uuid 1.6.2_2
 pcre 8.39
 perl 5.24.0_1
+phantomjs 2.1.1
 pkg-config 0.29.1_2
 ponysay 3.0.2_1
 postgresql 9.5.1 9.5.4_1 9.5.5
 protobuf 3.1.0
 python 2.7.12_2
 python3 3.5.2_3
-rbenv 1.0.0
-readline 7.0
+rbenv 1.0.0 1.1.0
+readline 7.0 7.0.1
+redis 3.2.8
 rethinkdb 2.2.5 2.3.5
 ruby 2.3.1_2
-ruby-build 20160913
+ruby-build 20160913 20161121 20161225
 sqlite 3.15.0 3.15.1
 the_silver_searcher 0.33.0
+tmux 2.3_1
 tokyo-cabinet 1.4.48
 tree 1.7.0
 unixodbc 2.3.4
+utf8proc 2.0.2
 vim 8.0.0046 8.0.0071
 watchman 4.7.0
 wget 1.18
 wxmac 3.0.2_4
 xz 5.2.2
-yarn 0.16.1
+yarn 0.16.1 0.18.1 0.19.1 0.20.0
 zeromq 4.1.5 4.1.6
 zsh 5.2
 zsh-completions 0.21.0
