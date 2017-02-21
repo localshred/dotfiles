@@ -7,7 +7,9 @@ colorv.vim https://github.com/Rykka/colorv.vim.git 71b9ef529986b3f732f14053d0b2b
 ctrlp.vim https://github.com/kien/ctrlp.vim.git 564176f01d7f3f7f8ab452ff4e1f5314de7b0981
 dash.vim https://github.com/rizzatti/dash.vim.git 96221024a6a0377bab13472881c31009bc93e6d0
 elm-vim git@github.com:ElmCast/elm-vim.git 16a9a380a514e23c02d4bd7374112aa2dac1f3a4
+es.next.syntax.vim https://github.com/othree/es.next.syntax.vim 86ddf3ce59c71c2fee5c60ca3d7869f275c1f976
 Io-programming-language-syntax https://github.com/vim-scripts/Io-programming-language-syntax.git 22cbb4780a20f68866b85f7594b5d466ea157f2a
+javascript-libraries-syntax.vim https://github.com/othree/javascript-libraries-syntax.vim 9132101724c8adddf6c707b9b5320f69157fc53b
 molokai https://github.com/tomasr/molokai.git c67bdfcdb31415aa0ade7f8c003261700a885476
 nerdtree https://github.com/scrooloose/nerdtree.git eee431dbd44111c858c6d33ffd366cae1f17f8b3
 nova-vim git@github.com:trevordmiller/nova-vim.git 9069edcb8adf175a2bd2224c4eb262897e06eb24
@@ -22,6 +24,7 @@ supertab git@github.com:ervandew/supertab.git cdaa5c27c5a7f8b08a43d0b2e659295122
 syntastic https://github.com/scrooloose/syntastic.git dfb263775bbf1d43350591b84bc53c925dcb7430
 tagbar git@github.com:majutsushi/tagbar.git 01f57ac5643b0365021ab891f78519d849867a5e
 tender.vim git@github.com:jacoborus/tender.vim 98f673b42d190686eecae38a75ce45bfb8132c0c
+vim-abolish git@github.com:tpope/vim-abolish.git 05c7d31f6b3066582017edf5198502a94f6a7cb5
 vim-airline https://github.com/bling/vim-airline 04be981de9c6c2b5723267416f2c158f337de823
 vim-airline-themes https://github.com/vim-airline/vim-airline-themes 5bfa07ae06cbf3e73a137c2953e9877167e5986b
 vim-arduino https://github.com/tclem/vim-arduino.git edabf5c2ace0957fc5e9edb84661757dd044f5df
@@ -32,14 +35,13 @@ vim-csharp https://github.com/OrangeT/vim-csharp.git 5580f19e9c7f1e7b1dfdad3224d
 vim-dispatch https://github.com/tpope/vim-dispatch.git a54f2c5e18b8c2aad8c6f8ba474760e70fdaaca3
 vim-easymotion https://github.com/Lokaltog/vim-easymotion.git 11632455de8caa40f264501df8f0a3e249cf0595
 vim-elixir git@github.com:elixir-lang/vim-elixir.git 5bba2b3381de2ddc1804c5fd56f9fce975b4a7f2
+vim-es7 https://github.com/kern/vim-es7 2ac146589b0022470168f436c77ea5a6c8dd0b2a
 vim-extest git@github.com:BjRo/vim-extest.git b4e444a06357274a6a21fa4d9befb840d9ee7494
 vim-fireplace git://github.com/tpope/vim-fireplace.git 46af4344ee29c0e898c8142d395b472ee341de00
 vim-fugitive https://github.com/tpope/vim-fugitive.git b754bc2031f21a532c083dd0d072ba373bbe3a37
 vim-git https://github.com/tpope/vim-git.git a08ca046128988beb3461d44de91524350be7678
-vim-javascript https://github.com/pangloss/vim-javascript.git 66b25d97c74b39fa6d488989fef56309aa3aaab8
 vim-jdaddy git://github.com/tpope/vim-jdaddy.git fccddca8092ca3dfa843e9e33fc7be8c8ef1c727
 vim-json https://github.com/leshill/vim-json.git 3029554ee1619f478fc5222bf4c6c08909b1be9c
-vim-jsx https://github.com/mxw/vim-jsx.git eb656ed96435ccf985668ebd7bb6ceb34b736213
 vim-leiningen git://github.com/tpope/vim-leiningen.git a0dc869952a38285476ceba91787948c1759088b
 vim-less https://github.com/groenewege/vim-less 6e818d5614d5fc18d95a48c92b89e6db39f9e3d6
 vim-localvimrc git@github.com:embear/vim-localvimrc.git 9f6de2ddfea2a397bc3e5335779bc93a8260ff99
