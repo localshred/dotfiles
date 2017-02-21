@@ -19,7 +19,7 @@ do
   source $function_file
 done
 
-cdpath=(~ ~/Documents ~/Desktop /code /code/src /code/src/services /code/src/gems /code/src/apps /code/src/utilities /code/src/sites)
+cdpath=(~ ~/Documents ~/Desktop /code /code/src /code/src/services /code/src/modules /code/src/gems /code/src/apps /code/src/utilities /code/src/sites)
 
 PROMPT='$(git_prompt_info)%(?,,%{${fg_bold[white]}%}[%?]%{$reset_color%} )%{$fg[magenta]%}%#%{$reset_color%} '
 RPROMPT='%{$fg[green]%}%~%{$reset_color%} %{$fg[red]%}$(ruby_version)%{$reset_color%}'

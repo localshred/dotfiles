@@ -12,4 +12,14 @@ function npmver() {
   jq '.version' node_modules/$package/package.json | awk -F\" '{print $2}'
 }
 
+function nb() {
+  program=$1
+  shift
+  ./node_modules/.bin/$program $@
+}
 
+function nr() {
+  script=$1
+  shift
+  npm run $script -- $@
+}
