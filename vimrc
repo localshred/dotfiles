@@ -51,8 +51,8 @@ set softtabstop=2
 set splitbelow
 set splitright
 set statusline+=%#warningmsg#
-set statusline+=%*
 set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 set swapfile
 set t_Co=256
@@ -93,11 +93,12 @@ let g:ctrlp_custom_ignore = {
       \ }
 let g:elm_format_autosave=1
 let g:jsx_ext_required = 0
-let g:localvimrc_whitelist='/code/src/\(services\|gems\|utilities\)/.*'
+let g:localvimrc_whitelist='/code/src/\(services\|gems\|utilities\|modules\)/.*'
 let g:rainbow_active = 1
 let g:rubytest_in_quickfix = 0
 let g:SuperTabSetDefaultCompletionType="context"
-let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_cs_checkers=["syntax","issues"]
