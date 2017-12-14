@@ -27,3 +27,7 @@ function vimupdateplugins() {
     popd > /dev/null
   done
 }
+
+function vimraw() {
+  vim -u NONE -U NONE -N $@
+}

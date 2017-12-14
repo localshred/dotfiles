@@ -50,10 +50,7 @@ set smartcase
 set softtabstop=2
 set splitbelow
 set splitright
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+hi default link User1 Error
 set swapfile
 set t_Co=256
 set t_ut=
@@ -79,6 +76,8 @@ let g:airline#extensions#tagbar#flags='f'
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline_theme='one' " bubblegum raven lucius tender one
+let g:airline_section_z=''
+let g:airline_section_error='%{ALEGetStatusLine()}'
 let g:clang_close_preview = 1
 let g:clang_complete_auto = 0
 let g:clang_exec = '/usr/bin/clang'
@@ -92,10 +91,43 @@ let g:ctrlp_custom_ignore = {
       \ 'file': '\v\.(beam|o|class)$',
       \ }
 let g:elm_format_autosave=1
+let g:projectionist_heuristics = {
+      \ "src/*.js": {
+      \   "alternate": "test/unit/app/{}.test.js",
+      \   "type": "src",
+      \   "template": [
+      \     "const R = require('ramda'",
+      \     "",
+      \     "const {} = () => {}",
+      \     "",
+      \     "module.exports = {}",
+      \   ]
+      \ },
+      \ 
+      \ "test/unit/src/*.test.js": {
+      \   "type": "test",
+      \   "alternate": "{}.js",
+      \   "make": "./node_modules/.bin/jest --no-color {file}",
+      \   "dispatch": "./node_modules/.bin/jest --no-color {file}",
+      \   "template": [
+      \     "/* eslint-env jest */",
+      \     "",
+      \     "const {basename|camelcase} = require('{}')",
+      \     "",
+      \     "describe('{}', () => {",
+      \     "  describe('default', () => {",
+      \     "    it('does a thing', () => {",
+      \     "      expect('You should add a test here').toBe('please')",
+      \     "    })",
+      \     "  })",
+      \     "})"
+      \   ]
+      \ }
+      \}
 let g:jsx_ext_required = 0
 let g:localvimrc_whitelist='/code/src/\(services\|gems\|utilities\|modules\)/.*'
+let g:localvimrc_persistent=2
 let g:rainbow_active = 1
-let g:rubytest_in_quickfix = 0
 let g:SuperTabSetDefaultCompletionType="context"
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -120,9 +152,11 @@ let g:tagbar_type_elixir = {
         \ 'r:records'
     \ ]
 \ }
+let test#strategy = 'dispatch'
 
 cnoremap Qa qa
 cnoremap QA qa
+cnoremap Q q
 cnoremap Sp sp
 cnoremap Vs vs
 cnoremap Wa wa
@@ -160,6 +194,12 @@ nnoremap <leader>pt :CtrlPTag<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>ts :tab split<cr>
 nnoremap <leader>w <c-w>
+nnoremap <leader>{s vi{S  
+nnoremap <silent> <leader>ts :TestSuite<CR>
+nnoremap <silent> <leader>tv :TestVisit<CR>
+nnoremap <silent> <leader>tl :TestLast<CR>
+nnoremap <silent> <leader>tf :TestFile<CR>
+nnoremap <silent> <leader>tn :TestNearest<CR>
 nnoremap <silent> <s-tab> :wincmd W<cr>
 nnoremap <silent> <tab> :wincmd w<cr>
 nnoremap gd [<c-i>
@@ -175,15 +215,17 @@ noremap gO ggO<esc><c-o>
 noremap go Go
 noremap H ^
 noremap L $
-nnoremap <leader>{s vi{S  
 vnoremap / /\v
 vnoremap <leader>al :Align 
 vnoremap <leader>S :sort i<cr>
 
 " Filetype mappings that need some help
-au BufNewFile,BufRead *.es6,*.jsx setlocal filetype=javascript.jsx
+au BufNewFile,BufRead *.es6,*.jsx setlocal filetype=javascript
 au BufNewFile,BufRead *.glsl setlocal filetype=glsl
 au BufNewFile,BufRead *.io set filetype=io
 au BufNewFile,BufRead *.scala set filetype=scala
 au BufNewFile,BufRead *.y{,a}ml.sample set ft=yaml
+au BufNewFile,BufRead *.apib set ft=markdown
 au BufNewFile,BufRead *.icss set ft=css
+au FileType javascript set formatprg=prettier-standard
+au BufWritePre *.js :normal mtgggqG't
