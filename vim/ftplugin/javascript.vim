@@ -1,6 +1,8 @@
-let g:syntastic_javascript_eslint_exec="./node_modules/.bin/eslint"
-let g:syntastic_javascript_checkers=["eslint"]
-let g:syntastic_javascript_eslint_args="--config .eslintrc"
+set suffixesadd+=.js
+
+let g:ale_fixers = {}
+let g:ale_fixers['javascript'] = ['prettier-standard']
+let g:ale_fix_on_save = 1
 
 " Comment line(s)
 noremap <leader># I// <esc>

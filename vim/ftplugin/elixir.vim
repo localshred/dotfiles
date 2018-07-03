@@ -1,5 +1,7 @@
 silent! set colorcolumn=100
 
+nnoremap <F9> :Dispatch elixir %<cr>
+
 " Comment line(s)
 noremap <leader># I# <esc>
 vnoremap <leader># 0<C-V>I# <esc>
