@@ -1,5 +1,5 @@
 ack.vim https://github.com/mileszs/ack.vim.git 6e04746a63dd2453601ae36c83d53fe2021a45f4
-ale git@github.com:w0rp/ale.git 5577d567d13ab922ee1c97fc5d17d468f4c30876
+ale git@github.com:w0rp/ale.git e43e7065da17f45e4cce127a319ceee0a0311883
 Align https://github.com/vim-scripts/Align.git 787662fe90cd057942bc5b682fd70c87e1a9dd77
 clang_complete https://github.com/Rip-Rip/clang_complete.git fb8f4f25ab808bc83bc7c704f23171cb6b020737
 cocoa.vim https://github.com/msanders/cocoa.vim.git 33faf435cf251ae23e0ee3500a0ce0eee6a1a94b
@@ -14,7 +14,7 @@ es.next.syntax.vim https://github.com/othree/es.next.syntax.vim 5c534d71e13787d2
 Io-programming-language-syntax https://github.com/vim-scripts/Io-programming-language-syntax.git 22cbb4780a20f68866b85f7594b5d466ea157f2a
 javascript-libraries-syntax.vim https://github.com/othree/javascript-libraries-syntax.vim fe6909af69db30d22df6295ab5811f3c73e33ed8
 molokai https://github.com/tomasr/molokai.git c67bdfcdb31415aa0ade7f8c003261700a885476
-nerdtree https://github.com/scrooloose/nerdtree.git 509122df20e200b50e887c32cb7d92b19171a4ab
+nerdtree https://github.com/scrooloose/nerdtree.git fc14b4f5df9be4d1c1d67c99d841e634bd5472ea
 nova-vim git@github.com:trevordmiller/nova-vim.git ba0506df18f9687005a84a4caaf798e35aa32c3e
 rainbow git@github.com:luochen1990/rainbow 1c45e0f81324641b23d4c21edda4eabeacba031b
 ruby_bashrockets.vim https://github.com/danchoi/ruby_bashrockets.vim.git 20f6cb15d38a8d4788615971d918556b799466af
@@ -26,9 +26,10 @@ stereokai.vim git@github.com:gummesson/stereokai.vim 1fdc42fcfb0fc23434f13a378f4
 supertab git@github.com:ervandew/supertab.git 40fe711e088e2ab346738233dd5adbb1be355172
 tagbar git@github.com:majutsushi/tagbar.git 387bbadda98e1376ff3871aa461b1f0abd4ece70
 tender.vim git@github.com:jacoborus/tender.vim 6b0497a59233b3e67fb528a498069eb1d24743f9
+typescript-vim git@github.com:leafgarland/typescript-vim e25636b44211a4be7b089bfed7cf09aa7dd086f5
 vim-abolish git@github.com:tpope/vim-abolish.git b6a8b49e2173ba5a1b34d00e68e0ed8addac3ebd
 vim-airline https://github.com/bling/vim-airline 6c8d0f5e6af878db71b2dc44ccf1d1417381d6a0
-vim-airline-themes https://github.com/vim-airline/vim-airline-themes 52dfa2b6c0dc2fd7a0e92954030893de3d173105
+vim-airline-themes https://github.com/vim-airline/vim-airline-themes d53d70b1fd39e221000296c783b6d1b7b98e86ac
 vim-arduino https://github.com/tclem/vim-arduino.git edabf5c2ace0957fc5e9edb84661757dd044f5df
 vim-bundler https://github.com/tpope/vim-bundler.git 97d50771e4c882242f6af0505f8b84ddff6f0684
 vim-cider git@github.com:clojure-vim/vim-cider.git 45a4b5e169fc479d8a7a0df327625d59a38cb5ee
@@ -52,6 +53,7 @@ vim-less https://github.com/groenewege/vim-less 6e818d5614d5fc18d95a48c92b89e6db
 vim-localvimrc git@github.com:embear/vim-localvimrc.git 48c01c214ea0312e8045aaa1a28b30850e98a194
 vim-markdown https://github.com/tpope/vim-markdown.git 8cd41796fdafb50977f7f3cd0338716b379f988b
 vim-matchit git@github.com:geoffharcourt/vim-matchit.git 44267b436d3d73c8adfb23537a1b86862239ad12
+vim-mix-format git@github.com:mhinz/vim-mix-format.git 33325e6997da734ee3de1fdf79cbc983cd65483a
 vim-monokai git@github.com:crusoexia/vim-monokai ef7e26f73bda815b3352edb24872091083785607
 vim-multiple-cursors git@github.com:terryma/vim-multiple-cursors.git a97dab5bc440bf0a7b62bb2de4479963a888f4ff
 vim-one git@github.com:rakr/vim-one dfb0353c47e0ce19cc04f2dc15b5fef9579c863e
@@ -63,6 +65,7 @@ vim-rails https://github.com/tpope/vim-rails.git d8d8151a4f85686196524bed4950c59
 vim-rake https://github.com/tpope/vim-rake.git 82ad45543f0d13dfa7d3f59ca4cd54d0e145417f
 vim-rbenv git://github.com/tpope/vim-rbenv.git 79a33164cade37f922cc1e2a16eaca3533aa0274
 vim-repeat https://github.com/tpope/vim-repeat.git 070ee903245999b2b79f7386631ffd29ce9b8e9f
+vim-rhubarb git@github.com:tpope/vim-rhubarb.git 6caad2b61afcc1b7c476b0ae3dea9ee5f2b1d14a
 vim-rspec https://github.com/thoughtbot/vim-rspec.git 52a72592b6128f4ef1557bc6e2e3eb014d8b2d38
 vim-ruby https://github.com/vim-ruby/vim-ruby.git 074200ffa39b19baf9d9750d399d53d97f21ee07
 vim-rvm https://github.com/tpope/vim-rvm.git f62ef4317391dfa6f50b924ff2eb32f0ec67e79e
@@ -72,7 +75,7 @@ vim-sexp-mappings-for-regular-people git://github.com/tpope/vim-sexp-mappings-fo
 vim-slim git@github.com:slim-template/vim-slim.git b19d372ddc4b00048953dc0f5315490ede343b60
 vim-spec git://github.com/geekjuice/vim-spec.git 3fbc4c1f2cc98ce9917489f6f632d411a2d61f90
 vim-surround https://github.com/tpope/vim-surround.git e49d6c2459e0f5569ff2d533b4df995dd7f98313
-vim-test git@github.com:janko-m/vim-test.git 571b4c175a7ab604f75b23c9986b8b8e8bb8849e
+vim-test git@github.com:janko-m/vim-test.git 5ed9e7b85ac5357ac1b717bacc79b253ce8241d8
 vim-textobj-rubyblock https://github.com/nelstrom/vim-textobj-rubyblock.git 2b882e2cc2599078f75e6e88cd268192bf7b27bf
 vim-textobj-user https://github.com/kana/vim-textobj-user.git e231b65797b5765b3ee862d71077e9bd56f3ca3e
 vim-trailing-whitespace https://github.com/bronson/vim-trailing-whitespace.git 4c596548216b7c19971f8fc94e38ef1a2b55fee6
