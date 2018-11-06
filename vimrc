@@ -4,6 +4,8 @@ filetype plugin indent on
 
 let mapleader="\<Space>"
 
+hi default link User1 Error
+
 set autoindent
 set background=dark
 set backspace=indent,eol,start
@@ -23,7 +25,8 @@ set expandtab
 set exrc "enable cwd .vimrc files
 set fileformats=unix,dos,mac
 set foldmethod=syntax
-set grepprg=ack\ -k
+set grepprg=ag
+set guifont=Fira\ Code:h16
 set hidden
 set hlsearch
 set ignorecase
@@ -51,7 +54,6 @@ set smartcase
 set softtabstop=2
 set splitbelow
 set splitright
-hi default link User1 Error
 set swapfile
 set t_Co=256
 set t_ut=
@@ -67,7 +69,7 @@ silent! set colorcolumn=100
 silent! sign define SyntasticError text=!>
 silent! sign define SyntasticWarning text=W>
 
-let g:ackprg='ag --nogroup --nocolor --column'
+let g:ackprg='ag --vimgrep --path-to-ignore ~/.ignore'
 let g:airline_left_sep=''
 let g:airline_mode_map = {
     \ '__' : '-',
@@ -86,7 +88,7 @@ let g:airline_right_sep=''
 let g:airline_theme='one' " bubblegum raven lucius tender one
 let g:airline_section_y=''
 let g:airline_section_z=''
-let g:airline_section_error='%{ALEGetStatusLine()}'
+let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#branch#empty_message='[no branch]'
 let g:airline#extensions#branch#format=2 " truncate all paths but final in branch name
 let g:airline#extensions#syntastic#enabled=1
@@ -97,6 +99,36 @@ let g:airline#extensions#tabline#show_splits=0
 let g:airline#extensions#tabline#show_tab_nr=0
 let g:airline#extensions#tabline#tab_min_count=2
 let g:airline#extensions#tagbar#flags='f'
+let g:ale_elixir_elixir_ls_release = '/code/src/utilities/elixir-ls/rel'
+let g:ale_linters = {
+  \ 'javascript' : ['standard'],
+  \ 'elixir': [],
+  \ }
+let g:ale_fixers = {
+  \ 'css' : ['prettier-standard'],
+  \ 'elixir' : ['mix_format'],
+  \ 'elm' : ['prettier-standard'],
+  \ 'flow' : ['prettier-standard'],
+  \ 'go' : ['gofmt'],
+  \ 'graphql' : ['prettier-standard'],
+  \ 'java' : ['prettier-standard'],
+  \ 'javascript' : ['prettier-standard'],
+  \ 'json' : ['prettier-standard'],
+  \ 'jsx' : ['prettier-standard'],
+  \ 'less' : ['prettier-standard'],
+  \ 'markdown' : ['prettier-standard'],
+  \ 'sql' : ['prettier-standard'],
+  \ 'php' : ['prettier-standard'],
+  \ 'python' : ['prettier-standard'],
+  \ 'ruby' : ['prettier-standard'],
+  \ 'scss' : ['prettier-standard'],
+  \ 'swift' : ['prettier-standard'],
+  \ 'typescript' : ['prettier-standard'],
+  \ 'vue' : ['prettier-standard'],
+  \ 'yaml' : ['prettier-standard'],
+  \ }
+let g:ale_fixers['yaml'] = ['prettier-standard']
+let g:ale_fix_on_save = 1
 let g:ale_sign_error = '💥'
 let g:ale_sign_warning = '⚠️'
 let g:clang_close_preview = 1
@@ -108,12 +140,7 @@ let g:clang_snippets = 1
 let g:clang_snippets_engine = 'ultisnips'
 let g:clang_use_library = 1
 let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn)$|node_modules/|coverage/)',
-  \ 'file': '\v\.(exe|so|dll)$',
-  \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
-  \ }
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --path-to-ignore ~/.ignore'
 let g:elm_format_autosave=1
 let g:jsx_ext_required = 0
 let g:localvimrc_whitelist='/code/src/\(services\|gems\|utilities\|modules|apps\)/.*'
@@ -153,6 +180,7 @@ let g:projectionist_heuristics = {
       \   ]
       \ }
       \}
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 let g:rainbow_active = 1
 let g:SuperTabSetDefaultCompletionType="context"
 let g:syntastic_always_populate_loc_list = 1
@@ -179,6 +207,44 @@ let g:tagbar_type_elixir = {
         \ 't:tests'
     \ ]
 \ }
+let g:tagbar_type_typescript = {
+  \ 'ctagstype' : 'typescript',
+  \ 'kinds'     : [
+    \ 'c:classes',
+    \ 'a:abstract classes',
+    \ 't:types',
+    \ 'n:modules',
+    \ 'f:functions',
+    \ 'v:variables',
+    \ 'l:varlambdas',
+    \ 'm:members',
+    \ 'i:interfaces',
+    \ 'e:enums'
+  \ ],
+  \ 'sro'        : '.',
+  \ 'kind2scope' : {
+    \ 'c' : 'classes',
+    \ 'a' : 'abstract classes',
+    \ 't' : 'types',
+    \ 'f' : 'functions',
+    \ 'v' : 'variables',
+    \ 'l' : 'varlambdas',
+    \ 'm' : 'members',
+    \ 'i' : 'interfaces',
+    \ 'e' : 'enums'
+  \ },
+  \ 'scope2kind' : {
+    \ 'classes'    : 'c',
+    \ 'abstract classes'    : 'a',
+    \ 'types'      : 't',
+    \ 'functions'  : 'f',
+    \ 'variables'  : 'v',
+    \ 'varlambdas' : 'l',
+    \ 'members'    : 'm',
+    \ 'interfaces' : 'i',
+    \ 'enums'      : 'e'
+  \ }
+  \ }
 let test#strategy = 'dispatch'
 
 highlight clear ALEErrorSign
@@ -212,9 +278,9 @@ nnoremap <leader>al :Align
 nnoremap <leader>cn :cnext<cr>
 nnoremap <leader>cp :cprevious<cr>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-nnoremap <leader>fi :Ack -i 
+nnoremap <leader>fi :Ack! -i 
 nnoremap <leader>fq :cclose<cr>
-nnoremap <leader>fs :AckFromSearch<cr>
+nnoremap <leader>fs :AckFromSearch!<cr>
 nnoremap <leader>fw :FixWhitespace<cr>
 nnoremap <leader>ntf :NERDTreeFind<cr>
 nnoremap <leader>ntt :NERDTreeToggle<cr>
@@ -227,6 +293,7 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>ts :tab split<cr>
 nnoremap <leader>tn :tabnew<cr>
 nnoremap <leader>tc :tabclose<cr>
+nnoremap <leader>ft :tselect /
 nnoremap <leader>w <c-w>
 nnoremap <leader>{s vi{S  
 nnoremap <silent> <s-tab> :wincmd W<cr>
@@ -249,6 +316,7 @@ vnoremap <leader>al :Align
 vnoremap <leader>S :sort i<cr>
 
 " Filetype mappings that need some help
+au BufNewFile,BufRead Makefile setlocal noexpandtab
 au BufNewFile,BufRead *.es6,*.jsx setlocal filetype=javascript
 au BufNewFile,BufRead *.glsl setlocal filetype=glsl
 au BufNewFile,BufRead *.io set filetype=io
