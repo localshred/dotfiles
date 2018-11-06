@@ -1,70 +1,92 @@
 autoconf 2.69
-cloc 1.70
-cmake 3.6.2 3.6.3
-colordiff 1.0.16
-coreutils 8.25
+automake 1.15 1.16.1
+awslogs 0.10
+cloc 1.70 1.76
+cmake 3.6.3 3.6.2 3.12.0 3.8.0
+colordiff 1.0.18 1.0.16
+coreutils 8.30 8.25
+cscope 15.8b
 ctags 5.8_1
-diff-so-fancy 0.11.2
+diff-so-fancy 0.11.2 1.2.0
 elasticsearch17 1.7.5
-elixir 1.3.4
-elm 0.17.1
-erlang 19.1
-flow 0.33.0
+elixir 1.5.2 1.5.3 1.3.4 1.6.6
+elm 0.18.0 0.17.1
+erlang 20.2.2 19.1 20.2.1 21.0.3
+exercism 2.3.0 3.0.5
+flow 0.33.0 0.77.0
 fortune 9708
 freetds 1.00.26
-gdbm 1.12
+gdbm 1.12 1.13 1.16 1.14.1_1
+gettext 0.19.8.1
+ghi 1.2.0_4
 ghostscript 9.20
-git 2.10.1 2.10.2
+git 2.10.1 2.19.0 2.14.2 2.18.0 2.10.2
 givegif 1.0.0.0
-htop-osx 0.8.2.8
-hub 2.2.9
-icu4c 58.2
-jpeg 8d
-jq 1.5_2
-leiningen 2.7.1
-libevent 2.0.22
+go 1.11.1 1.10.3
+heroku 7.7.1 6.13.2
+htop 0.8.2.8 2.2.0
+hub 2.5.0 2.2.9
+icu4c 58.2 59.1_1 62.1 59.1
+jemalloc 4.5.0
+jpeg 9b 9c 8d
+jq 1.5_2 1.5_3
+leiningen 2.7.1 2.8.1
+libevent 2.0.22 2.1.8
 libffi 3.0.13
-libpng 1.6.25 1.6.26
-libtiff 4.0.6_2 4.0.6_3 4.0.7_2
-libyaml 0.1.7
+libidn2 2.0.5
+libpng 1.6.25 1.6.34 1.6.35 1.6.26
+libtermkey 0.19
+libtiff 4.0.7_2 4.0.9_4 4.0.9 4.0.6_2 4.0.6_3
+libtool 2.4.6_1
+libunistring 0.9.10
+libuv 1.11.0
+libvterm 681
+libyaml 0.1.7 0.2.1
 little-cms2 2.8
+lumo 1.7.0
+macvim 8.1-149_1
 mas 1.3.1
-mongodb 3.2.10 3.2.8
-mutt 1.5.24 1.7.0 1.7.1
-mysql 5.7.17
-node 6.9.1 7.3.0 7.4.0 7.5.0
-nvm 0.33.0
-oniguruma 5.9.6 6.0.0 6.1.1 6.1.1_1
-openssl 1.0.2j 1.0.2k
+maven 3.5.4
+mongodb 3.2.10 4.0.0 3.2.8
+msgpack 3.0.1 2.1.1
+mutt 1.7.1 1.7.0 1.5.24 1.10.1
+mysql 5.7.17 8.0.11
+node 7.9.0 7.3.0 6.9.1 8.2.1 7.4.0 8.5.0 7.10.0 7.5.0 8.4.0 10.7.0 11.0.0 10.10.0 8.9.1
+nvm 0.33.11 0.33.1 0.33.0
+oniguruma 5.9.6 6.1.1_1 6.0.0 6.8.2 6.1.1
+openssl 1.0.2o 1.0.2o_1 1.0.2n 1.0.2k 1.0.2l 1.0.2o_2 1.0.2j
 ossp-uuid 1.6.2_2
-pcre 8.39
-perl 5.24.0_1
+pcre 8.42 8.39
+perl 5.28.0 5.26.1 5.24.0_1
 phantomjs 2.1.1
-pkg-config 0.29.1_2
-ponysay 3.0.2_1
-postgresql 9.5.1 9.5.4_1 9.5.5
-protobuf 3.1.0
-python 2.7.12_2
-python3 3.5.2_3
-rbenv 1.0.0 1.1.0
-readline 7.0 7.0.1
-redis 3.2.8
-rethinkdb 2.2.5 2.3.5
-ruby 2.3.1_2
-ruby-build 20160913 20161121 20161225
-sqlite 3.15.0 3.15.1
-the_silver_searcher 0.33.0
-tmux 2.3_1
+pkg-config 0.29.2 0.29.1_2
+ponysay 3.0.2_1 3.0.3_3
+postgresql 10.1 10.4
+protobuf 3.3.0 3.1.0 3.6.0
+python 3.7.0
+python@2 2.7.15_1
+rbenv 1.0.0 1.1.0 1.1.1
+readline 7.0.1 7.0 7.0.5 7.0.3_1
+redis 4.0.10 3.2.8
+rlwrap 0.43
+ruby 2.4.2_1 2.3.1_2 2.4.3_1 2.5.1
+ruby-build 20170523 20180618 20161225 20160913 20161121
+sphinx-doc 1.7.6 1.7.2
+sqlite 3.21.0 3.22.0 3.15.0 3.15.1 3.24.0
+telnet 60
+the_silver_searcher 0.33.0 2.1.0
+tmux 2.3_1 2.7 2.6
 tokyo-cabinet 1.4.48
 tree 1.7.0
+unibilium 1.2.0
 unixodbc 2.3.4
-utf8proc 2.0.2
-vim 8.0.0046 8.0.0071
-watchman 4.7.0
-wget 1.18
-wxmac 3.0.2_4
-xz 5.2.2
-yarn 0.16.1 0.18.1 0.19.1 0.20.0
-zeromq 4.1.5 4.1.6
-zsh 5.2
-zsh-completions 0.21.0
+utf8proc 2.0.2 2.2.0
+vim 8.0.0071 8.0.1400_1 8.0.0046 8.1.0202 8.0.1200
+watchman 4.7.0 4.9.0
+wget 1.19.5 1.18
+wxmac 3.0.2_4 3.0.3.1_1 3.0.4
+xz 5.2.2 5.2.4 5.2.3
+yarn 0.24.6 0.20.0 1.7.0 1.12.1 0.16.1 1.0.1 0.18.1 1.9.4 1.3.2 0.19.1 0.23.2 1.0.2
+zeromq 4.1.5 4.2.5 4.1.6
+zsh 5.5.1 5.2
+zsh-completions 0.27.0 0.21.0
