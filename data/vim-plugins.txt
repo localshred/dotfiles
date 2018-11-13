@@ -1,10 +1,9 @@
 ack.vim git@github.com:mileszs/ack.vim.git 36e40f9ec91bdbf6f1adf408522a73a6925c3042
-ale git@github.com:w0rp/ale.git 06132954b12ba87c7bba8fb7d5a40e4ff8b774e8
+ale git@github.com:w0rp/ale.git ad98cb74488c017a4b23e5a848e37ac5bc0840b0
 Align https://github.com/vim-scripts/Align.git 787662fe90cd057942bc5b682fd70c87e1a9dd77
 clang_complete https://github.com/Rip-Rip/clang_complete.git 0918788ea0b9dc4c753ffd162c95f890ae57a275
 cocoa.vim https://github.com/msanders/cocoa.vim.git 33faf435cf251ae23e0ee3500a0ce0eee6a1a94b
 colorizer https://github.com/chrisbra/colorizer abce308f7a7e5b66dabdcafa3757e07e34e277fd
-colorschemer git@github.com:jlund3/colorschemer.git 97738b838da25c09866617d40b6796e0829979ba
 ctrlp.vim https://github.com/kien/ctrlp.vim.git 564176f01d7f3f7f8ab452ff4e1f5314de7b0981
 dash.vim https://github.com/rizzatti/dash.vim.git 25b17d9488454a1fcdbb2cbe829a23226f95e3c2
 Dockerfile.vim git@github.com:ekalinin/Dockerfile.vim.git 97e6230ee8fe7f95413db8bf9cf8321661071e07
@@ -21,7 +20,7 @@ ruby_bashrockets.vim https://github.com/danchoi/ruby_bashrockets.vim.git 20f6cb1
 scala.vim https://github.com/vim-scripts/scala.vim.git 3289f46fdcb419265decd4f1c689cc8ae78a8a8c
 setcolors https://github.com/felixhummel/setcolors.vim.git eef7a46d8313c22ba265cdbdfa1892060a33d758
 Spacegray.vim git://github.com/ajh17/Spacegray.vim.git f9e5205319cbb5c598bbf02b16c3d05277817f81
-splitjoin.vim git@github.com:AndrewRadev/splitjoin.vim 9e1c8cd7dcc52ebf3f30be5f55ad6178924b88b3
+splitjoin.vim git@github.com:AndrewRadev/splitjoin.vim 30d7eae90deb7dd0edf6f519bd5924fa740ba2a9
 stereokai.vim git@github.com:gummesson/stereokai.vim 1fdc42fcfb0fc23434f13a378f49e26655cac767
 supertab git@github.com:ervandew/supertab.git 40fe711e088e2ab346738233dd5adbb1be355172
 tagbar git@github.com:majutsushi/tagbar.git 387bbadda98e1376ff3871aa461b1f0abd4ece70
