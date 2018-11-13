@@ -1,9 +1,9 @@
 alias ...='cd ../..'
+alias ag='ag --path-to-ignore=~/.ignore'
 alias history='fc -l 1' # show history
 alias la='ls -lA'
 alias ll='ls -l'
 alias lsa='ls -lah'
-alias vim=/usr/local/bin/vim
 
 function dash()
 {
