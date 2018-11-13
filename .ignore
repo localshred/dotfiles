@@ -3,3 +3,6 @@
 
 doc/
 deps/
+priv/static/
+*/cover/
+cov/
