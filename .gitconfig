@@ -19,11 +19,11 @@
   br          = branch
   bra         = branch -a
   brd         = branch -d
+  brdf        = branch -D
   brc         = rev-parse --abbrev-ref HEAD
   ch          = cherry
-  ci          = commit
-  cia         = commit -a
-  civ         = commit -v
+  ci          = commit -v
+  cia         = commit -av
   co          = checkout
   conflicts   = !vim $(git diff --name-only --diff-filter=U)
   cob         = checkout -b
@@ -67,7 +67,7 @@
 [init]
   templatedir = ~/.git_template
 [hub]
-  host = git.moneydesktop.com
+  host = github.com
   protocol = https
 [filter "media"]
   clean = git-media-clean %f
@@ -81,6 +81,9 @@
 	diff = diff-so-fancy | less --tabs=4 -RFX
 	show = diff-so-fancy | less --tabs=4 -RFX
 [filter "lfs"]
-	smudge = git-lfs smudge %f
 	required = true
-	clean = git-lfs clean %f
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[ghi]
+	token = !security find-internet-password -a localshred -s github.com -l 'ghi token' -w

@@ -1,5 +1,5 @@
-alias g='git'
 alias git='hub'
+alias g='git'
 alias gti='git'
 
 function reposync()

@@ -1,3 +1,5 @@
+alias vim='nvim'
+
 function agvim() {
   args=$@
   files=$(ag -l "${args}")

@@ -1,5 +1,5 @@
 alias ...='cd ../..'
-alias ag='ag --path-to-ignore=~/.ignore'
+alias ag='ag -p ~/.ignore'
 alias history='fc -l 1' # show history
 alias la='ls -lA'
 alias ll='ls -l'
