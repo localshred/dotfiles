@@ -1,9 +1,12 @@
 function load_rbenv() {
   [[ ! -s Gemfile ]] && return 0
-  if ! command -v rbenv > /dev/null; then
+  if [[ -z $RBENV_LOADED ]]; then
     eval "$(rbenv init -)"
+    export RBENV_LOADED=1
+    add-zsh-hook -d precmd load_rbenv
   fi
 }
+add-zsh-hook precmd load_rbenv
 
 function ruby_prompt() {
   if [[ -s Gemfile ]]; then

@@ -31,7 +31,9 @@ function load_nvm() {
     export NVM_DIR="/Users/bj/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"  # This loads nvm
 
-    load-nvmrc() {
+    set_js_version() {
+      [[ ! -s package.json ]] && return 0
+
       local node_version="$(nvm version)"
       local nvmrc_path="$(nvm_find_nvmrc)"
 
@@ -54,8 +56,9 @@ function load_nvm() {
         nvm use --silent default
       fi
     }
-    add-zsh-hook chpwd load-nvmrc
-    load-nvmrc
+    add-zsh-hook -d precmd load_nvm
+    add-zsh-hook chpwd set_js_version
+    set_js_version
   fi
 }
 add-zsh-hook precmd load_nvm
