@@ -4,7 +4,7 @@ cdpath=(~ ~/Documents ~/Desktop /code /code/src /code/src/utilities /code/src/go
 
 alias ..='cd ..'
 alias ...='cd ../..'
-alias ag='ag -p ~/.ignore'
+alias ag="ag -p $DOTFILES/.agignore"
 alias history='fc -l 1'
 alias la='ls -lAh'
 alias ll='ls -l'

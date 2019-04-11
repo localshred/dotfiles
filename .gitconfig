@@ -35,11 +35,15 @@
   last        = log -1 HEAD
   ls          = ls-remote .
   mine        = !git log --author=`git config user.email`
+  mr          = !lab mr new
   pgm         = push github master
   phm         = push heroku master
   pr          = pull-request
   pu          = push
   pum         = push upstream master
+  rba         = rebase --abort
+  rbc         = rebase --continue
+  rbm         = rebase master
   recent      = log --oneline -10
   sha         = log -1 --oneline HEAD
   softrm      = rm --cached --
@@ -57,18 +61,15 @@
   ribbon      = tag --force _ribbon origin/master
   stl         = stash list
   stp         = stash pop
+  undo        = reset --soft HEAD~1
 [branch]
   autosetuprebase = remote
 [github]
   user = localshred
-  token = "some token"
 [push]
   default = current
 [init]
   templatedir = ~/.git_template
-[hub]
-  host = github.com
-  protocol = https
 [filter "media"]
   clean = git-media-clean %f
   smudge = git-media-smudge %f
@@ -81,9 +82,7 @@
 	diff = diff-so-fancy | less --tabs=4 -RFX
 	show = diff-so-fancy | less --tabs=4 -RFX
 [filter "lfs"]
-	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
-[ghi]
-	token = !security find-internet-password -a localshred -s github.com -l 'ghi token' -w
+	required = true

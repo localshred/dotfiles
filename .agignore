@@ -1,0 +1,10 @@
+" Silver Searcher global ignore file
+" You have to do `ag --path-to-ignore ~/.ignore` to get this to work. It's already setup to do this in vim
+
+cover/
+cov/
+deps/
+doc/
+node_modules/
+priv/static/
+vendor/
