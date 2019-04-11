@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 function load_rbenv() {
   [[ ! -s Gemfile ]] && return 0
   if [[ -z $RBENV_LOADED ]]; then

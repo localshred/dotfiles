@@ -18,3 +18,17 @@ nnoremap <leader>pa 0f(ldt,O<esc>po\|><esc>Jf,xxVk=
 
 " Pipe extract case B (one arg in parens)
 nnoremap <leader>pb 0f(di(ko<esc>pjI\|> <esc>Vk=
+
+" Hack to get ale to stop screwing with compile reload issues
+" See https://github.com/phoenixframework/phoenix/issues/1165#issuecomment-307863099
+augroup AleGroup
+    autocmd!
+    autocmd User ALELint call TouchOpenFile()
+augroup END
+
+func! TouchOpenFile()
+    let g:ale_enabled = 0
+    sleep 500m
+    w
+    let g:ale_enabled = 1
+endfunc

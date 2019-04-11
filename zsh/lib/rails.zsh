@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 alias bi='bundle install'
 alias bo='bundle open'
 alias bs='bundle show'

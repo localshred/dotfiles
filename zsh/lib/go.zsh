@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 alias gopath="cd $GOPATH"
 alias gosrc="cd $GOPATH/src"
 

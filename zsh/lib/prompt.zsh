@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 supported_language_prompts=(js elixir go ruby)
 function get_language_prompt() {
   for language in $supported_language_prompts; do

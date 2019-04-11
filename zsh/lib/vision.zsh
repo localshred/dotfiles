@@ -1,34 +1,26 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 
-# Functions for working with the vision board
-
-vimvision()
-{
+vimvision() {
   vim $VISIONBOARD
 }
 
-vimvisionideas()
-{
+vimvisionideas() {
   vim "${VISIONBOARDDIR}/ideas.md"
 }
 
-vision()
-{
+vision() {
   egrep '\[( |x)\] \*' $VISIONBOARD | sort
 }
 
-visionadd()
-{
+visionadd() {
   echo "[ ] ${@}" >> $VISIONBOARD
 }
 
-visionall()
-{
+visionall() {
   cat $VISIONBOARD | sort
 }
 
-visiondone()
-{
+visiondone() {
   grep '\[x\]' $VISIONBOARD | sort
 }
 

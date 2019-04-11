@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 function load_kiex() {
   [[ ! -s mix.exs ]] && return 0
   if ! command -v kiex > /dev/null; then

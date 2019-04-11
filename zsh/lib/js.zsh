@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 function lintchanged() {
   git diff --name-only | xargs ./node_modules/.bin/eslint --quiet
 }

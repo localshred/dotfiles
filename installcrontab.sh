@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-crontabfile=$mydotfiles/crontab.cron
+crontabfile=$DOTFILES/crontab.cron
 who=`whoami`
 
 echo "Installing crontab ${crontabfile}..."
