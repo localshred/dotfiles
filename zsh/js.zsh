@@ -1,5 +1,31 @@
+function lintchanged() {
+  git diff --name-only | xargs ./node_modules/.bin/eslint --quiet
+}
+
+function npmedit() {
+  package=$1
+  vim node_modules/$package/package.json -c "NERDTree node_modules/$package"
+}
+
+function npmver() {
+  package=$1
+  jq '.version' node_modules/$package/package.json | awk -F\" '{print $2}'
+}
+
+function nb() {
+  program=$1
+  shift
+  ./node_modules/.bin/$program $@
+}
+
+function nr() {
+  script=$1
+  shift
+  npm run $script -- $@
+}
+
 function load_nvm() {
-  [[ ! -d node_modules ]] && return 0
+  [[ ! -s package.json ]] && return 0
 
   if ! command -v nvm > /dev/null; then
     export NVM_DIR="/Users/bj/.nvm"
@@ -33,3 +59,10 @@ function load_nvm() {
   fi
 }
 add-zsh-hook precmd load_nvm
+
+function js_prompt() {
+  if [[ -s package.json ]]; then
+    version=$(nvm current)
+    echo "js:${version/v/}"
+  fi
+}
