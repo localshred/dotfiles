@@ -19,6 +19,7 @@ load_completion /usr/local/share/zsh-completions
 load_correction
 
 # Load all aliases, functions
+autoload -Uz add-zsh-hook
 for function_file in $(find $mydotfiles/zsh -type f -iname '*.zsh')
 do
   source $function_file
