@@ -29,7 +29,6 @@ set expandtab
 set exrc
 set fileformats=unix,dos,mac
 set foldmethod=manual
-set grepprg=ag
 set guicursor+=a:blinkon0
 set guifont=Fira\ Code:h16
 set guioptions=
@@ -39,7 +38,6 @@ set ignorecase
 set incsearch
 set keywordprg=dash
 set laststatus=2
-set lazyredraw
 set listchars=tab:▶━,trail:⌴,extends:▶,precedes:◀
 set matchtime=2
 set nocompatible
@@ -69,11 +67,34 @@ set tabstop=2
 set termguicolors
 set updatetime=2000
 set vb
+set wildignore=*.o
+set wildignore+=*.obj
+set wildignore+=*.class
+set wildignore+=*/assets/*
+set wildignore+=*/cov/*
+set wildignore+=*/cover/*
+set wildignore+=*/deps/*
+set wildignore+=*/doc/*
+set wildignore+=*/node_modules/*
+set wildignore+=*/priv/static/*
+set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png,*.ico
+set wildignore+=*.pdf,*.psd
+set wildignorecase
 set wildmenu
+
+if isdirectory('.git') && executable('git')
+  set grepprg=git\ grep\ -nI
+endif
+
+if executable('ag') && !isdirectory('.git')
+  " Silver searcher instead of grep
+  set grepprg=ag\ --vimgre\ -p\ ~/.ignore
+  set grepformat=%f:%l:%c%m
+endif
 
 colorscheme one " molokai nova tender one(bg dark)
 
-let g:ackprg='ag --vimgrep --path-to-ignore ~/.ignore'
+let g:ackprg='ag --vimgrep -p ~/.ignore'
 let g:airline_left_sep=''
 let g:airline_mode_map = {
     \ '__' : '-',
@@ -130,7 +151,7 @@ let g:ale_fix_on_save = 1
 let g:ale_lint_on_enter = 1
 let g:ale_linters = {}
 let g:ale_linters.javascript = ['standard']
-let g:ale_linters.elixir = ['elixir-ls', 'credo']
+let g:ale_linters.elixir = ['mix', 'elixir-ls', 'credo']
 let g:clang_close_preview = 1
 let g:clang_complete_auto = 0
 let g:clang_exec = '/usr/bin/clang'
@@ -140,7 +161,7 @@ let g:clang_snippets = 1
 let g:clang_snippets_engine = 'ultisnips'
 let g:clang_use_library = 1
 let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" --path-to-ignore ~/.ignore'
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" -p ~/.ignore'
 let g:dash_activate = 0
 let g:jsx_ext_required = 0
 let g:localvimrc_whitelist='/code/src/\(services\|gems\|utilities\|modules|apps\)/.*'
@@ -179,6 +200,8 @@ let g:projectionist_heuristics = {
       \   ]
       \ }
       \}
+" let g:python_host_prog = '/Users/bj/.pyenv/versions/neovim2/bin/python'
+" let g:python3_host_prog = '/Users/bj/.pyenv/versions/neovim3/bin/python'
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 let g:rainbow_active = 1
 let g:SuperTabSetDefaultCompletionType="context"
@@ -244,7 +267,8 @@ let g:tagbar_type_typescript = {
     \ 'enums'      : 'e'
   \ }
   \ }
-let test#strategy = 'dispatch'
+let test#filename_modifier = ":p"
+let test#strategy = 'neovim'
 
 cnoremap Q q
 cnoremap Qa qa
@@ -276,7 +300,7 @@ nnoremap <leader>al :Align
 nnoremap <leader>cn :cnext<cr>
 nnoremap <leader>cp :cprevious<cr>
 nnoremap <leader>d :ALEDetail<cr>
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>ev :vsplit ~/.vimrc<cr>
 nnoremap <leader>fi :Ack! -i 
 nnoremap <leader>fn :NERDTreeFind<cr>j<cr>
 nnoremap <leader>fp :NERDTreeFind<cr>k<cr>
@@ -284,7 +308,9 @@ nnoremap <leader>fq :cclose<cr>
 nnoremap <leader>fs :AckFromSearch!<cr>
 nnoremap <leader>ft :tselect /
 nnoremap <leader>fw :FixWhitespace<cr>
-nnoremap <leader>gd :ALEGoToDefinitionInTab<cr>
+nnoremap <leader>gdd :vs<cr>:ALEGoToDefinition<cr>
+nnoremap <leader>gds :vs<cr>:ALEGoToDefinition<cr>
+nnoremap <leader>gdt :vs<cr>:ALEGoToDefinitionInTab<cr>
 nnoremap <leader>k :ALEHover<cr>
 nnoremap <leader>ntf :NERDTreeFind<cr>
 nnoremap <leader>ntt :NERDTreeToggle<cr>
@@ -293,7 +319,8 @@ nnoremap <leader>pd :CtrlPDir<cr>
 nnoremap <leader>pf :CtrlP<cr>
 nnoremap <leader>pm :CtrlPMRU<cr>
 nnoremap <leader>pt :CtrlPTag<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>sv :source ~/.vimrc<cr>
+nnoremap <leader>tb :TagbarToggle<cr>
 nnoremap <leader>tc :tabclose<cr>
 nnoremap <leader>tn :tabnew<cr>
 nnoremap <leader>ts :tab split<cr>

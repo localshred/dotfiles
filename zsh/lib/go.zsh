@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 alias gopath="cd $GOPATH"
 alias gosrc="cd $GOPATH/src"
 
@@ -11,7 +13,6 @@ function golab() {
 
 function go_prompt() {
   if [[ ! -z $(find . -name '*.go' -type f -maxdepth 2) ]]; then
-    version=$(go version | awk -Fgo '{print $3}' | awk '{print $1}')
-    echo "go:$version"
+    echo "go:$GOVERSION"
   fi
 }

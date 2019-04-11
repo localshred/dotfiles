@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-pushd $mydotfiles > /dev/null
+pushd $DOTFILES > /dev/null
 
-vim_plugins_file=$mydotfiles/data/vim-plugins.txt
-mkdir -p $mydotfiles/data
+vim_plugins_file=$DOTFILES/data/vim-plugins.txt
+mkdir -p $DOTFILES/data
 
 # Get a fresh file
 rm -f $vim_plugins_file

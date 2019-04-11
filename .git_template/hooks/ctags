@@ -1,4 +1,3 @@
 #!/bin/sh
 rm -f .git/*tags
-/usr/local/bin/ctags --tag-relative -Rf.git/tags --exclude=.git --exclude=node_modules --exclude=coverage --exclude=build
-
+/usr/local/bin/ctags --tag-relative -Rf.git/tags {app,test}/**/*.js
