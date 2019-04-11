@@ -1,7 +1,4 @@
-alias b='bundle'
-alias be='bundle exec'
 alias bi='bundle install'
-alias bis='bundle install --binstubs'
 alias bo='bundle open'
 alias bs='bundle show'
 alias bu='bundle update'

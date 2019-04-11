@@ -1,5 +1,6 @@
-export GOPATH=/code/src/go-workspace
-export GOBIN=/code/src/go-workspace/bin
+export GOROOT=/usr/local/Cellar/go/1.12.1/libexec
+export GOPATH=/code/src/go
+export GOBIN=/code/src/go/bin
 export utilities=/code/src/utilities
 export mydotfiles=$utilities/mydotfiles
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/code/src/utilities/ephemer/bin:/Users/bj/Library/Python/3.7/bin:/Users/bj/node_modules/.bin:$HOME/.yarn/bin:/usr/local/opt/go/libexec/bin:$(go env GOPATH)/bin
@@ -18,6 +19,7 @@ load_completion /usr/local/share/zsh-completions
 load_correction
 
 # Load all aliases, functions
+autoload -Uz add-zsh-hook
 for function_file in $(find $mydotfiles/zsh -type f -iname '*.zsh')
 do
   source $function_file
