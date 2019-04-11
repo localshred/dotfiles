@@ -1,14 +1,29 @@
-export GOROOT=/usr/local/Cellar/go/1.12.1/libexec
 export GOPATH=/code/src/go
 export GOBIN=/code/src/go/bin
+export GOVERSION=$(go version | awk -Fgo '{print $3}' | awk '{print $1}')
 export utilities=/code/src/utilities
 export mydotfiles=$utilities/mydotfiles
-export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/code/src/utilities/ephemer/bin:/Users/bj/Library/Python/3.7/bin:/Users/bj/node_modules/.bin:$HOME/.yarn/bin:/usr/local/opt/go/libexec/bin:$(go env GOPATH)/bin
 export VISIONBOARD=~/Dropbox/BJ/vision/vision.md
-export ECTO_EDITOR=vim
-export EDITOR=vim
-export REACT_EDITOR=vim
+export ECTO_EDITOR=nvim
+export EDITOR=nvim
+export REACT_EDITOR=nvim
 export JAVA_HOME=$(/usr/libexec/java_home)
+
+PATH=/usr/local/bin
+PATH=$PATH:/usr/local/sbin
+PATH=$PATH:/usr/bin
+PATH=$PATH:/bin
+PATH=$PATH:/usr/sbin
+PATH=$PATH:/sbin
+PATH=$PATH:/usr/X11/bin
+PATH=$PATH:/code/src/utilities/ephemer/bin
+PATH=$PATH:/Users/bj/Library/Python/3.7/bin
+PATH=$PATH:/Users/bj/node_modules/.bin
+PATH=$PATH:$HOME/.yarn/bin
+PATH=$PATH:/usr/local/opt/go/libexec/bin
+PATH=$PATH:$(go env GOPATH)/bin
+PATH=$PATH:/Users/bj/.pyenv/bin
+export PATH
 
 # Load zshuery
 bindkey -e
@@ -25,6 +40,6 @@ do
   source $function_file
 done
 
-cdpath=(~ ~/Documents ~/Desktop /code /code/src /code/src/services /code/src/modules /code/src/gems /code/src/apps /code/src/utilities /code/src/sites)
+cdpath=(~ ~/Documents ~/Desktop /code /code/src /code/src/utilities /code/src/go/src/github.com /code/src/go/src/gitlab.com)
 
 fortune | ponysay
