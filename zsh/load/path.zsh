@@ -14,7 +14,7 @@ PATH=$PATH:/Users/bj/Library/Python/3.7/bin
 PATH=$PATH:/Users/bj/node_modules/.bin
 PATH=$PATH:$HOME/.yarn/bin
 PATH=$PATH:/usr/local/opt/go/libexec/bin
-PATH=$PATH:$(go env GOPATH)/bin
+PATH=$PATH:$GOBIN
 PATH=$PATH:/Users/bj/.pyenv/bin
 export PATH
 

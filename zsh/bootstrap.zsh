@@ -3,7 +3,8 @@
 autoload colors; colors;
 
 function __bootstrap() {
-  __load_zsh_libs $DOTFILES/zsh/load
+  source $DOTFILES/zsh/load/env.zsh
+  source $DOTFILES/zsh/load/path.zsh
   __load_defaults
 
   __load_zsh_libs $DOTFILES/zsh/lib
@@ -54,6 +55,6 @@ function __say_hello() {
   fortune -s | ponysay
 }
 
-function zshbootstrap() { vim $DOTFILES/zsh/load/bootstrap.zsh }
+function zshbootstrap() { vim $DOTFILES/zsh/bootstrap.zsh }
 
 __bootstrap
