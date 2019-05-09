@@ -62,6 +62,17 @@ ex() {
         echo "'$1' is not a valid file"
     fi
 }
+
+keyslow() {
+  defaults write -g InitialKeyRepeat -int 225
+  defaults write -g KeyRepeat -int 30
+}
+
+keyfast() {
+  defaults write -g InitialKeyRepeat -int 10
+  defaults write -g KeyRepeat -int 1
+}
+
 md5() { echo -n $1 | openssl md5 /dev/stdin }
 md5file() { cat $1 | openssl md5 /dev/stdin }
 sha1() { echo -n $1 | openssl sha1 /dev/stdin }
