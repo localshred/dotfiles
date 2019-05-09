@@ -164,7 +164,7 @@ let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" -p ~/.ignore'
 let g:dash_activate = 0
 let g:jsx_ext_required = 0
-let g:localvimrc_whitelist='/code/src/\(services\|gems\|utilities\|modules|apps\)/.*'
+let g:localvimrc_whitelist='/code/src/\(crux\|localshred\|mmoney\|utilities\|go/gitlab.com/mmoney\)/.*'
 let g:localvimrc_persistent=2
 let g:mix_format_elixir_bin_path = '/code/src/languages/elixir/bin'
 let g:projectionist_heuristics = {
@@ -342,6 +342,8 @@ noremap H ^
 noremap L $
 vnoremap / /\v
 vnoremap <leader>S :sort i<cr>
+nnoremap <leader>nofixsave let g:ale_fix_on_save=0<cr>
+nnoremap <leader>fixsave let g:ale_fix_on_save=1<cr>
 
 " Filetype mappings that need some help
 autocmd BufNewFile,BufRead Makefile setlocal noexpandtab
