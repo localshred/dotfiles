@@ -51,3 +51,16 @@ function reposync()
     echo "${color_red}Not a git repository${color_reset}"
   fi
 }
+
+function reposyncdirs()
+{
+  for dir in $(ls)
+  do
+    echo ">>> [Dir: $dir]"
+    pushd $dir > /dev/null
+    git checkout master
+    reposync
+    popd > /dev/null
+    echo ">>> Done"
+  done
+}

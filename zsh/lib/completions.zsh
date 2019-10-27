@@ -8,6 +8,10 @@ __load_completion() {
     autoload -U compinit
     fpath=($* $fpath)
     fignore=(.DS_Store $fignore)
+    # Brew completions
+    if type brew &>/dev/null; then
+      fpath=($fpath $(brew --prefix)/share/zsh/site-functions)
+    fi
     compinit -i
     zmodload -i zsh/complist
     setopt complete_in_word

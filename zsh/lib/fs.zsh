@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-cdpath=(~ ~/Documents ~/Desktop /code /code/src /code/src/utilities /code/src/go/src/github.com /code/src/go/src/gitlab.com)
+cdpath=(~ ~/Documents ~/Desktop $CODE $CODE/src $CODE/src/utilities $GOPATH/src/github.com $GOPATH/src/gitlab.com)
 
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -9,6 +9,9 @@ alias history='fc -l 1'
 alias la='ls -lAh'
 alias ll='ls -l'
 alias lst="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
+alias tree1='tree -L 1'
+alias tree2='tree -L 2'
+alias tree3='tree -L 3'
 
 function dash() {
   open "dash://$@"

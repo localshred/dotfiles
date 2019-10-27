@@ -39,7 +39,7 @@
   pgm         = push github master
   phm         = push heroku master
   pr          = pull-request
-  pu          = push
+  pu          = push -u
   pum         = push upstream master
   rba         = rebase --abort
   rbc         = rebase --continue
@@ -82,10 +82,10 @@
 	diff = diff-so-fancy | less --tabs=4 -RFX
 	show = diff-so-fancy | less --tabs=4 -RFX
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [url "git@bitbucket.org:"]

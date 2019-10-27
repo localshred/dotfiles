@@ -128,7 +128,7 @@ let g:ale_elixir_elixir_ls_release = '/code/src/utilities/elixir-ls/rel'
 let g:ale_fixers = {}
 let g:ale_fixers.css = ['prettier-standard']
 let g:ale_fixers.elixir = ['mix_format']
-let g:ale_fixers.elm = ['elm_format']
+let g:ale_fixers.elm = ['elm-format']
 let g:ale_fixers.flow = ['prettier-standard']
 let g:ale_fixers.go = ['gofmt']
 let g:ale_fixers.graphql = ['prettier-standard']
@@ -151,7 +151,7 @@ let g:ale_fix_on_save = 1
 let g:ale_lint_on_enter = 1
 let g:ale_linters = {}
 let g:ale_linters.javascript = ['standard']
-let g:ale_linters.elixir = ['mix', 'elixir-ls', 'credo']
+let g:ale_linters.elixir = ['elixir-ls', 'credo']
 let g:clang_close_preview = 1
 let g:clang_complete_auto = 0
 let g:clang_exec = '/usr/bin/clang'
@@ -329,6 +329,7 @@ nnoremap <leader>{s vi{S
 nnoremap <silent> <s-tab> :wincmd W<cr>
 nnoremap <silent> <tab> :wincmd w<cr>
 nnoremap gd [<c-i>
+nnoremap gdvs :vs<cr>gd
 nnoremap P [P
 nnoremap p ]p
 nnoremap Q <nop>
