@@ -3,7 +3,7 @@
 dotfiles=$(dirname "$0")
 
 echo "LINKING..."
-files_to_link=".zshrc .vimrc .gitconfig .gitignore .git_template .tmux.conf .vim/autoload .vim/ftplugin .vim/spell"
+files_to_link=".zshrc .vimrc .gitconfig .gitignore .git_template .tmux.conf .vim/autoload .vim/ftplugin .vim/spell .spacemacs"
 for file in $files_to_link; do
   if [[ ! -s $file ]]; then
     echo "LINK $file ~/$file"
