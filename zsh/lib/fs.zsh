@@ -143,3 +143,20 @@ selected() {
     end tell
 EOT
 }
+
+# Find fuzzy name of a file in current tree
+function searchf() {
+  find . -type f -iname "*$@*"
+}
+
+# Find fuzzy name of a directory in current tree
+function searchd() {
+  find . -type d -iname "*$@*"
+}
+
+# Show list of files in directory sorted by human readable size
+# Optionally specify a recurse depth (default=1 (current dir))
+function bigfiles() {
+  local depth=${1:-1}
+  du -h -d $depth | sort -h
+}

@@ -152,6 +152,7 @@ let g:ale_lint_on_enter = 1
 let g:ale_linters = {}
 let g:ale_linters.javascript = ['standard']
 let g:ale_linters.elixir = ['elixir-ls', 'credo']
+let g:ale_linters.clojure = ['clj-kondo']
 let g:clang_close_preview = 1
 let g:clang_complete_auto = 0
 let g:clang_exec = '/usr/bin/clang'

@@ -16,5 +16,6 @@ PATH=$PATH:$HOME/.yarn/bin
 PATH=$PATH:/usr/local/opt/go/libexec/bin
 PATH=$PATH:$GOBIN
 PATH=$PATH:/Users/bj/.pyenv/bin
+PATH=$PATH:/usr/local/opt/mysql-client/bin
 export PATH
 
