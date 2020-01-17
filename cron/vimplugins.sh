@@ -13,7 +13,7 @@ pushd ~/.vim/bundle > /dev/null
   plugins=$(ls -d */ | cut -f1 -d'/' | sort -f)
   for plugin_dir in $plugins; do
     pushd $plugin_dir > /dev/null
-      origin=$(git remote -v | grep origin | head -1 | awk '{print $2}')
+      origin=$(git remote get-url origin)
       sha=$(git rev-parse HEAD)
       echo "${plugin_dir} ${origin} ${sha}" >> $vim_plugins_file
     popd > /dev/null
