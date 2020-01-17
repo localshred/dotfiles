@@ -1,7 +1,4 @@
-2.7.11  
-3.4.4  
 ack.vim git@github.com:mileszs/ack.vim.git 36e40f9ec91bdbf6f1adf408522a73a6925c3042
-activate  
 ale git@github.com:w0rp/ale.git 5f84325cd811ec179b7f3642652438c6a45b174d
 clang_complete https://github.com/Rip-Rip/clang_complete.git 0918788ea0b9dc4c753ffd162c95f890ae57a275
 cocoa.vim https://github.com/msanders/cocoa.vim.git 33faf435cf251ae23e0ee3500a0ce0eee6a1a94b
@@ -11,15 +8,11 @@ dash.vim https://github.com/rizzatti/dash.vim.git 25b17d9488454a1fcdbb2cbe829a23
 Dockerfile.vim git@github.com:ekalinin/Dockerfile.vim.git 97e6230ee8fe7f95413db8bf9cf8321661071e07
 elm-vim git@github.com:ElmCast/elm-vim.git e51e2e43ad617c26205a84453481d3ac152c8fec
 es.next.syntax.vim https://github.com/othree/es.next.syntax.vim c121769361278eebbbcba56b110ace2997001716
-install  
 Io-programming-language-syntax https://github.com/vim-scripts/Io-programming-language-syntax.git 22cbb4780a20f68866b85f7594b5d466ea157f2a
 javascript-libraries-syntax.vim https://github.com/othree/javascript-libraries-syntax.vim 5ef435d8c28ebc3c9b52fb865f4c06db629857f7
 molokai https://github.com/tomasr/molokai.git c67bdfcdb31415aa0ade7f8c003261700a885476
-neovim2  
-neovim3  
 nerdtree https://github.com/scrooloose/nerdtree.git d6032c876c6d6932ab7f07e262a16c9a85a31d5b
 nova-vim git@github.com:trevordmiller/nova-vim.git 9cd6b82ec2d75597ff57d9a222bb9ebfd1212f85
-python  
 rainbow git@github.com:luochen1990/rainbow 549724c2123c5a06834676963be0d76d5c37abc1
 scala.vim https://github.com/vim-scripts/scala.vim.git 3289f46fdcb419265decd4f1c689cc8ae78a8a8c
 setcolors https://github.com/felixhummel/setcolors.vim.git eef7a46d8313c22ba265cdbdfa1892060a33d758
@@ -84,6 +77,4 @@ vim-textobj-rubyblock https://github.com/nelstrom/vim-textobj-rubyblock.git 2b88
 vim-textobj-user https://github.com/kana/vim-textobj-user.git e231b65797b5765b3ee862d71077e9bd56f3ca3e
 vim-toml git@github.com:cespare/vim-toml.git a4ec206052aa347d7df90dc4b6697b7f2b7929bc
 vim-trailing-whitespace https://github.com/bronson/vim-trailing-whitespace.git 4c596548216b7c19971f8fc94e38ef1a2b55fee6
-virtualenv  
-which  
 yaml.vim https://github.com/vim-scripts/yaml.vim.git 7df61101e7aadaac7f4301f1e05d65dbc430d420
