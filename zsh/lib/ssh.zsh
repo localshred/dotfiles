@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-function newkey() {
+function sshkeygen() {
   local postfix=$1
   local user_comment=${2:-bj.neilsen@gmail.com}
   [[ $postfix == "" ]] && echo "You need to provide a postfix name for the keyfile (e.g. github+localshred)" && return 1
