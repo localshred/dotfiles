@@ -40,11 +40,22 @@ install_brew() {
 }
 
 install_vim_bundle() {
-	pushd ~/.vim/bundle
+	echo
+	echo "Installing vim bundles"
+	pushd ~/.vim/bundle > /dev/null
 	for repo_url in $(cat data/vim-plugins.txt | awk '{print $2}'); do
-		git clone $repo_url
+		repo_name=$(echo $repo_url | sed -E 's/^.+\/(.+)\.git$/\1/g' 
+		if [ -d $repo_name ]; then
+			echo "Pulling latest $repo_name from $repo_url..."
+			pushd $repo_name > /dev/null
+			git pull
+			popd > /dev/null
+		else
+			echo "Cloning $repo_name from $repo_url..."
+			git clone $repo_url
+		fi
 	done
-	popd
+	popd > /dev/null
 }
 
 uninstall() {
