@@ -43,8 +43,8 @@ install_vim_bundle() {
 	echo
 	echo "Installing vim bundles"
 	pushd ~/.vim/bundle > /dev/null
-	for repo_url in $(cat data/vim-plugins.txt | awk '{print $2}'); do
-		repo_name=$(echo $repo_url | sed -E 's/^.+\/(.+)\.git$/\1/g' 
+	for repo_url in $(cat $DOTFILES/data/vim-plugins.txt | awk '{print $2}'); do
+		repo_name=$(echo $repo_url | sed -E 's/^.+\/(.+)\.git$/\1/g')
 		if [ -d $repo_name ]; then
 			echo "Pulling latest $repo_name from $repo_url..."
 			pushd $repo_name > /dev/null
