@@ -14,8 +14,12 @@ pushd ~/.vim/bundle > /dev/null
   for plugin_dir in $plugins; do
     pushd $plugin_dir > /dev/null
       origin=$(git remote -v | grep origin | head -1 | awk '{print $2}')
-      sha=$(git rev-parse HEAD)
-      echo "${plugin_dir} ${origin} ${sha}" >> $vim_plugins_file
+      if [ "$origin" != "" ]; then
+        sha=$(git rev-parse HEAD)
+        echo "${plugin_dir} ${origin} ${sha}" >> $vim_plugins_file
+      else
+        echo "${plugin_dir} is not a git repo, skipping"
+      fi
     popd > /dev/null
   done
 popd > /dev/null
