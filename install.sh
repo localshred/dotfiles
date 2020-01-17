@@ -2,7 +2,7 @@
 
 dotfiles="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 dirs=".vim .vim/bundle"
-files=".zshrc .vimrc .gitconfig .gitignore .git_template .tmux.conf .vim/autoload .vim/ftplugin .vim/spell .spacemacs"
+files=".zshrc .vimrc .gitconfig .gitignore .git_template .tmux.conf .vim/autoload .vim/ftplugin .vim/spell .vim/init.vim .spacemacs"
 
 install() {
 	echo "Creating Dirs..."
