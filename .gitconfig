@@ -14,6 +14,7 @@
 [user]
   name = BJ Neilsen
   email = bj.neilsen@gmail.com
+	signingkey = A812DE568A890B62
 [alias]
   amend       = commit --amend
   br          = branch
