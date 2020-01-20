@@ -10,7 +10,7 @@ dotfiles="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 dirs=".vim .vim/bundle .config/nvim"
 files=".zshrc .vimrc .gitconfig .gitignore .git_template .tmux.conf .vim/autoload .vim/ftplugin .vim/spell .vim/init.vim .spacemacs .config/nvim/init.vim"
 brew_kegs="homebrew/cask-fonts"
-brew_casks="adoptopenjdk font-fira-code insomnia java reactotron"
+brew_casks="1password 1password-cli adoptopenjdk dash font-fira-code insomnia java reactotron"
 brew_bottles="
 awslogs
 clj-kondo
@@ -149,6 +149,11 @@ install_crontab() {
 }
 
 install_brew() {
+  if ! hash brew 2>/dev/null; then
+    print_info "Installing brew..."
+    run_command '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+  fi
+
   print_info "Tapping kegs..."
 	run_command "brew tap $brew_kegs"
 
