@@ -20,7 +20,6 @@ files="
 .git_template
 .gitconfig
 .gitignore
-.gnupg/gpg-agent.conf
 .spacemacs
 .tmux.conf
 .vim/autoload
@@ -29,6 +28,7 @@ files="
 .vim/spell
 .vimrc
 .zshrc
+.gnupg/pgp-agent.conf
 "
 
 brew_kegs="
@@ -41,6 +41,7 @@ brew_casks="
 adoptopenjdk
 dash
 font-fira-code
+gpg-suite
 insomnia
 java
 keybase
@@ -68,7 +69,6 @@ fortune
 glib
 gnupg
 gnutls
-gpgme
 htop-osx
 hub
 jabba
@@ -89,7 +89,6 @@ openssl
 openssl@1.1
 pcre
 pcre2
-pinentry-mac
 ponysay
 protobuf
 python
