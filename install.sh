@@ -9,8 +9,21 @@ color_reset='\033[0;39m'
 dotfiles="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 dirs=".vim .vim/bundle .config/nvim"
 files=".zshrc .vimrc .gitconfig .gitignore .git_template .tmux.conf .vim/autoload .vim/ftplugin .vim/spell .vim/init.vim .spacemacs .config/nvim/init.vim"
+
 brew_kegs="homebrew/cask-fonts"
-brew_casks="1password 1password-cli adoptopenjdk dash font-fira-code insomnia java reactotron"
+
+brew_casks="
+1password
+1password-cli
+adoptopenjdk
+dash
+font-fira-code
+insomnia
+java
+keybase
+reactotron
+"
+
 brew_bottles="
 awslogs
 clj-kondo

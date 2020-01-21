@@ -1,0 +1,99 @@
+{fm/fm
+ {:local/root "/Users/nolan/dev/fm"
+  :git/url "https://github.com/nolan330/fm.git"}
+ deps/tools
+ {:local/root "/Users/nolan/dev/deps.tools"
+  :git/url "https://github.com/nolan330/deps.tools"}
+ nuid/daml-example
+ {:local/root "/Users/nolan/dev/nuid/daml-example"
+  :git/url "https://github.com/nuid/daml-example.git"}
+ nuid/cryptography
+ {:local/root "/Users/nolan/dev/nuid/cryptography"
+  :git/url "https://github.com/nuid/cryptography.git"}
+ nuid/exception
+ {:local/root "/Users/nolan/dev/nuid/exception"
+  :git/url "https://github.com/nuid/exception.git"}
+ nuid/ethereum
+ {:local/root "/Users/nolan/dev/nuid/ethereum"
+  :git/url "https://github.com/nuid/ethereum.git"}
+ nuid/elliptic
+ {:local/root "/Users/nolan/dev/nuid/elliptic"
+  :git/url "https://github.com/nuid/elliptic.git"}
+ nuid/transit
+ {:local/root "/Users/nolan/dev/nuid/transit"
+  :git/url "https://github.com/nuid/transit.git"}
+ nuid/base64
+ {:local/root "/Users/nolan/dev/nuid/base64"
+  :git/url "https://github.com/nuid/base64.git"}
+ nuid/codec
+ {:local/root "/Users/nolan/dev/nuid/codec"
+  :git/url "https://github.com/nuid/codec.git"}
+ nuid/utils
+ {:local/root "/Users/nolan/dev/nuid/utils"
+  :git/url "https://github.com/nuid/utils.git"}
+ nuid/bytes
+ {:local/root "/Users/nolan/dev/nuid/bytes"
+  :git/url "https://github.com/nuid/bytes.git"}
+ nuid/site
+ {:local/root "/Users/nolan/dev/nuid/site"
+  :git/url "https://github.com/nuid/site.git"}
+ nuid/hex
+ {:local/root "/Users/nolan/dev/nuid/hex"
+  :git/url "https://github.com/nuid/hex.git"}
+ nuid/zk
+ {:local/root "/Users/nolan/dev/nuid/zk"
+  :git/url "https://github.com/nuid/zk.git"}
+ nuid/bn
+ {:local/root "/Users/nolan/dev/nuid/bn"
+  :git/url "https://github.com/nuid/bn.git"}
+ nuid/front-end
+ {:local/root "/Users/nolan/dev/nuid/front-end"
+  :git/url "git@github.com:nuid/front-end.git"}
+ nuid/browser
+ {:local/root "/Users/nolan/dev/nuid/browser"
+  :git/url "git@github.com:nuid/browser.git"}
+ nuid/datomic
+ {:local/root "/Users/nolan/dev/nuid/datomic"
+  :git/url "git@github.com:nuid/datomic.git"}
+ nuid/slides
+ {:local/root "/Users/nolan/dev/nuid/slides"
+  :git/url "git@github.com:nuid/slides.git"}
+ nuid/repl
+ {:local/root "/Users/nolan/dev/nuid/repl"
+  :git/url "git@github.com:nuid/repl.git"}
+ nuid/aws
+ {:local/root "/Users/nolan/dev/nuid/aws"
+  :git/url "git@github.com:nuid/aws.git"}
+ front-end/ions
+ {:local/root "/Users/nolan/dev/nuid/front-end/datomic/ions"
+  :git/url "git@github.com:nuid/front-end.git"}
+ front-end.lambda/credentials
+ {:local/root "/Users/nolan/dev/nuid/front-end/lambda/credentials"
+  :git/url "git@github.com:nuid/front-end.git"}
+ front-end.lambda/challenges
+ {:local/root "/Users/nolan/dev/nuid/front-end/lambda/challenges"
+  :git/url "git@github.com:nuid/front-end.git"}
+ ethereum-registration.lambda/register
+ {:local/root "/Users/nolan/dev/nuid/ethereum-registration/api/lambda/register"
+  :git/url "git@github.com:nuid/ethereum-registration.git"}
+ ethereum-registration.lambda/process-registrations
+ {:local/root "/Users/nolan/dev/nuid/ethereum-registration/lambda/process-registrations"
+  :git/url "git@github.com:nuid/ethereum-registration.git"}
+ ethereum-registration.lambda/record-registration
+ {:local/root "/Users/nolan/dev/nuid/ethereum-registration/lambda/record-registration"
+  :git/url "git@github.com:nuid/ethereum-registration.git"}
+ developer-portal/ions
+ {:local/root "/Users/nolan/dev/nuid/developer-portal/datomic/ions"
+  :git/url "git@github.com:nuid/developer-portal.git"}
+ developer-portal/site
+ {:local/root "/Users/nolan/dev/nuid/developer-portal"
+  :git/url "git@github.com:nuid/developer-portal.git"}
+ developer-portal.lambda/register-with-nuid
+ {:local/root "/Users/nolan/dev/nuid/developer-portal/lambda/register-with-nuid"
+  :git/url "git@github.com:nuid/developer-portal.git"}
+ developer-portal.lambda/process-registrations
+ {:local/root "/Users/nolan/dev/nuid/developer-portal/lambda/process-registrations"
+  :git/url "git@github.com:nuid/developer-portal.git"}
+ developer-portal.lambda/index-email-addresses
+ {:local/root "/Users/nolan/dev/nuid/developer-portal/lambda/index-email-addresses"
+  :git/url "git@github.com:nuid/developer-portal.git"}}

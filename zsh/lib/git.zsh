@@ -6,7 +6,8 @@ alias gti='git'
 
 function pgpkeygen() {
   echo "Generating your pgp key..."
-  gpg --default-new-key-algo rsa4096 --full-generate-key
+  keybase login
+  keybase pgp gen --multi
 
   echo "Getting key id"
   key_id=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk -F/ '{print $2}' | awk '{print $1}')
@@ -15,7 +16,7 @@ function pgpkeygen() {
 	git config --global user.signingkey $key_id
 
   echo "Getting pgp key armor format"
-	gpg --armor --export $key_id | pbcopy
+	keybase pgp export -q $key_id | pbcopy
 	pbpaste
 
 	echo "Added public key to pasteboard"

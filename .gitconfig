@@ -14,7 +14,9 @@
 [user]
   name = BJ Neilsen
   email = bj.neilsen@gmail.com
-	signingkey = A812DE568A890B62
+	signingkey = 01B08A910ED37363
+[commit]
+	gpgsign = true
 [alias]
   amend       = commit --amend
   br          = branch
@@ -87,9 +89,14 @@
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+[filesystem "AdoptOpenJDK|1.8.0_232|/dev/disk1s2"]
+  timestampResolution = 1001 milliseconds
+  minRacyThreshold = 0 nanoseconds
 ; [url "git@github.com:"]
 ; 	insteadOf = https://github.com/
 ; [url "git@bitbucket.org:"]
 ;  	insteadOf = https://bitbucket.org/
 ; [url "git@gitlab.com:"]
 ; 	insteadOf = https://gitlab.com/
+[gpg]
+	program = gpg

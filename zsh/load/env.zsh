@@ -4,6 +4,7 @@ function zshenv() { vim $DOTFILES/zsh/load/env.zsh }
 
 export ECTO_EDITOR=nvim
 export EDITOR=nvim
+export GPG_TTY=$(tty)
 export GOPATH=$CODE/src/go
 export GOBIN=$GOPATH/bin
 export GOVERSION=$(go version | awk -Fgo '{print $3}' | awk '{print $1}')
