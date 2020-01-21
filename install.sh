@@ -22,6 +22,7 @@ insomnia
 java
 keybase
 reactotron
+zoom
 "
 
 brew_bottles="
