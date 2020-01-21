@@ -7,10 +7,33 @@ color_yellow='\033[0;33m'
 color_reset='\033[0;39m'
 
 dotfiles="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-dirs=".vim .vim/bundle .config/nvim"
-files=".zshrc .vimrc .gitconfig .gitignore .git_template .tmux.conf .vim/autoload .vim/ftplugin .vim/spell .vim/init.vim .spacemacs .config/nvim/init.vim"
 
-brew_kegs="homebrew/cask-fonts"
+dirs="
+.vim
+.vim/bundle
+.config/nvim
+.gnupg
+"
+
+files="
+.config/nvim/init.vim
+.git_template
+.gitconfig
+.gitignore
+.gnupg/gpg-agent.conf
+.spacemacs
+.tmux.conf
+.vim/autoload
+.vim/ftplugin
+.vim/init.vim
+.vim/spell
+.vimrc
+.zshrc
+"
+
+brew_kegs="
+homebrew/cask-fonts
+"
 
 brew_casks="
 1password
@@ -66,6 +89,7 @@ openssl
 openssl@1.1
 pcre
 pcre2
+pinentry-mac
 ponysay
 protobuf
 python
