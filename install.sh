@@ -41,8 +41,10 @@ brew_casks="
 adoptopenjdk
 dash
 font-fira-code
+github
 gpg-suite
 insomnia
+omnifocus
 java
 keybase
 reactotron
