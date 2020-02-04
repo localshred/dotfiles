@@ -109,3 +109,4 @@ cache/
 node_modules/
 # clojure
 .rebel_readline_history
+.clojure/.cpcache

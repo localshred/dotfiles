@@ -1,12 +1,62 @@
-{:aliases
- {:deps/check
-  {:extra-deps {olical/depot {:mvn/version "1.8.4"}},
-   :main-opts ["-m" "depot.outdated.main"]},
-  :deps/upgrade
-  {:extra-deps {olical/depot {:mvn/version "1.8.4"}},
-   :main-opts ["-m" "depot.outdated.main --update"]},
-  :deps/graph
-  {:extra-deps {org.clojure/tools.deps.graph {:mvn/version "0.1.14"}},
-   :main-opts ["-m" "clojure.tools.deps.graph"]}
-  :deps/tools
-  {:extra-deps {deps/tools {:local/root "/Users/nolan/dev/deps.tools"}}}}}
+;; The deps.edn file describes the information needed to build a classpath.
+;;
+;; When using the `clojure` or `clj` script, there are several deps.edn files
+;; that are combined:
+;; - install-level
+;; - user level (this file)
+;; - project level (current directory when invoked)
+;;
+;; For all attributes other than :paths, these config files are merged left to right.
+;; Only the last :paths is kept and others are dropped.
+
+{
+ ;; Paths
+ ;;   Directories in the current project to include in the classpath
+
+ ;; :paths ["src"]
+
+ ;; External dependencies
+
+ ;; :deps {
+ ;;   org.clojure/clojure {:mvn/version "1.10.1"}
+ ;; }
+
+ ;; Aliases
+ ;;   resolve-deps aliases (-R) affect dependency resolution, options:
+ ;;     :extra-deps - specifies extra deps to add to :deps
+ ;;     :override-deps - specifies a coordinate to use instead of that in :deps
+ ;;     :default-deps - specifies a coordinate to use for a lib if one isn't found
+ ;;   make-classpath aliases (-C) affect the classpath generation, options:
+ ;;     :extra-paths - vector of additional paths to add to the classpath
+ ;;     :classpath-overrides - map of lib to path that overrides the result of resolving deps
+
+ ;; :aliases {
+ ;;   :deps {:extra-deps {org.clojure/tools.deps.alpha {:mvn/version "0.8.599"}}}
+ ;;   :test {:extra-paths ["test"]}
+ ;; }
+
+ ;; Provider attributes
+
+ :mvn/repos {"central" {:url "https://repo1.maven.org/maven2/"}
+             "clojars" {:url "https://repo.clojars.org/"}}
+
+ :aliases {:repl {:extra-deps
+                  {com.bhauman/rebel-readline                 {:mvn/version "RELEASE"}
+                   com.gfredericks/user.clj                   {:mvn/version "RELEASE"}
+                   org.clojure/core.async                     {:mvn/version "RELEASE"}
+                   org.clojure/core.logic                     {:mvn/version "RELEASE"}
+                   org.clojure/test.check                     {:mvn/version "RELEASE"}
+                   com.clojure-goes-fast/clj-java-decompiler  {:mvn/version "RELEASE"}
+                   com.clojure-goes-fast/clj-memory-meter     {:mvn/version "RELEASE"}
+                   com.clojure-goes-fast/clj-async-profiler   {:mvn/version "RELEASE"}
+                   com.clojure-goes-fast/jvm-alloc-rate-meter {:mvn/version "RELEASE"}
+                   com.clojure-goes-fast/jvm-hiccup-meter     {:mvn/version "RELEASE"}
+                   io.aviso/pretty                            {:mvn/version "RELEASE"}
+                   mvxcvi/puget                               {:mvn/version "RELEASE"}
+                   com.hypirion/clj-xchart                    {:mvn/version "RELEASE"}
+                   org.clojure/clojure                        {:mvn/version "RELEASE"}
+                   generateme/fastmath                        {:mvn/version "RELEASE"}
+                   clj-commons/pomegranate                    {:mvn/version "RELEASE"}}
+                  :main-opts ["-m" "rebel-readline.main"]}
+           }
+ }

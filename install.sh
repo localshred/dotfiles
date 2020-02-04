@@ -16,6 +16,7 @@ dirs="
 "
 
 files="
+.clojure
 .config/nvim/init.vim
 .git_template
 .gitconfig
