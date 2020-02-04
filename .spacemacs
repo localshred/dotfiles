@@ -307,8 +307,8 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-    (push '("melpa-stable" . "stable.melpa.org/packages/") configuration-layer--elpa-archives)
-    (push '(use-package . "melpa-stable") package-pinned-packages)
+  (push '("melpa-stable" . "stable.melpa.org/packages/") configuration-layer--elpa-archives)
+  (push '(use-package . "melpa-stable") package-pinned-packages)
   )
 
 (defun dotspacemacs/user-config ()
@@ -327,8 +327,28 @@ you should place your code here."
   (spacemacs/toggle-truncate-lines-off)
   (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
+  (spacemacs/toggle-automatic-symbol-highlight-on)
+  (spacemacs/toggle-fill-column-indicator-on)
+  (spacemacs/toggle-indent-guide-globally-on)
   (spacemacs/toggle-indent-guide-on)
-  (spacemacs/toggle-golden-ratio-on)
+  (spacemacs/toggle-truncate-lines-on)
+  (spacemacs/toggle-syntax-checking-on)
+
+  ;; Copy/Paste support for osx pasteboard
+  ;; https://github.com/syl20bnr/spacemacs/issues/2222#issuecomment-512507097
+  ; (if (eq system-type 'darwin)
+  ;     (progn
+  ;       (defun mac-copy ()
+  ;         (shell-command-to-string "pbpaste"))
+
+  ;       (defun mac-paste (text &optional push)
+  ;         (let ((process-connection-type nil))
+  ;           (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+  ;             (process-send-string proc text)
+  ;             (process-send-eof proc))))
+
+  ;       (setq interprogram-cut-function 'mac-paste)
+  ;       (setq interprogram-paste-function 'mac-copy)))
   )
 
 
