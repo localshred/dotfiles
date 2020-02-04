@@ -9,10 +9,10 @@ color_reset='\033[0;39m'
 dotfiles="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 dirs="
-.vim
-.vim/bundle
 .config/nvim
 .gnupg
+.vim
+.vim/bundle
 "
 
 files="
@@ -21,6 +21,7 @@ files="
 .git_template
 .gitconfig
 .gitignore
+.gnupg/pgp-agent.conf
 .spacemacs
 .tmux.conf
 .vim/autoload
@@ -29,7 +30,6 @@ files="
 .vim/spell
 .vimrc
 .zshrc
-.gnupg/pgp-agent.conf
 "
 
 brew_kegs="
