@@ -49,7 +49,7 @@ omnifocus
 java
 keybase
 reactotron
-zoom
+zoomus
 "
 
 brew_bottles="
