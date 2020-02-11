@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 
 function load_kiex() {
-  [[ ! -s mix.exs ]] && return 0
   if ! command -v kiex > /dev/null; then
     test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
+    use_kiex_version
+    add-zsh-hook chpwd use_kiex_version
   fi
 }
-add-zsh-hook chpwd load_kiex
 
-function set_kiex_version() {
+function use_kiex_version() {
   if [[ -s .kiexrc ]]; then
     version=$(cat .kiexrc)
     kiex use $version > /dev/null
@@ -24,7 +24,6 @@ function set_kiex_version() {
     fi
   fi
 }
-add-zsh-hook precmd set_kiex_version
 
 function elixir_prompt() {
   if [[ -s mix.exs ]]; then
@@ -32,3 +31,10 @@ function elixir_prompt() {
     echo "elixir:$version"
   fi
 }
+
+function __autoload_kiex() {
+  [[ ! -s mix.exs ]] && return 0
+  load_kiex
+  add-zsh-hook -d precmd __autoload_kiex
+}
+add-zsh-hook precmd __autoload_kiex
