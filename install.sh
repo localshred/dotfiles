@@ -75,7 +75,6 @@ gnupg
 gnutls
 htop-osx
 hub
-jabba
 jpeg
 jq
 leiningen
@@ -178,6 +177,13 @@ install_non_brew_libs() {
   print_info "Installing Kiex (https://github.com/taylor/kiex)..."
   if [ ! -d $HOME/.kiex ]; then
     run_command "curl -sSL https://raw.githubusercontent.com/taylor/kiex/master/install | bash -s"
+  else
+    print_info "Already installed"
+  fi
+
+  print_info "Installing Jabba (https://github.com/shyiko/jabba)..."
+  if [ ! -d $HOME/.jabba ]; then
+    run_command "curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh"
   else
     print_info "Already installed"
   fi
