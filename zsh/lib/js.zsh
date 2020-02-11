@@ -26,48 +26,53 @@ function nr() {
   npm run $script -- $@
 }
 
-function load_nvm() {
-  [[ ! -s package.json ]] && return 0
+function use_nvm_version() {
+  [[ ! -s package.json && ! -s .nvmrc ]] && return 0
 
-  if ! command -v nvm > /dev/null; then
-    export NVM_DIR="/Users/bj/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"  # This loads nvm
+  local node_version="$(nvm version)"
+  local nvmrc_path="$(nvm_find_nvmrc)"
 
-    set_js_version() {
-      [[ ! -s package.json ]] && return 0
+  if [ -n "$nvmrc_path" ]; then
+    local expected_version=$(cat "${nvmrc_path}")
+    local nvmrc_node_version=$(nvm version "${expected_version}")
 
-      local node_version="$(nvm version)"
-      local nvmrc_path="$(nvm_find_nvmrc)"
-
-      if [ -n "$nvmrc_path" ]; then
-        local expected_version=$(cat "${nvmrc_path}")
-        local nvmrc_node_version=$(nvm version "${expected_version}")
-
-        if [ "$nvmrc_node_version" = "N/A" ]; then
-          echo "You haven't installed node ${expected_version}. Do you want to?"
-          read response
-          if [[ 'y' == "${response}" ]]; then
-            nvm install
-          else
-            echo "Skipping node ${expected_version} install"
-          fi
-        elif [ "$nvmrc_node_version" != "$node_version" ]; then
-          nvm use --silent
-        fi
-      elif [ "$node_version" != "$(nvm version default)" ]; then
-        nvm use --silent default
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      echo "You haven't installed node ${expected_version}. Do you want to?"
+      read response
+      if [[ 'y' == "${response}" ]]; then
+        nvm install
+      else
+        echo "Skipping node ${expected_version} install"
       fi
-    }
-    add-zsh-hook -d precmd load_nvm
-    add-zsh-hook chpwd set_js_version
-    set_js_version
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use --silent
+    fi
+  elif [ "$node_version" != "$(nvm version default)" ]; then
+    nvm use --silent default
   fi
 }
-add-zsh-hook precmd load_nvm
+
+function load_nvm() {
+  if ! command -v nvm > /dev/null; then
+    export NVM_DIR="/Users/bj/.nvm"
+    [ -s "/usr/local/opt/nvm/nvm.sh" ] && source "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+    [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && source "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+    use_nvm_version
+    add-zsh-hook chpwd use_nvm_version
+  fi
+}
 
 function js_prompt() {
-  if [[ -s package.json ]]; then
+  if [[ -s package.json || -s .nvmrc ]]; then
     version=$(nvm current)
     echo "js:${version/v/}"
   fi
 }
+
+function __autoload_nvm() {
+  [[ ! -s package.json && ! -s .nvmrc ]] && return 0
+  load_nvm
+  add-zsh-hook -d precmd __autoload_nvm
+}
+add-zsh-hook precmd __autoload_nvm
