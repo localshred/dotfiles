@@ -11,6 +11,7 @@ dotfiles="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 dirs="
 .config/nvim
 .gnupg
+.nvm
 .vim
 .vim/bundle
 "
