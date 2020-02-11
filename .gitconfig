@@ -1,6 +1,6 @@
 [core]
   editor = vim
-  excludesfile = ~/.gitignore
+  excludesfile = ~/.gitignore.global
 [color]
   status = auto
   interactive = auto

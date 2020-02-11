@@ -21,7 +21,7 @@ files="
 .config/nvim/init.vim
 .git_template
 .gitconfig
-.gitignore
+.gitignore.global
 .gnupg/pgp-agent.conf
 .spacemacs
 .tmux.conf
