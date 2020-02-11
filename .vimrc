@@ -42,6 +42,7 @@ set listchars=tab:▶━,trail:⌴,extends:▶,precedes:◀
 set matchtime=2
 set nocompatible
 set nofoldenable
+set nojoinspaces
 set noshowmode
 set nowrap
 set number
