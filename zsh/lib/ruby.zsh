@@ -1,14 +1,11 @@
 #!/usr/bin/env zsh
 
 function load_rbenv() {
-  [[ ! -s Gemfile ]] && return 0
   if [[ -z $RBENV_LOADED ]]; then
     eval "$(rbenv init -)"
     export RBENV_LOADED=1
-    add-zsh-hook -d precmd load_rbenv
   fi
 }
-add-zsh-hook precmd load_rbenv
 
 function ruby_prompt() {
   if [[ -s Gemfile ]]; then
@@ -16,3 +13,10 @@ function ruby_prompt() {
     echo "ruby:$version"
   fi
 }
+
+function __autoload_rbenv() {
+  [[ ! -s Gemfile ]] && return 0
+  load_rbenv
+  add-zsh-hook -d precmd __autoload_rbenv
+}
+add-zsh-hook precmd __autoload_rbenv
