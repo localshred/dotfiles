@@ -53,6 +53,7 @@ zoomus
 "
 
 brew_bottles="
+awscli
 awslogs
 clj-kondo
 cloc
