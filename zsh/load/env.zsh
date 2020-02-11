@@ -3,6 +3,7 @@
 function zshenv() { vim $DOTFILES/zsh/load/env.zsh }
 
 export DEFAULT_JABBA_VERSION="adopt@1.8.0-232"
+export DEFAULT_NVM_VERSION="12.15.0"
 export ECTO_EDITOR=nvim
 export EDITOR=nvim
 export GPG_TTY=$(tty)

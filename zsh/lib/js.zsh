@@ -58,6 +58,7 @@ function load_nvm() {
     [ -s "/usr/local/opt/nvm/nvm.sh" ] && source "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
     [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && source "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
+    nvm alias default $DEFAULT_NVM_VERSION
     use_nvm_version
     add-zsh-hook chpwd use_nvm_version
   fi
