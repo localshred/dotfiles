@@ -3,5 +3,5 @@ function cljrepl () {
 }
 
 function classpath() {
-  clj -Spath
+  clj -Spath | sed 's/:/\'$'\n''/g'
 }
