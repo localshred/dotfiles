@@ -109,7 +109,7 @@ ruby-build
 switchaudio-osx
 task
 telnet
-terraform
+tfenv
 the_silver_searcher
 tmux
 tree
