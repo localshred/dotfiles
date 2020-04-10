@@ -1,6 +1,6 @@
 ;; -*- mode: emacs-lisp -*-
 ;; This file is loaded by Spacemacs at startup.
-;; It must be stored in your home directory.
+;; in your home directory.
 
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
@@ -31,11 +31,12 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     html
      php
      auto-completion
      better-defaults
      (clojure :variables
-              clojure-enable-linters 'clj-kondo)
+              clojure-enable-linters '(clj-kondo))
      emacs-lisp
      git
      helm
@@ -61,6 +62,9 @@ values."
    '(
      helm-org
      flycheck-clj-kondo
+     ;; flycheck-joker
+     flycheck-color-mode-line
+     xclip
      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -321,34 +325,52 @@ you should place your code here."
   (use-package clojure-mode
     :ensure t
     :config
-    (require 'flycheck-clj-kondo))
+    (require 'flycheck-clj-kondo)
+    ;; (require 'flycheck-joker)
+    )
+
+  (xclip-mode 1)
+  (global-set-key (kbd "C-p") 'project-find-file)
+
+  (setq vc-follow-symlinks t)
+  (setq cider-repl-display-help-banner nil)
+  (setq cider-repl-use-pretty-printing t)
+
+  ;; https://github.com/flycheck/flycheck-color-mode-line
+  (require 'flycheck-color-mode-line)
+  (eval-after-load "flycheck"
+    '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+
+  (add-hook 'clojure-mode-hook 'spacemacs/toggle-truncate-lines-on)
+  (spacemacs/toggle-truncate-lines-on)
 
   ;; https://emacs.stackexchange.com/a/19364
-  (spacemacs/toggle-truncate-lines-off)
-  (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+  (add-hook 'clojure-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+  (spacemacs/toggle-visual-line-navigation-on)
 
+  (add-hook 'clojure-mode-hook 'spacemacs/toggle-automatic-symbol-highlight-on)
   (spacemacs/toggle-automatic-symbol-highlight-on)
+
+  (add-hook 'clojure-mode-hook 'spacemacs/toggle-fill-column-indicator-on)
   (spacemacs/toggle-fill-column-indicator-on)
+
+  (add-hook 'clojure-mode-hook 'spacemacs/toggle-indent-guide-globally-on)
   (spacemacs/toggle-indent-guide-globally-on)
+
+  (add-hook 'clojure-mode-hook 'spacemacs/toggle-indent-guide-on)
   (spacemacs/toggle-indent-guide-on)
+
+  (add-hook 'clojure-mode-hook 'spacemacs/toggle-truncate-lines-on)
   (spacemacs/toggle-truncate-lines-on)
+
+  (add-hook 'clojure-mode-hook 'spacemacs/toggle-syntax-checking-on)
   (spacemacs/toggle-syntax-checking-on)
 
-  ;; Copy/Paste support for osx pasteboard
-  ;; https://github.com/syl20bnr/spacemacs/issues/2222#issuecomment-512507097
-  ; (if (eq system-type 'darwin)
-  ;     (progn
-  ;       (defun mac-copy ()
-  ;         (shell-command-to-string "pbpaste"))
+  (add-hook 'clojure-mode-hook 'spacemacs/toggle-syntax-checking-on)
+  (spacemacs/toggle-syntax-checking-on)
 
-  ;       (defun mac-paste (text &optional push)
-  ;         (let ((process-connection-type nil))
-  ;           (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-  ;             (process-send-string proc text)
-  ;             (process-send-eof proc))))
-
-  ;       (setq interprogram-cut-function 'mac-paste)
-  ;       (setq interprogram-paste-function 'mac-copy)))
+  (add-hook 'clojure-mode-hook 'spacemacs/toggle-highlight-long-lines-globally-on)
+  (spacemacs/toggle-highlight-long-lines-globally-on)
   )
 
 
@@ -367,7 +389,7 @@ you should place your code here."
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode xkcd xterm-color terraform-mode hcl-mode shell-pop multi-term eshell-z eshell-prompt-extras esh-help yaml-mode flycheck-clj-kondo web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode one-themes org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot helm-org unfill smeargle orgit mwim mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient company-statistics company clojure-snippets auto-yasnippet auto-dictionary ac-ispell auto-complete clj-refactor inflections edn multiple-cursors paredit yasnippet peg cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data xclip flycheck-color-mode-line flycheck-joker phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode xkcd xterm-color terraform-mode hcl-mode shell-pop multi-term eshell-z eshell-prompt-extras esh-help yaml-mode flycheck-clj-kondo web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode one-themes org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot helm-org unfill smeargle orgit mwim mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient company-statistics company clojure-snippets auto-yasnippet auto-dictionary ac-ispell auto-complete clj-refactor inflections edn multiple-cursors paredit yasnippet peg cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
