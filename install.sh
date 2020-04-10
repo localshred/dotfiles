@@ -42,10 +42,13 @@ brew_casks="
 1password-cli
 adoptopenjdk
 dash
+docker
 font-fira-code
 github
 gpg-suite
 insomnia
+kindle
+licecap
 omnifocus
 java
 keybase
@@ -56,6 +59,7 @@ zoomus
 brew_bottles="
 awscli
 awslogs
+candid82/brew/joker
 clj-kondo
 cloc
 clojure
@@ -198,6 +202,8 @@ install_crontab() {
 
 install_brew() {
   if ! hash brew 2>/dev/null; then
+    print_info "Installing command XCode line tools..."
+    run_command "xcode-select --install"
     print_info "Installing brew..."
     run_command '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
   fi
