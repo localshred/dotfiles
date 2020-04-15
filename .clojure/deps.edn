@@ -61,6 +61,9 @@
            :nuid/repl
            {:extra-deps
             {nuid/repl {:local/root "/Users/bj/code/src/nuid/repl"}}}
+           :cmdo
+           {:extra-deps {nuid/commando {:local/root "/Users/bj/code/src/nuid/commando"}}
+            :main-opts  ["-m" "nuid.commando.core"]}
            :deps/graph
            {:extra-deps {org.clojure/tools.deps.graph {:mvn/version "0.1.14"}},
             :main-opts  ["-m" "clojure.tools.deps.graph"]}}}
