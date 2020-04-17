@@ -2,6 +2,8 @@
 
 function zshenv() { nvim $DOTFILES/zsh/load/env.zsh }
 
+## export CODE, DOTFILES from .zshrc
+
 export DEFAULT_JABBA_VERSION="adopt@1.8.0-232"
 export DEFAULT_NVM_VERSION="12.15.0"
 export ECTO_EDITOR=nvim
@@ -17,3 +19,7 @@ export LANGUAGE=en_US.UTF-8
 export REACT_EDITOR=nvim
 export TERM=xterm-24bit
 export VISIONBOARD=~/Dropbox/BJ/vision/vision.md
+
+cdpath=(~ ~/Documents ~/Desktop
+  $CODE $CODE/src $CODE/src/nuid $CODE/src/localshred $CODE/src/utilities
+  $GOPATH/src/github.com $GOPATH/src/gitlab.com)

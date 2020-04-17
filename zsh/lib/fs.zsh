@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-cdpath=(~ ~/Documents ~/Desktop $CODE $CODE/src $CODE/src/utilities $GOPATH/src/github.com $GOPATH/src/gitlab.com)
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ag="ag -p $DOTFILES/.agignore"
