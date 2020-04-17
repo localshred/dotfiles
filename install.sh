@@ -19,6 +19,7 @@ dirs="
 files="
 .clojure
 .config/nvim/init.vim
+.doom.d
 .git_template
 .gitconfig
 .gitignore.global
@@ -74,6 +75,7 @@ direnv
 elixir
 emacs
 exercism
+fd
 fortune
 glib
 gnupg
@@ -106,6 +108,7 @@ readline
 ripgrep
 rlwrap
 ruby-build
+shellcheck
 switchaudio-osx
 task
 telnet
@@ -120,6 +123,11 @@ wireshark
 yarn
 zsh
 zsh-completions
+"
+
+npm_global_packages="
+prettier
+stylelint
 "
 
 print_error() {
@@ -140,8 +148,8 @@ print_warn() {
 
 run_command() {
   local command=$@
-  print_command $command
-  eval $command
+  print_command "$command"
+  eval "$command"
 }
 
 install() {
@@ -151,6 +159,7 @@ install() {
 	install_vim_bundles
   install_crontab
   install_non_brew_libs
+  install_global_npm
 }
 
 install_dirs() {
@@ -180,14 +189,14 @@ install_non_brew_libs() {
   fi
 
   print_info "Installing Kiex (https://github.com/taylor/kiex)..."
-  if [ ! -d $HOME/.kiex ]; then
+  if [ ! -d "$HOME/.kiex" ]; then
     run_command "curl -sSL https://raw.githubusercontent.com/taylor/kiex/master/install | bash -s"
   else
     print_info "Already installed"
   fi
 
   print_info "Installing Jabba (https://github.com/shyiko/jabba)..."
-  if [ ! -d $HOME/.jabba ]; then
+  if [ ! -d "$HOME/.jabba" ]; then
     run_command "curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh"
   else
     print_info "Already installed"
@@ -196,7 +205,7 @@ install_non_brew_libs() {
 
 install_crontab() {
   print_info "Installing crontab..."
-  run_command "sudo crontab -u `whoami` $DOTFILES/crontab.cron"
+  run_command "sudo crontab -u $(whoami) $DOTFILES/crontab.cron"
   run_command "crontab -l"
 }
 
@@ -220,9 +229,9 @@ install_brew() {
 
 install_vim_bundles() {
 	print_info "Installing vim bundles"
-	for repo_url in $(cat $DOTFILES/data/vim-plugins.txt | awk '{print $2}'); do
-		repo_name=$(echo $repo_url | awk -F/ '{print ($NF)}' | sed 's/\.git$//')
-    if [ -d ~/.vim/bundle/$repo_name ]; then
+	for repo_url in $(awk '{print $2}' "$DOTFILES/data/vim-plugins.txt" ); do
+		repo_name=$(echo "$repo_url" | awk -F/ '{print ($NF)}' | sed 's/\.git$//')
+    if [ -d "$HOME/.vim/bundle/$repo_name" ]; then
       print_info "Pulling latest $repo_name from $repo_url..."
       run_command "pushd ~/.vim/bundle/$repo_name > /dev/null"
       run_command "git pull"
@@ -232,6 +241,10 @@ install_vim_bundles() {
 			run_command "git clone $repo_url ~/.vim/bundle/$repo_name"
 		fi
 	done
+}
+
+install_global_npm() {
+  npm install -g "$npm_global_packages"
 }
 
 uninstall() {
