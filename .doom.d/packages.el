@@ -20,8 +20,8 @@
 
 (package! evil-surround)
 (package! evil-lisp-state)
-(package! evil-cleverparens)
 (package! prettier-js)
+(package! pinentry) ;; be sure to `M-x pinentry-start`
 
 ;; To install a package directly from a particular repo, you'll need to specify
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:

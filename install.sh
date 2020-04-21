@@ -99,6 +99,7 @@ openssl
 openssl@1.1
 pcre
 pcre2
+pinentry-mac
 ponysay
 protobuf
 python
