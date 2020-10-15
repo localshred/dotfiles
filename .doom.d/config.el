@@ -51,16 +51,29 @@
 ;;
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
+(use-package! cider
+  :config
+  (map! (:localleader
+          (:map (clojure-mode-map clojurescript-mode-map)
+            (:prefix ("e" . "eval")
+              (:prefix ("c" . "eval comment")
+                "e" #'cider-pprint-eval-last-sexp-to-comment
+                "f" #'cider-pprint-eval-defun-to-comment)
+              "f" #'cider-eval-defun-at-point
+              "F" #'cider-insert-defun-in-repl
+              )))))
 
- (use-package evil-lisp-state
-    :init
-    (setq evil-lisp-state-global t)
+(use-package evil-lisp-state
+  :init
+  (setq evil-lisp-state-global t)
 
-    :config
-    (map! :leader
-          :desc "evil-lisp-state" "k" evil-lisp-state-map))
+  :config
+  (map! :leader
+        :desc "evil-lisp-state" "k" evil-lisp-state-map))
 
-(add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
+(use-package clojure-mode
+  :config
+  (require 'flycheck-clj-kondo))
 
 ;; prettier-emacs (js)
 (defun enable-minor-mode (my-pair)

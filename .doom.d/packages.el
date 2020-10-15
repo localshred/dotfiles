@@ -18,10 +18,11 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
-(package! evil-surround)
 (package! evil-lisp-state)
-(package! prettier-js)
+(package! evil-surround)
+(package! flycheck-clj-kondo)
 (package! pinentry) ;; be sure to `M-x pinentry-start`
+(package! prettier-js)
 
 ;; To install a package directly from a particular repo, you'll need to specify
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:

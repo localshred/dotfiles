@@ -42,6 +42,7 @@
   pgm         = push github master
   phm         = push heroku master
   pr          = pull-request
+  pro         = pull-request -o
   pu          = push -u
   pum         = push upstream master
   rba         = rebase --abort
@@ -49,6 +50,7 @@
   rbm         = rebase master
   recent      = log --oneline -10
   sha         = log -1 --oneline HEAD
+  sync       = !reposync
   softrm      = rm --cached --
   softrmdir   = rm --cached -r --
   st          = status

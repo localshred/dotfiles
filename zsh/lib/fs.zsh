@@ -64,6 +64,10 @@ ex() {
     fi
 }
 
+function nuidjwt() {
+  jwt decode -j $(echo $1 | egrep -o "eyJhb[^/]+") | jq -r '.payload["nu/id"]'
+}
+
 keyslow() {
   defaults write -g InitialKeyRepeat -int 225
   defaults write -g KeyRepeat -int 30

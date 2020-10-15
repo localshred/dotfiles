@@ -36,6 +36,7 @@ files="
 
 brew_kegs="
 homebrew/cask-fonts
+mike-engel/jwt-cli
 "
 
 brew_casks="
@@ -90,6 +91,7 @@ libpq
 libssh
 libssh2
 libtiff
+jwt-cli
 maven
 ncurses
 neovim
@@ -156,8 +158,8 @@ run_command() {
 install() {
   install_dirs
   install_files
-	install_brew
-	install_vim_bundles
+  install_brew
+  install_vim_bundles
   install_crontab
   install_non_brew_libs
   install_global_npm
@@ -202,6 +204,11 @@ install_non_brew_libs() {
   else
     print_info "Already installed"
   fi
+
+  print_info "Installing Babashka (https://github.com/borkdude/babashka)..."
+  if ! hash bb 2>/dev/null; then
+    run_command "bash <(curl -s https://raw.githubusercontent.com/borkdude/babashka/master/install)"
+  fi
 }
 
 install_crontab() {
@@ -219,29 +226,29 @@ install_brew() {
   fi
 
   print_info "Tapping kegs..."
-	run_command "brew tap $brew_kegs"
+  run_command "brew tap $brew_kegs"
 
   print_info "Installing casks..."
-	run_command "brew cask install $brew_casks"
+  run_command "brew cask install $brew_casks"
 
   print_info "Installing bottles..."
-	run_command "brew install $brew_bottles"
+  run_command "brew install $brew_bottles"
 }
 
 install_vim_bundles() {
-	print_info "Installing vim bundles"
-	for repo_url in $(awk '{print $2}' "$DOTFILES/data/vim-plugins.txt" ); do
-		repo_name=$(echo "$repo_url" | awk -F/ '{print ($NF)}' | sed 's/\.git$//')
+  print_info "Installing vim bundles"
+  for repo_url in $(awk '{print $2}' "$DOTFILES/data/vim-plugins.txt" ); do
+    repo_name=$(echo "$repo_url" | awk -F/ '{print ($NF)}' | sed 's/\.git$//')
     if [ -d "$HOME/.vim/bundle/$repo_name" ]; then
       print_info "Pulling latest $repo_name from $repo_url..."
       run_command "pushd ~/.vim/bundle/$repo_name > /dev/null"
       run_command "git pull"
       run_command "popd > /dev/null"
-		else
-			print_info "Cloning $repo_name from $repo_url..."
-			run_command "git clone $repo_url ~/.vim/bundle/$repo_name"
-		fi
-	done
+    else
+      print_info "Cloning $repo_name from $repo_url..."
+      run_command "git clone $repo_url ~/.vim/bundle/$repo_name"
+    fi
+  done
 }
 
 install_global_npm() {
@@ -249,18 +256,18 @@ install_global_npm() {
 }
 
 uninstall() {
-	print_info "Uninstall..."
-	for file in $files; do
-		if [[ -L $HOME/$file ]]; then
-			run_command "rm $HOME/$file"
-		else
-			print_warn "$HOME/$file missing, skipping"
-		fi
-	done
+  print_info "Uninstall..."
+  for file in $files; do
+    if [[ -L $HOME/$file ]]; then
+      run_command "rm $HOME/$file"
+    else
+      print_warn "$HOME/$file missing, skipping"
+    fi
+  done
 }
 
 case "$1" in
-	uninstall) uninstall ;;
-	*) install ;;
+  uninstall) uninstall ;;
+  *) install ;;
 esac
 

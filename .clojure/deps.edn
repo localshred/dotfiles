@@ -39,31 +39,43 @@
  :mvn/repos {"central" {:url "https://repo1.maven.org/maven2/"}
              "clojars" {:url "https://repo.clojars.org/"}}
 
- :aliases {:repl
-           {:extra-deps
-            {com.bhauman/rebel-readline                 {:mvn/version "RELEASE"}
-             com.gfredericks/user.clj                   {:mvn/version "RELEASE"}
-             org.clojure/core.async                     {:mvn/version "RELEASE"}
-             org.clojure/core.logic                     {:mvn/version "RELEASE"}
-             org.clojure/test.check                     {:mvn/version "RELEASE"}
-             com.clojure-goes-fast/clj-java-decompiler  {:mvn/version "RELEASE"}
-             com.clojure-goes-fast/clj-memory-meter     {:mvn/version "RELEASE"}
-             com.clojure-goes-fast/clj-async-profiler   {:mvn/version "RELEASE"}
-             com.clojure-goes-fast/jvm-alloc-rate-meter {:mvn/version "RELEASE"}
-             com.clojure-goes-fast/jvm-hiccup-meter     {:mvn/version "RELEASE"}
-             io.aviso/pretty                            {:mvn/version "RELEASE"}
-             mvxcvi/puget                               {:mvn/version "RELEASE"}
-             com.hypirion/clj-xchart                    {:mvn/version "RELEASE"}
-             org.clojure/clojure                        {:mvn/version "RELEASE"}
-             generateme/fastmath                        {:mvn/version "RELEASE"}
-             clj-commons/pomegranate                    {:mvn/version "RELEASE"}}
-            :main-opts ["-m" "rebel-readline.main"]}
-           :nuid/repl
-           {:extra-deps
-            {nuid/repl {:local/root "/Users/bj/code/src/nuid/repl"}}}
-           :cmdo
-           {:extra-deps {nuid/commando {:local/root "/Users/bj/code/src/nuid/commando"}}
-            :main-opts  ["-m" "nuid.commando.core"]}
-           :deps/graph
-           {:extra-deps {org.clojure/tools.deps.graph {:mvn/version "0.1.14"}},
-            :main-opts  ["-m" "clojure.tools.deps.graph"]}}}
+ :aliases
+ {:repl
+  {:extra-deps
+   {com.bhauman/rebel-readline                 {:mvn/version "RELEASE"}
+    com.gfredericks/user.clj                   {:mvn/version "RELEASE"}
+    org.clojure/core.async                     {:mvn/version "RELEASE"}
+    org.clojure/core.logic                     {:mvn/version "RELEASE"}
+    org.clojure/test.check                     {:mvn/version "RELEASE"}
+    com.clojure-goes-fast/clj-java-decompiler  {:mvn/version "RELEASE"}
+    com.clojure-goes-fast/clj-memory-meter     {:mvn/version "RELEASE"}
+    com.clojure-goes-fast/clj-async-profiler   {:mvn/version "RELEASE"}
+    com.clojure-goes-fast/jvm-alloc-rate-meter {:mvn/version "RELEASE"}
+    com.clojure-goes-fast/jvm-hiccup-meter     {:mvn/version "RELEASE"}
+    io.aviso/pretty                            {:mvn/version "RELEASE"}
+    mvxcvi/puget                               {:mvn/version "RELEASE"}
+    com.hypirion/clj-xchart                    {:mvn/version "RELEASE"}
+    org.clojure/clojure                        {:mvn/version "RELEASE"}
+    generateme/fastmath                        {:mvn/version "RELEASE"}
+    clj-commons/pomegranate                    {:mvn/version "RELEASE"}}
+   :main-opts ["-m" "rebel-readline.main"]}
+  :nuid/repl
+  {:extra-deps
+   {nuid/repl {:local/root "/Users/bj/code/src/nuid/repl"}}}
+  :cmdo
+  {:extra-deps {nuid/commando {:local/root "/Users/bj/code/src/nuid/commando"}}
+   :main-opts  ["-m" "nuid.commando.core"]}
+  :deps/tools
+  {:extra-deps
+   {notalwaysgray/deps.tools
+    {:git/url "git@github.com:notalwaysgray/deps.tools.git"
+     :sha "250a757396617f7382ae85988964b925cf448969"}}}
+  :deps/graph
+  {:extra-deps {org.clojure/tools.deps.graph {:mvn/version "0.1.14"}},
+   :main-opts  ["-m" "clojure.tools.deps.graph"]}
+  :deps/outdated
+  {:extra-deps {olical/depot {:mvn/version "1.8.4"}}
+   :main-opts  ["-m" "depot.outdated.main"]}
+  :deps/upgrade
+  {:extra-deps {olical/depot {:mvn/version "1.8.4"}}
+   :main-opts  ["-m" "depot.outdated.main --update"]}}}

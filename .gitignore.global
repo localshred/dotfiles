@@ -110,7 +110,9 @@ node_modules/
 # clojure
 .rebel_readline_history
 .clojure/.cpcache
+.clj-kondo/
 
 # NUID config concerns
 .jabbarc
 .nvmrc
+plan.out
