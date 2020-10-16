@@ -64,8 +64,8 @@ ex() {
     fi
 }
 
-function nuidjwt() {
-  jwt decode -j $(echo $1 | egrep -o "eyJhb[^/]+") | jq -r '.payload["nu/id"]'
+function jwtdecode() {
+  jwt decode -j $(echo $1 | egrep -o "eyJhb[^/]+")
 }
 
 keyslow() {
