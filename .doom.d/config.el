@@ -34,7 +34,6 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -75,6 +74,10 @@
   :config
   (require 'flycheck-clj-kondo))
 
+(use-package prettier-js
+  :config
+  (setq prettier-js-command "/Users/bj/.nvm/versions/node/v12.15.0/bin/prettier-standard"))
+
 ;; prettier-emacs (js)
 (defun enable-minor-mode (my-pair)
   "Enable minor mode if filename match the regexp.  MY-PAIR is a cons cell (regexp . minor-mode)."
@@ -82,8 +85,23 @@
       (if (string-match (car my-pair) buffer-file-name)
           (funcall (cdr my-pair)))))
 
-(add-hook 'js2-mode-hook 'prettier-js-mode)
-(add-hook 'web-mode-hook 'prettier-js-mode)
+(use-package rjsx-mode
+  :mode "\\.js$")
+
+;; (add-to-list 'auto-minor-mode-alist '("\\.js\\'" . js2-minor-mode))
+
+(defun setup-js-modes ()
+  (prettier-js-mode)
+  (prettify-symbols-mode -1))
+
+(add-hook 'js2-mode-hook 'setup-js-modes)
+(add-hook 'js-jsx-mode-hook 'setup-js-modes)
+(add-hook 'rjsx-mode-hook 'setup-js-modes)
+(add-hook 'web-mode-hook 'setup-js-modes)
 (add-hook 'web-mode-hook #'(lambda ()
                             (enable-minor-mode
-                             '("\\.jsx?\\'" . prettier-js-mode))))
+                             '("\\.js\\'" . prettier-js-mode))))
+
+;; (setq prettify-symbols-alist nil)
+;; (setq lisp-prettify-symbols-alist nil)
+;; (setq js--prettify-symbols-alist nil)

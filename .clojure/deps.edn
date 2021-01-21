@@ -47,6 +47,7 @@
     org.clojure/core.async                     {:mvn/version "RELEASE"}
     org.clojure/core.logic                     {:mvn/version "RELEASE"}
     org.clojure/test.check                     {:mvn/version "RELEASE"}
+    org.clojure/data.csv                       {:mvn/version "RELEASE"}
     com.clojure-goes-fast/clj-java-decompiler  {:mvn/version "RELEASE"}
     com.clojure-goes-fast/clj-memory-meter     {:mvn/version "RELEASE"}
     com.clojure-goes-fast/clj-async-profiler   {:mvn/version "RELEASE"}

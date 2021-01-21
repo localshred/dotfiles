@@ -36,6 +36,7 @@ files="
 
 brew_kegs="
 homebrew/cask-fonts
+heroku/brew
 mike-engel/jwt-cli
 "
 
@@ -81,7 +82,9 @@ fortune
 glib
 gnupg
 gnutls
+heroku
 htop-osx
+heroku/brew
 hub
 jpeg
 jq
