@@ -43,6 +43,7 @@
   phm         = push heroku master
   pr          = pull-request
   pro         = pull-request -o
+  prom        = pull-request -b main -o
   pu          = push -u
   pum         = push upstream master
   rba         = rebase --abort
@@ -74,6 +75,7 @@
 [push]
   default = current
 [init]
+  defaultBranch = main
   templatedir = ~/.git_template
 [filter "media"]
   clean = git-media-clean %f

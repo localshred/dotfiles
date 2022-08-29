@@ -21,5 +21,5 @@ export TERM=xterm-24bit
 export VISIONBOARD=~/Dropbox/BJ/vision/vision.md
 
 cdpath=(~ ~/Documents ~/Desktop
-  $CODE $CODE/src $CODE/src/nuid $CODE/src/localshred $CODE/src/utilities
-  $GOPATH/src/github.com $GOPATH/src/gitlab.com)
+  $CODE $CODE/src $CODE/src/localshred $CODE/src/crx $CODE/src/utilities
+  $CODE/src/commsor $CODE/src/nuid $GOPATH/src/github.com $GOPATH/src/gitlab.com)

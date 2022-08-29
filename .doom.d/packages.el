@@ -23,6 +23,20 @@
 (package! flycheck-clj-kondo)
 (package! pinentry) ;; be sure to `M-x pinentry-start`
 (package! prettier-js)
+(package! docker)
+(package! dockerfile-mode)
+(package! docker-compose-mode)
+(package! ethan-wspace
+  :recipe (:host github :repo "glasserc/ethan-wspace"))
+
+;; See https://github.com/hlissner/doom-emacs/issues/5667#issuecomment-948229579
+(package! gitconfig-mode
+	  :recipe (:host github :repo "magit/git-modes"
+			 :files ("gitconfig-mode.el")))
+
+(package! gitignore-mode
+	  :recipe (:host github :repo "magit/git-modes"
+			 :files ("gitignore-mode.el")))
 
 ;; To install a package directly from a particular repo, you'll need to specify
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:

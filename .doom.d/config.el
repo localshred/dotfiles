@@ -1,5 +1,6 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
@@ -88,11 +89,8 @@
 (use-package rjsx-mode
   :mode "\\.js$")
 
-;; (add-to-list 'auto-minor-mode-alist '("\\.js\\'" . js2-minor-mode))
-
 (defun setup-js-modes ()
-  (prettier-js-mode)
-  (prettify-symbols-mode -1))
+  (prettier-js-mode))
 
 (add-hook 'js2-mode-hook 'setup-js-modes)
 (add-hook 'js-jsx-mode-hook 'setup-js-modes)
@@ -102,6 +100,17 @@
                             (enable-minor-mode
                              '("\\.js\\'" . prettier-js-mode))))
 
-;; (setq prettify-symbols-alist nil)
-;; (setq lisp-prettify-symbols-alist nil)
-;; (setq js--prettify-symbols-alist nil)
+
+(rassq-delete-all 'prettify-symbols-mode auto-mode-alist)
+
+(setq js2-basic-offset 2)
+(setq typescript-indent-level 2)
+
+(set-formatter! 'pretter-standard-fmt  "prettier-standard --format --lint" :modes '(js2-mode))
+;; (set-formatter! 'cljfmt "cljfmt 2> /dev/null" :modes '(clojure-mode clojurescript-mode))
+
+(add-hook 'go-mode-hook 'lsp-deferred)
+
+;; glasserc/ethan-wspace
+(add-hook 'clojure-mode-hook 'ethan-wspace-mode)
+(setq mode-require-final-newline nil)

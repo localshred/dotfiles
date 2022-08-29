@@ -49,6 +49,7 @@ docker
 font-fira-code
 github
 gpg-suite
+graalvm/tap/graalvm-ce-lts-java11
 insomnia
 kindle
 licecap

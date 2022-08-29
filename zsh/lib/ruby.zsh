@@ -8,14 +8,14 @@ function load_rbenv() {
 }
 
 function ruby_prompt() {
-  if [[ -s Gemfile ]]; then
+  if [[ -s Gemfile || -s .ruby-version ]]; then
     version=$(rbenv version | awk '{print $1}')
     echo "ruby:$version"
   fi
 }
 
 function __autoload_rbenv() {
-  [[ ! -s Gemfile ]] && return 0
+  [[ ! -s Gemfile && ! -s .ruby-version ]] && return 0
   load_rbenv
   add-zsh-hook -d precmd __autoload_rbenv
 }
