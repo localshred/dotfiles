@@ -35,6 +35,21 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+(use-package aggressive-indent
+  :ensure t
+  :hook ((clojure-mode clojurescript-mode emacs-lisp-mode racket-mode cider-repl) . aggressive-indent-mode)
+  :config
+  ;; Indentation of function forms
+  ;; https://github.com/clojure-emacs/clojure-mode#indentation-of-function-forms
+  ;; (setq clojure-indent-style 'align-arguments)
+  (setq clojure-indent-style 'always-indent)
+  ;;
+  ;; Vertically align s-expressions
+  ;; https://github.com/clojure-emacs/clojure-mode#vertical-alignment
+  (setq clojure-align-forms-automatically true)
+  ;;
+  )
+
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -63,6 +78,10 @@
               "F" #'cider-insert-defun-in-repl
               )))))
 
+(use-package clojure-mode
+  :config
+  (require 'flycheck-clj-kondo))
+
 (use-package evil-lisp-state
   :init
   (setq evil-lisp-state-global t)
@@ -71,13 +90,17 @@
   (map! :leader
         :desc "evil-lisp-state" "k" evil-lisp-state-map))
 
-(use-package clojure-mode
+(use-package! neil
   :config
-  (require 'flycheck-clj-kondo))
+  (setq neil-prompt-for-version-p nil
+        neil-inject-dep-to-project-p t))
 
 (use-package prettier-js
   :config
   (setq prettier-js-command "/Users/bj/.nvm/versions/node/v12.15.0/bin/prettier-standard"))
+
+(use-package rjsx-mode
+  :mode "\\.js$")
 
 ;; prettier-emacs (js)
 (defun enable-minor-mode (my-pair)
@@ -85,9 +108,6 @@
   (if (buffer-file-name)
       (if (string-match (car my-pair) buffer-file-name)
           (funcall (cdr my-pair)))))
-
-(use-package rjsx-mode
-  :mode "\\.js$")
 
 (defun setup-js-modes ()
   (prettier-js-mode))

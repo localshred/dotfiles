@@ -18,25 +18,28 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
+(package! aggressive-indent)
+(package! docker)
+(package! docker-compose-mode)
+(package! dockerfile-mode)
+(package! ethan-wspace :recipe (:host github
+                                :repo "glasserc/ethan-wspace"))
 (package! evil-lisp-state)
 (package! evil-surround)
 (package! flycheck-clj-kondo)
+;; See https://github.com/hlissner/doom-emacs/issues/5667#issuecomment-948229579
+(package! gitconfig-mode :recipe (:host github
+                                  :repo "magit/git-modes"
+                                  :files ("gitconfig-mode.el")))
+(package! gitignore-mode :recipe (:host github
+                                  :repo "magit/git-modes"
+                                  :files ("gitignore-mode.el")))
+(package! neil :recipe (:host github
+                        :repo "babashka/neil"
+                        :files ("*.el")))
 (package! pinentry) ;; be sure to `M-x pinentry-start`
 (package! prettier-js)
-(package! docker)
-(package! dockerfile-mode)
-(package! docker-compose-mode)
-(package! ethan-wspace
-  :recipe (:host github :repo "glasserc/ethan-wspace"))
 
-;; See https://github.com/hlissner/doom-emacs/issues/5667#issuecomment-948229579
-(package! gitconfig-mode
-	  :recipe (:host github :repo "magit/git-modes"
-			 :files ("gitconfig-mode.el")))
-
-(package! gitignore-mode
-	  :recipe (:host github :repo "magit/git-modes"
-			 :files ("gitignore-mode.el")))
 
 ;; To install a package directly from a particular repo, you'll need to specify
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:

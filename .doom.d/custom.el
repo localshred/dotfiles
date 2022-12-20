@@ -14,6 +14,41 @@
        (async/go
         (async/<! (async/timeout 5000))
         (shell/sh \"node\" \"./resources/bin/static.js\"))
+       (shadow/nrepl-select :ui))")
+     (eval cider-register-cljs-repl-type 'hostpro-ui "(do
+        (require
+        '[clojure.core.async :as async]
+        '[shadow.cljs.devtools.api :as shadow]
+        '[clojure.java.shell :as shell])
+       (shadow/watch :ui)
+       (shadow/watch :static)
+       (shadow/nrepl-select :ui)
+       (async/go
+        (async/<! (async/timeout 5000))
+        (shell/sh \"node\" \"./resources/bin/static.js\")))")
+     (cider-ns-refresh-before-fn . "crx.hostpro.repl/cider-ns-refresh-before-fn")
+     (cider-ns-refresh-after-fn . "crx.hostpro.repl/cider-ns-refresh-after-fn")
+     (eval cider-register-cljs-repl-type 'crxdev-ui "(do
+        (require
+        '[clojure.core.async :as async]
+        '[shadow.cljs.devtools.api :as shadow]
+        '[clojure.java.shell :as shell])
+       (shadow/watch :ui)
+       (shadow/watch :static)
+       (async/go
+        (async/<! (async/timeout 5000))
+        (shell/sh \"node\" \"./resources/bin/static.js\"))
+       :started)")
+     (eval cider-register-cljs-repl-type 'hostpro-ui "(do
+        (require
+        '[clojure.core.async :as async]
+        '[shadow.cljs.devtools.api :as shadow]
+        '[clojure.java.shell :as shell])
+       (shadow/watch :ui)
+       (shadow/watch :static)
+       (async/go
+        (async/<! (async/timeout 5000))
+        (shell/sh \"node\" \"./resources/bin/static.js\"))
        :started)")
      (cider-default-clj)
      (eval cider-register-cljs-repl-type 'hostpro-ui "(do
