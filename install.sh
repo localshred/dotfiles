@@ -43,21 +43,25 @@ mike-engel/jwt-cli
 brew_casks="
 1password
 1password-cli
-adoptopenjdk
+alfred
+brave-browser
 dash
 docker
+dropbox
 font-fira-code
 github
 gpg-suite
 graalvm/tap/graalvm-ce-lts-java11
 insomnia
+iterm2
+java
+keybase
 kindle
 licecap
 omnifocus
-java
-keybase
 reactotron
-zoomus
+temurin
+zoom
 "
 
 brew_bottles="
@@ -213,6 +217,18 @@ install_non_brew_libs() {
   if ! hash bb 2>/dev/null; then
     run_command "bash <(curl -s https://raw.githubusercontent.com/borkdude/babashka/master/install)"
   fi
+
+  print_info "Installing Doom Emacs (https://github.com/doomemacs/doomemacs#install)..."
+  if ! hash ~/.emacs.d/bin/doom 2>/dev/null; then
+    run_command "git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+~/.emacs.d/bin/doom sync"
+  fi
+
+  if [ ! -f ~/.terminfo ]; then
+    print_info "Building xterm-24 \$SHELL"
+    /usr/bin/tic -x -o ~/.terminfo terminfo-24bit.src
+  fi
+
 }
 
 install_crontab() {
@@ -226,17 +242,24 @@ install_brew() {
     print_info "Installing command XCode line tools..."
     run_command "xcode-select --install"
     print_info "Installing brew..."
-    run_command '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+    run_command '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+    eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
 
   print_info "Tapping kegs..."
-  run_command "brew tap $brew_kegs"
+  for keg in $brew_kegs; do
+    run_command "brew tap $keg"
+  done
 
   print_info "Installing casks..."
-  run_command "brew cask install $brew_casks"
+  for cask in $brew_casks; do
+    run_command "brew install --cask $cask"
+  done
 
   print_info "Installing bottles..."
-  run_command "brew install $brew_bottles"
+  for bottle in $brew_bottles; do
+    run_command "brew install $bottle"
+  done
 }
 
 install_vim_bundles() {

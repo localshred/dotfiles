@@ -4,6 +4,10 @@ function zshenv() { nvim $DOTFILES/zsh/load/env.zsh }
 
 ## export CODE, DOTFILES from .zshrc
 
+# Homebrew shellenv
+# Set PATH, MANPATH, etc.
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 export DEFAULT_JABBA_VERSION="adopt@1.8.0-232"
 export DEFAULT_NVM_VERSION="12.15.0"
 export ECTO_EDITOR=nvim
