@@ -6,7 +6,7 @@ color_green='\033[0;32m'
 color_yellow='\033[0;33m'
 color_reset='\033[0;39m'
 
-dotfiles="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+dotfiles="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 dirs="
 .config/nvim
@@ -34,10 +34,12 @@ files="
 .zshrc
 "
 
+# Taps
 brew_kegs="
 homebrew/cask-fonts
 heroku/brew
 mike-engel/jwt-cli
+d12frosted/emacs-plus
 "
 
 brew_casks="
@@ -67,10 +69,12 @@ zoom
 brew_bottles="
 awscli
 awslogs
+babashka/brew/neil
 candid82/brew/joker
 clj-kondo
 cloc
 clojure
+clojure-lsp/brew/clojure-lsp-native
 cmake
 colordiff
 coreutils
@@ -80,7 +84,7 @@ dep
 diff-so-fancy
 direnv
 elixir
-emacs
+'emacs-plus@28 --with-native-comp --without-cocoa'
 exercism
 fd
 fortune
@@ -264,7 +268,7 @@ install_brew() {
 
 install_vim_bundles() {
   print_info "Installing vim bundles"
-  for repo_url in $(awk '{print $2}' "$DOTFILES/data/vim-plugins.txt" ); do
+  for repo_url in $(awk '{print $2}' "$DOTFILES/data/vim-plugins.txt"); do
     repo_name=$(echo "$repo_url" | awk -F/ '{print ($NF)}' | sed 's/\.git$//')
     if [ -d "$HOME/.vim/bundle/$repo_name" ]; then
       print_info "Pulling latest $repo_name from $repo_url..."
@@ -297,4 +301,3 @@ case "$1" in
   uninstall) uninstall ;;
   *) install ;;
 esac
-
