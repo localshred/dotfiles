@@ -82,6 +82,7 @@ ctags
 curl-openssl
 dep
 diff-so-fancy
+difftastic
 direnv
 elixir
 'emacs-plus@28 --with-native-comp --without-cocoa'

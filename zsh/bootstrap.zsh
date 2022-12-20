@@ -5,6 +5,7 @@ autoload colors; colors;
 function __bootstrap() {
   source $DOTFILES/zsh/load/env.zsh
   source $DOTFILES/zsh/load/path.zsh
+  __load_brew
   __load_defaults
 
   __load_zsh_libs $DOTFILES/zsh/lib
@@ -42,6 +43,12 @@ function __load_defaults() {
   setopt extended_history
   setopt hist_expire_dups_first
   setopt hist_ignore_space
+}
+
+function __load_brew() {
+  # Homebrew shellenv
+  # Set PATH, MANPATH, etc.
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 }
 
 function __load_zsh_libs() {

@@ -12,12 +12,12 @@ PATH=$PATH:/usr/sbin
 PATH=$PATH:/sbin
 PATH=$PATH:/usr/X11/bin
 PATH=$PATH:$CODE/src/utilities/ephemer/bin
-PATH=$PATH:/Users/bj/node_modules/.bin
+PATH=$PATH:$HOME/node_modules/.bin
 PATH=$PATH:$HOME/.yarn/bin
 PATH=$PATH:/usr/local/opt/go/libexec/bin
 PATH=$PATH:$GOBIN
-PATH=$PATH:/Users/bj/.pyenv/bin
-PATH=$PATH:/Users/bj/Library/Python/3.8/bin
+PATH=$PATH:$HOME/.pyenv/bin
+PATH=$PATH:$HOME/Library/Python/3.8/bin
 PATH=$PATH:/usr/local/opt/mysql-client/bin
 export PATH
 

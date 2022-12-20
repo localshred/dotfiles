@@ -9,7 +9,7 @@
   diff = auto
 [diff]
   tool = vimdiff
-	external = difft
+  external = difft
 [difftool]
   prompt = false
 [difftool "difftastic"]
@@ -19,7 +19,7 @@
   email = bj.neilsen@gmail.com
 	signingkey = 01B08A910ED37363
 [commit]
-	gpgsign = true
+  gpgsign = true
 [alias]
   amend       = commit --amend
   amend       = commit --amend
