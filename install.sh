@@ -62,6 +62,7 @@ kindle
 licecap
 omnifocus
 reactotron
+signal
 temurin
 zoom
 "
@@ -197,43 +198,31 @@ install_files() {
 }
 
 install_non_brew_libs() {
-  print_info "Installing Spacemacs (https://www.spacemacs.org/#)..."
-  if [ ! -d ~/.emacs.d ]; then
-    run_command "git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d"
-  else
-    print_info "Already installed"
-  fi
-
-  print_info "Installing Kiex (https://github.com/taylor/kiex)..."
-  if [ ! -d "$HOME/.kiex" ]; then
-    run_command "curl -sSL https://raw.githubusercontent.com/taylor/kiex/master/install | bash -s"
-  else
-    print_info "Already installed"
-  fi
-
-  print_info "Installing Jabba (https://github.com/shyiko/jabba)..."
-  if [ ! -d "$HOME/.jabba" ]; then
-    run_command "curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh"
-  else
-    print_info "Already installed"
-  fi
-
-  print_info "Installing Babashka (https://github.com/borkdude/babashka)..."
-  if ! hash bb 2>/dev/null; then
-    run_command "bash <(curl -s https://raw.githubusercontent.com/borkdude/babashka/master/install)"
-  fi
-
-  print_info "Installing Doom Emacs (https://github.com/doomemacs/doomemacs#install)..."
   if ! hash ~/.emacs.d/bin/doom 2>/dev/null; then
+    print_info "Installing Doom Emacs (https://github.com/doomemacs/doomemacs#install)..."
     run_command "git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
 ~/.emacs.d/bin/doom sync"
+  fi
+
+  if [ ! -d "$HOME/.kiex" ]; then
+    print_info "Installing Kiex (https://github.com/taylor/kiex)..."
+    run_command "curl -sSL https://raw.githubusercontent.com/taylor/kiex/master/install | bash -s"
+  fi
+
+  if [ ! -d "$HOME/.sdkman" ]; then
+    print_info "Installing SDKMan (https://sdkman.io/)..."
+    run_command "curl -s 'https://get.sdkman.io' | bash"
+  fi
+
+  if ! hash bb 2>/dev/null; then
+    print_info "Installing Babashka (https://github.com/borkdude/babashka)..."
+    run_command "bash <(curl -s https://raw.githubusercontent.com/borkdude/babashka/master/install)"
   fi
 
   if [ ! -f ~/.terminfo ]; then
     print_info "Building xterm-24 \$SHELL"
     /usr/bin/tic -x -o ~/.terminfo terminfo-24bit.src
   fi
-
 }
 
 install_crontab() {

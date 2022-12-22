@@ -80,7 +80,6 @@
   default = current
 [init]
   defaultBranch = main
-  templatedir = ~/.git_template
 [filter "media"]
   clean = git-media-clean %f
   smudge = git-media-smudge %f
