@@ -71,6 +71,7 @@ brew_bottles="
 awscli
 awslogs
 babashka/brew/neil
+blueutil
 candid82/brew/joker
 clj-kondo
 cloc

@@ -1,19 +1,31 @@
 #!/usr/bin/env zsh
 
-alias airpods='btconnect "amor fati pods" && SwitchAudioSource -t output -s "amor fati pods"'
-alias speakers='SwitchAudioSource -t output -s "Built-in Output"'
-alias wanderer='btconnect "The Grey Wanderer" && SwitchAudioSource -t output -s "The Gray Wanderer"'
-alias yeti='SwitchAudioSource -t output -s "Yeti Stereo Microphone"'
+function audioin() {
+  SwitchAudioSource -a -t input -s "$1"
+}
 
-function audiodefaults() {
-  SwitchAudioSource -t output -s "Built-in Output"
-  SwitchAudioSource -t input -s "Built-in Microphone"
+function audioout() {
+  SwitchAudioSource -a -t output -s "$1"
 }
 
 function audiosources() {
-  echo "Input:"
-  SwitchAudioSource -a -t input | awk -F\( '{print "\011",$1}'
-  echo
-  echo "Output:"
-  SwitchAudioSource -a -t output | awk -F\( '{print "\011",$1}'
+  echo "In:  $(SwitchAudioSource -c -t input)"
+  echo "Out: $(SwitchAudioSource -c -t output)"
+}
+
+# outputs
+alias speakers='audioout "MacBook Pro Speakers"'
+alias yetiout='audioout "Yeti Stereo Microphone"'
+
+# bt outputs
+alias airpods='btconnect "bobbie" && audioout "bobbie"'
+alias wanderer='btconnect "The Grey Wanderer" && audioout "The Gray Wanderer"'
+alias pyle='btconnect pyle && audioout "Pyle"'
+
+# inputs
+alias yetiin='audioin "Yeti Stereo Microphone"'
+
+function audiodefaults() {
+  speakers
+  audioin "MacBook Pro Microphone"
 }
