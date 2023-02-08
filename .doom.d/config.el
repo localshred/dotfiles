@@ -102,6 +102,11 @@
 (use-package rjsx-mode
   :mode "\\.js$")
 
+(use-package lsp-mode
+  :commands lsp
+  :hook
+  (sh-mode . lsp))
+
 ;; prettier-emacs (js)
 (defun enable-minor-mode (my-pair)
   "Enable minor mode if filename match the regexp.  MY-PAIR is a cons cell (regexp . minor-mode)."

@@ -50,7 +50,7 @@
 (def aliased-users
   {"l" {:user "localshred" :scm :github}
    "c" {:user "crxdev" :scm :github}
-   "s" {:user "spiff" :scm :github}})
+   "s" {:user "spiffinc" :scm :github}})
 
 (def github-base-url "https://github.com")
 
@@ -110,11 +110,11 @@
 
 (defn- parse-from-args
   [options arguments]
-  (let [[user repo number] (string/split (first arguments) #"[\/#]")]
+  (let [[user repo number] (string/split (string/join " " arguments) #"[\s\/#]+")]
     (cond-> options
       (some? user)     (assoc :user user)
       (some? repo)     (assoc :repo repo)
-      (some? number)   (assoc :number (Integer/parseInt number) :issues true)
+      (some? number)   (assoc :number (Integer/parseInt number) :issues (not (:pull-requests options)))
       (:debug options) (tap))))
 
 (defmethod task :goto-scm
@@ -138,14 +138,14 @@
   Navigate to SCM provider URLs for user, repo, issues, prs.
 
 Usage:
-  alfred_wf_scm -h
-  alfred_wf_scm -u foo                    # navigate to https://github.com/foo
-  alfred_wf_scm -u foo -s gitlab          # navigate to https://gitlab.com/foo
-  alfred_wf_scm -u foo -r bar             # navigate to https://github.com/foo/bar
-  alfred_wf_scm -u foo -r bar -i          # navigate to https://github.com/foo/bar/issues
-  alfred_wf_scm -u foo -r bar -i -n 123   # navigate to https://github.com/foo/bar/issue/123
-  alfred_wf_scm -u foo -r bar -p          # navigate to https://github.com/foo/bar/pulls
-  alfred_wf_scm -u foo -r bar -p -n 456   # navigate to https://github.com/foo/bar/pull/456
+  goto_scm -h
+  goto_scm -u foo                    # navigate to https://github.com/foo
+  goto_scm -u foo -s gitlab          # navigate to https://gitlab.com/foo
+  goto_scm -u foo -r bar             # navigate to https://github.com/foo/bar
+  goto_scm -u foo -r bar -i          # navigate to https://github.com/foo/bar/issues
+  goto_scm -u foo -r bar -i -n 123   # navigate to https://github.com/foo/bar/issue/123
+  goto_scm -u foo -r bar -p          # navigate to https://github.com/foo/bar/pulls
+  goto_scm -u foo -r bar -p -n 456   # navigate to https://github.com/foo/bar/pull/456
 
 Options:")
   (println summary)

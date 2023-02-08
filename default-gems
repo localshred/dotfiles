@@ -1,3 +1,4 @@
 bundler
 gem-ctags
-
+solargraph
+solargraph-rails

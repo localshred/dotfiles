@@ -144,24 +144,25 @@ zsh-completions
 "
 
 npm_global_packages="
+bash-language-server
 prettier
 stylelint
 "
 
 print_error() {
-  echo -e "${color_red}!!> $@${color_reset}"
+  echo -e "${color_red}!!> $*${color_reset}"
 }
 
 print_info() {
-  echo -e "${color_green}==> $@${color_reset}"
+  echo -e "${color_green}==> $*${color_reset}"
 }
 
 print_command() {
-  echo -e "${color_orange}-> $@${color_reset}"
+  echo -e "${color_orange}-> $*${color_reset}"
 }
 
 print_warn() {
-  echo -e "${color_yellow}~~> $@${color_reset}"
+  echo -e "${color_yellow}~~> $*${color_reset}"
 }
 
 run_command() {
