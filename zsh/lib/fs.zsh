@@ -107,9 +107,8 @@ _gimme() { reply=(`brew search`) }
 pman() { man $1 -t | open -f -a Preview } # open man pages in Preview
 
 vol() {
-    if [[ -n $1 ]]; then osascript -e "set volume output volume $1"
-    else osascript -e "output volume of (get volume settings)"
-    fi
+    [[ -n $1 ]] && echo "Setting volume to $1" && osascript -e "set volume output volume $1"
+    echo "Volume: $(osascript -e "output volume of (get volume settings)")"
 }
 
 evernote() {
