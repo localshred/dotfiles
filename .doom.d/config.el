@@ -85,7 +85,10 @@
   (sh-mode . lsp))
 
 (use-package magit-delta
-  :hook (magit-mode . magit-delta-mode))
+  :hook (magit-mode . magit-delta-mode)
+  :config
+  (add-to-list 'magit-delta-delta-args "magit")
+  (add-to-list 'magit-delta-delta-args "--features"))
 
 ;; prettier-emacs (js)
 (defun enable-minor-mode (my-pair)

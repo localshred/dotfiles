@@ -79,8 +79,14 @@
   navigate = true  # use n and N to move between diff sections
   light = false
   dark = true
-  line-numbers = true
   side-by-side = false
+
+
+[delta "default"]
+    line-numbers = true
+
+[delta "magit"]
+    line-numbers = false
 
 [diff]
   colorMoved = default
