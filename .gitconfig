@@ -1,20 +1,3 @@
-[core]
-  editor = vim
-  excludesfile = ~/.gitignore.global
-  pager = diff-so-fancy | less --tabs=4 -RFX
-[color]
-  status = auto
-  interactive = auto
-  grep = auto
-  branch = auto
-  diff = auto
-  ui = true
-[user]
-  name = BJ Neilsen
-  email = bj.neilsen@gmail.com
-	signingkey = 01B08A910ED37363
-[commit]
-  gpgsign = true
 [alias]
   amend       = commit --amend
   amend       = commit --amend
@@ -66,46 +49,87 @@
   undo        = reset --soft HEAD~1
   unstage     = reset HEAD --
   yoink       = cherry-pick
+
 [branch]
   autosetuprebase = remote
-[github]
-  user = localshred
-[push]
-  default = current
-[init]
-  defaultBranch = main
-[filter "media"]
-  clean = git-media-clean %f
-  smudge = git-media-smudge %f
-[pager]
+
+[core]
+  editor = vim
+  excludesfile = ~/.gitignore.global
+  pager = delta
+
+[color]
+  status = auto
+  interactive = auto
+  grep = auto
+  branch = auto
+  diff = auto
+  ui = true
+
+[commit]
+  gpgsign = true
+
+# maybe: villsau zebra-dark
+# meh?: collared-trogon  calochortus-lyallii
+# almost, but no: chameleon mantis-shrimp matis-shrimp-lite woolly-mammoth
+#
+
+[delta]
+  features = villsau
+  navigate = true  # use n and N to move between diff sections
+  light = false
+  dark = true
+  line-numbers = true
+  side-by-side = false
+
+[diff]
+  colorMoved = default
+
+[filesystem "AdoptOpenJDK|1.8.0_232|/dev/disk1s2"]
+  timestampResolution = 1001 milliseconds
+  minRacyThreshold = 0 nanoseconds
+
 [filter "lfs"]
   process = git-lfs filter-process
   required = true
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
-[filesystem "AdoptOpenJDK|1.8.0_232|/dev/disk1s2"]
-  timestampResolution = 1001 milliseconds
-  minRacyThreshold = 0 nanoseconds
+
+[filter "media"]
+  clean = git-media-clean %f
+  smudge = git-media-smudge %f
+
+[github]
+  user = localshred
+
+[gpg]
+  program = gpg
+
+[include]
+  path = ~/code/src/utilities/dotfiles/delta-themes.gitconfig
+
+[init]
+  defaultBranch = main
+
+[interactive]
+  diffFilter = delta --color-only --features=interactive
+
+[merge]
+  conflictstyle = diff3
+
+[pager]
+
+[push]
+  default = current
+
 ; [url "git@github.com:"]
 ; 	insteadOf = https://github.com/
 ; [url "git@bitbucket.org:"]
 ;  	insteadOf = https://bitbucket.org/
 ; [url "git@gitlab.com:"]
 ; 	insteadOf = https://gitlab.com/
-[gpg]
-  program = gpg
-[interactive]
-  diffFilter = diff-so-fancy --patch
-[color "diff-highlight"]
-  oldNormal = red bold
-  oldHighlight = red bold 52
-  newNormal = green bold
-  newHighlight = green bold 22
-[color "diff"]
-  meta = 11
-  frag = magenta bold
-  func = 146 bold
-  commit = yellow bold
-  old = red bold
-  new = green bold
-  whitespace = red reverse
+
+[user]
+  name = BJ Neilsen
+  email = bj.neilsen@gmail.com
+  signingkey = F8006C1017C96B41

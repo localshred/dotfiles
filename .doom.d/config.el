@@ -1,39 +1,16 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets.
-(setq user-full-name "BJ Neilsen"
-      user-mail-address "bj.neilsen@gmail.com")
-
-;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
-;;
-;; + `doom-font'
-;; + `doom-variable-pitch-font'
-;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "Fira Code" :size 16))
-
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq
+ display-line-numbers-type t ;; For relative line numbers, set this to `relative'.
+ doom-font (font-spec :family "Fira Code" :size 16)
+ doom-theme 'doom-one
+ org-directory "~/org/"
+ user-full-name "BJ Neilsen"
+ user-mail-address "bj.neilsen@gmail.com"
+ )
 
 (use-package aggressive-indent
   :ensure t
@@ -107,9 +84,13 @@
   :hook
   (sh-mode . lsp))
 
+(use-package magit-delta
+  :hook (magit-mode . magit-delta-mode))
+
 ;; prettier-emacs (js)
 (defun enable-minor-mode (my-pair)
-  "Enable minor mode if filename match the regexp.  MY-PAIR is a cons cell (regexp . minor-mode)."
+  "Enable minor mode if filename match the regexp.  MY-PAIR is a cons cell
+(regexp . minor-mode)."
   (if (buffer-file-name)
       (if (string-match (car my-pair) buffer-file-name)
           (funcall (cdr my-pair)))))
