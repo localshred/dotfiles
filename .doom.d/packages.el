@@ -66,4 +66,4 @@
                         :files ("*.el")))
 (package! pinentry) ;; be sure to `M-x pinentry-start`
 (package! prettier-js)
-
+(package! rubocop)
