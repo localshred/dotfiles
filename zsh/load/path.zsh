@@ -20,5 +20,6 @@ PATH=$PATH:$GOBIN
 PATH=$PATH:$HOME/.pyenv/bin
 PATH=$PATH:$HOME/Library/Python/3.8/bin
 PATH=$PATH:/usr/local/opt/mysql-client/bin
+PATh=$PATH:/Applications/Docker.app/Contents/Resources/bin
 export PATH
 
