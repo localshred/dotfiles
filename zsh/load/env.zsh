@@ -10,7 +10,9 @@ export ECTO_EDITOR=emacs
 export EDITOR=emcas
 export GOBIN=$GOPATH/bin
 export GOPATH=$CODE/src/go
-export GOVERSION=$(go version | awk -Fgo '{print $3}' | awk '{print $1}')
+if hash go 2> /dev/null; then
+  export GOVERSION=$(go version | awk -Fgo '{print $3}' | awk '{print $1}')
+fi
 export GPG_TTY=$(tty)
 export JAVA_HOME=$(/usr/libexec/java_home)
 export LANG=en_US.UTF-8
@@ -22,4 +24,4 @@ export VISIONBOARD=~/Dropbox/BJ/vision/vision.md
 
 cdpath=(~ ~/Documents ~/Desktop
   $CODE $CODE/src $CODE/src/localshred $CODE/src/crx $CODE/src/utilities
-  $CODE/src/commsor $CODE/src/nuid $GOPATH/src/github.com $GOPATH/src/gitlab.com)
+  $CODE/src/spiff $CODE/src/nuid $GOPATH/src/github.com $GOPATH/src/gitlab.com)

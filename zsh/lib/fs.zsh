@@ -161,3 +161,32 @@ function bigfiles() {
   local depth=${1:-1}
   du -h -d $depth | sort -h
 }
+
+
+color_orange='\033[0;35m'
+color_red='\033[0;31m'
+color_green='\033[0;32m'
+color_yellow='\033[0;33m'
+color_reset='\033[0;39m'
+
+print_error() {
+  echo -e "${color_red}!!> $*${color_reset}"
+}
+
+print_info() {
+  echo -e "${color_green}==> $*${color_reset}"
+}
+
+print_command() {
+  echo -e "${color_orange}-> $*${color_reset}"
+}
+
+print_warn() {
+  echo -e "${color_yellow}~~> $*${color_reset}"
+}
+
+run_command() {
+  local command=$@
+  print_command "$command"
+  eval "$command"
+}

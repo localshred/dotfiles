@@ -96,7 +96,6 @@ gnupg
 gnutls
 heroku
 htop-osx
-heroku/brew
 hub
 jpeg
 jq
