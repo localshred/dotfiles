@@ -9,16 +9,15 @@ color_reset='\033[0;39m'
 dotfiles="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 dirs="
-.config/nvim
 .gnupg
 .nvm
 .vim
+.vim/autload
 .vim/bundle
 "
 
 files="
 .clojure
-.config/nvim/init.vim
 .doom.d
 .git_template
 .gitconfig
@@ -28,7 +27,6 @@ files="
 .tmux.conf
 .vim/autoload
 .vim/ftplugin
-.vim/init.vim
 .vim/spell
 .vimrc
 .zshrc
@@ -258,6 +256,9 @@ install_brew() {
 }
 
 install_vim_bundles() {
+  print_info "Linking neovim config"
+  run_command "ln -s $dotfiles/.vim ~/.config/nvim"
+
   print_info "Installing vim bundles"
   for repo_url in $(awk '{print $2}' "$DOTFILES/data/vim-plugins.txt"); do
     repo_name=$(echo "$repo_url" | awk -F/ '{print ($NF)}' | sed 's/\.git$//')
