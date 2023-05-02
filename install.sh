@@ -66,6 +66,7 @@ zoom
 "
 
 brew_bottles="
+asdf
 awscli
 awslogs
 babashka/brew/neil
