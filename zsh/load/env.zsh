@@ -4,10 +4,8 @@ function zshenv() { vim $DOTFILES/zsh/load/env.zsh }
 
 ## export CODE, DOTFILES from .zshrc
 
-export DEFAULT_JABBA_VERSION="11.0.17-tem"
-export DEFAULT_NVM_VERSION="12.15.0"
 export ECTO_EDITOR=emacs
-export EDITOR=emcas
+export EDITOR=emacs
 export GOBIN=$GOPATH/bin
 export GOPATH=$CODE/src/go
 if hash go 2> /dev/null; then

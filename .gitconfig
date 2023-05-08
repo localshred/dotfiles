@@ -54,7 +54,7 @@
   autosetuprebase = remote
 
 [core]
-  editor = vim
+  editor = nvim
   excludesfile = ~/.gitignore.global
   pager = delta
 
@@ -139,3 +139,5 @@
   name = BJ Neilsen
   email = bj.neilsen@gmail.com
   signingkey = F8006C1017C96B41
+[pull]
+	rebase = true

@@ -10,7 +10,6 @@ dotfiles="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 dirs="
 .gnupg
-.nvm
 .vim
 .vim/autload
 .vim/bundle
@@ -108,7 +107,6 @@ jwt-cli
 maven
 ncurses
 neovim
-nvm
 openldap
 openssl
 openssl@1.1
@@ -119,11 +117,9 @@ ponysay
 protobuf
 python
 python@2
-rbenv
 readline
 ripgrep
 rlwrap
-ruby-build
 shellcheck
 switchaudio-osx
 task
@@ -174,7 +170,7 @@ install() {
   install_files
   install_brew
   install_vim_bundles
-  install_crontab
+  # install_crontab
   install_non_brew_libs
   install_global_npm
 }
@@ -204,16 +200,6 @@ install_non_brew_libs() {
 ~/.emacs.d/bin/doom sync"
   fi
 
-  if [ ! -d "$HOME/.kiex" ]; then
-    print_info "Installing Kiex (https://github.com/taylor/kiex)..."
-    run_command "curl -sSL https://raw.githubusercontent.com/taylor/kiex/master/install | bash -s"
-  fi
-
-  if [ ! -d "$HOME/.sdkman" ]; then
-    print_info "Installing SDKMan (https://sdkman.io/)..."
-    run_command "curl -s 'https://get.sdkman.io' | bash"
-  fi
-
   if ! hash bb 2>/dev/null; then
     print_info "Installing Babashka (https://github.com/borkdude/babashka)..."
     run_command "bash <(curl -s https://raw.githubusercontent.com/borkdude/babashka/master/install)"
@@ -223,12 +209,15 @@ install_non_brew_libs() {
     print_info "Building xterm-24 \$SHELL"
     /usr/bin/tic -x -o ~/.terminfo terminfo-24bit.src
   fi
-}
 
-install_crontab() {
-  print_info "Installing crontab..."
-  run_command "sudo crontab -u $(whoami) $DOTFILES/crontab.cron"
-  run_command "crontab -l"
+  libdir="${HOME}/code/src/lib"
+  dest="${libdir}/icons-in-terminal"
+  if [ ! -d "${dest}" ]; then
+    print_info "Installing sebastiencs/icons-in-terminal"
+    run_command "mkdir -p ${libdir}"
+    run_command "git clone https://github.com/sebastiencs/icons-in-terminal.git ${dest}"
+    run_command "source ${dest}/install-autodetect.sh"
+  fi
 }
 
 install_brew() {
