@@ -45,6 +45,9 @@
 ;(package! builtin-package :recipe (:branch "develop"))
 
 (package! aggressive-indent)
+(package! copilot :recipe (:host github
+                           :repo "zerolfx/copilot.el"
+                           :files ("*.el" "dist")))
 (package! docker)
 (package! docker-compose-mode)
 (package! dockerfile-mode)
