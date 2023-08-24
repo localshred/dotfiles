@@ -3,7 +3,7 @@
 function zshpath() { nvim $DOTFILES/zsh/load/path.zsh }
 
 PATH=/usr/local/bin
-PATH=$DOTFILES/bin
+PATH=$PATH:$DOTFILES/bin
 PATH=$PATH:/usr/local/sbin
 PATH=$PATH:/usr/bin
 PATH=$PATH:/bin
