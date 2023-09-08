@@ -74,13 +74,19 @@ function reposync()
 
 function reposyncdirs()
 {
-  for dir in $(ls)
-  do
-    echo ">>> [Dir: $dir]"
+  for dir in $(ls -d */); do
+    echo "${color_yellow}>>> Dir: $dir${color_reset}"
     pushd $dir > /dev/null
-    git checkout master
+
+    has_main=$(git branch -a | grep origin/main)
+    if [[ has_main != "" ]]; then
+      git checkout main
+    else
+      git checkout master
+    fi
+
     reposync
     popd > /dev/null
-    echo ">>> Done"
+    echo "${color_green}>>> Done${color_reset}"
   done
 }

@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 function zshpath() { nvim $DOTFILES/zsh/load/path.zsh }
+function rebuildpath() { source $DOTFILES/zsh/load/path.zsh }
 
 PATH=/usr/local/bin
 PATH=$PATH:$DOTFILES/bin
@@ -8,7 +9,7 @@ PATH=$PATH:/usr/local/sbin
 PATH=$PATH:/usr/bin
 PATH=$PATH:/bin
 PATH=$PATH:$HOME/bin
-PATH=$PATH:$HOME/.emacs.d/bin
+PATH=$PATH:$HOME/.config/emacs/bin
 PATH=$PATH:/usr/sbin
 PATH=$PATH:/sbin
 PATH=$PATH:/usr/X11/bin

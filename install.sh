@@ -18,6 +18,7 @@ dirs="
 files="
 .clojure
 .doom.d
+.gemrc
 .git_template
 .gitconfig
 .gitignore.global
@@ -89,6 +90,7 @@ elixir
 exercism
 fd
 fortune
+git-delta
 glib
 gnupg
 gnutls

@@ -81,12 +81,13 @@
   (setq neil-prompt-for-version-p nil
         neil-inject-dep-to-project-p t))
 
+;; FIXME bad path since we don't use NVM anymore
 (use-package prettier-js
   :config
   (setq prettier-js-command "/Users/bj/.nvm/versions/node/v12.15.0/bin/prettier-standard"))
 
 (use-package rjsx-mode
-  :mode "\\.js$")
+  :mode "\\.(j|t)sx?$")
 
 (use-package lsp-mode
   :commands lsp
@@ -132,3 +133,5 @@
 ;; glasserc/ethan-wspace
 (add-hook 'clojure-mode-hook 'ethan-wspace-mode)
 (setq mode-require-final-newline nil)
+
+(setq projectile-project-search-path '("~/code/src"))
