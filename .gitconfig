@@ -66,6 +66,7 @@
   diff = auto
   ui = true
 
+
 [commit]
   gpgsign = true
 
@@ -109,7 +110,13 @@
   user = localshred
 
 [gpg]
-  program = gpg
+  format = ssh
+
+# See https://blog.1password.com/git-commit-signing/
+# See https://calebhearth.com/sign-git-with-ssh
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+  allowedSignersFile = /Users/bj/.ssh/allowed_signers
 
 [include]
   path = ~/code/src/utilities/dotfiles/delta-themes.gitconfig
@@ -138,6 +145,6 @@
 [user]
   name = BJ Neilsen
   email = bj.neilsen@gmail.com
-  signingkey = F8006C1017C96B41
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiZrJmwtdHkKYQ+tnxXvuL+N9XPINq0lOL3ttTRz8aE
 [pull]
 	rebase = true
