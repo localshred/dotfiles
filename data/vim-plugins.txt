@@ -16,7 +16,6 @@ nova-vim git@github.com:trevordmiller/nova-vim.git 9cd6b82ec2d75597ff57d9a222bb9
 rainbow git@github.com:luochen1990/rainbow 549724c2123c5a06834676963be0d76d5c37abc1
 scala.vim https://github.com/vim-scripts/scala.vim.git 3289f46fdcb419265decd4f1c689cc8ae78a8a8c
 setcolors https://github.com/felixhummel/setcolors.vim.git eef7a46d8313c22ba265cdbdfa1892060a33d758
-Spacegray.vim git://github.com/ajh17/Spacegray.vim.git f9e5205319cbb5c598bbf02b16c3d05277817f81
 splitjoin.vim git@github.com:AndrewRadev/splitjoin.vim 30d7eae90deb7dd0edf6f519bd5924fa740ba2a9
 stereokai.vim git@github.com:gummesson/stereokai.vim 1fdc42fcfb0fc23434f13a378f49e26655cac767
 supertab git@github.com:ervandew/supertab.git 40fe711e088e2ab346738233dd5adbb1be355172

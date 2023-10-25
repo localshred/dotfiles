@@ -44,6 +44,9 @@
 ;; our package manager can't deal with; see raxod502/straight.el#279)
 ;(package! builtin-package :recipe (:branch "develop"))
 
+(package! asdf :recipe (:host github
+                        :repo "tabfugnic/asdf.el"
+                        :files ("asdf.el")))
 (package! aggressive-indent)
 (package! copilot :recipe (:host github
                            :repo "zerolfx/copilot.el"
@@ -67,6 +70,7 @@
 (package! neil :recipe (:host github
                         :repo "babashka/neil"
                         :files ("*.el")))
+(package! pbcopy)
 (package! pinentry) ;; be sure to `M-x pinentry-start`
 (package! prettier-js)
 (package! rubocop)

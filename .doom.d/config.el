@@ -81,6 +81,10 @@
   (setq neil-prompt-for-version-p nil
         neil-inject-dep-to-project-p t))
 
+(use-package! pbcopy
+  :config
+  (turn-on-pbcopy))
+
 ;; FIXME bad path since we don't use NVM anymore
 (use-package prettier-js
   :config

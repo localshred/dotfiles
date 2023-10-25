@@ -6,6 +6,7 @@ function zshenv() { vim $DOTFILES/zsh/load/env.zsh }
 
 export ECTO_EDITOR=emacs
 export EDITOR=emacs
+export ERL_AFLAGS="-kernel shell_history enabled"
 export GOBIN=$GOPATH/bin
 export GOPATH=$CODE/src/go
 if hash go 2> /dev/null; then

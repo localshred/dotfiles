@@ -48,7 +48,7 @@ function __load_defaults() {
 function __load_brew() {
   # Homebrew shellenv
   # Set PATH, MANPATH, etc.
-  eval "$(brew shellenv)"
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 }
 
 function __load_zsh_libs() {

@@ -17,6 +17,7 @@ dirs="
 
 files="
 .clojure
+.default-npm-packages
 .doom.d
 .gemrc
 .git_template
@@ -34,6 +35,7 @@ files="
 
 # Taps
 brew_kegs="
+ankitpokhrel/jira-cli
 homebrew/cask-fonts
 heroku/brew
 mike-engel/jwt-cli
@@ -48,7 +50,9 @@ brave-browser
 dash
 docker
 dropbox
+discord
 font-fira-code
+gcloud
 github
 gpg-suite
 graalvm/tap/graalvm-ce-lts-java11
@@ -62,6 +66,7 @@ omnifocus
 reactotron
 signal
 temurin
+visual-studio-code
 zoom
 "
 
@@ -86,7 +91,7 @@ diff-so-fancy
 difftastic
 direnv
 elixir
-'emacs-plus@28 --with-native-comp --without-cocoa'
+\"emacs-plus@28 --with-native-comp --without-cocoa\"
 exercism
 fd
 fortune
@@ -97,6 +102,7 @@ gnutls
 heroku
 htop-osx
 hub
+jira-cli
 jpeg
 jq
 leiningen
@@ -196,10 +202,11 @@ install_files() {
 }
 
 install_non_brew_libs() {
-  if ! hash ~/.emacs.d/bin/doom 2>/dev/null; then
+  echo "WTF"
+  if ! hash ~/.config/emacs/bin/doom 2>/dev/null; then
     print_info "Installing Doom Emacs (https://github.com/doomemacs/doomemacs#install)..."
-    run_command "git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
-~/.emacs.d/bin/doom sync"
+    run_command "git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs"
+    run_command "~/.config/emacs/bin/doom install"
   fi
 
   if ! hash bb 2>/dev/null; then
@@ -207,10 +214,10 @@ install_non_brew_libs() {
     run_command "bash <(curl -s https://raw.githubusercontent.com/borkdude/babashka/master/install)"
   fi
 
-  if [ ! -f ~/.terminfo ]; then
-    print_info "Building xterm-24 \$SHELL"
-    /usr/bin/tic -x -o ~/.terminfo terminfo-24bit.src
-  fi
+  # if [ ! -f ~/.terminfo ]; then
+  #   print_info "Building xterm-24 \$SHELL"
+  #   /usr/bin/tic -x -o ~/.terminfo terminfo-24bit.src
+  # fi
 
   libdir="${HOME}/code/src/lib"
   dest="${libdir}/icons-in-terminal"
