@@ -1,0 +1,1 @@
+{:lib io.github.clojure/tools.deps.graph, :coord {:git/tag "v1.1.81", :git/sha "98c14b6"}}
