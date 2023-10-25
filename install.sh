@@ -235,23 +235,30 @@ install_brew() {
     run_command "xcode-select --install"
     print_info "Installing brew..."
     run_command '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+    if [[ -d /opt/homebrew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+      eval "$(brew shellenv)"
+    fi
   fi
 
-  print_info "Tapping kegs..."
-  for keg in $brew_kegs; do
-    run_command "brew tap $keg"
-  done
+  print_info "Installing brew taps, casks, and bottles from Brewfile..."
+  brew bundle install --file Brewfile
 
-  print_info "Installing casks..."
-  for cask in $brew_casks; do
-    run_command "brew install --cask $cask"
-  done
+  # print_info "Tapping kegs..."
+  # for keg in $brew_kegs; do
+  #   run_command "brew tap $keg"
+  # done
 
-  print_info "Installing bottles..."
-  for bottle in $brew_bottles; do
-    run_command "brew install $bottle"
-  done
+  # print_info "Installing casks..."
+  # for cask in $brew_casks; do
+  #   run_command "brew install --cask $cask"
+  # done
+
+  # print_info "Installing bottles..."
+  # for bottle in $brew_bottles; do
+  #   run_command "brew install $bottle"
+  # done
 }
 
 install_vim_bundles() {
