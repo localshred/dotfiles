@@ -56,6 +56,7 @@
 (package! dockerfile-mode)
 (package! ethan-wspace :recipe (:host github
                                 :repo "glasserc/ethan-wspace"))
+(package! evil-lion)
 (package! evil-lisp-state)
 (package! evil-surround)
 (package! flycheck-clj-kondo)
