@@ -39,6 +39,7 @@
     :validate [provider? (format "Invalid SCM provider. Should be one of: %s"
                            (string/join ", " (map name provider?)))]]
    ["-d" "--debug" "Enable debug logging"]
+   ["-y" "--dry" "Debug and exit without opening the URL"]
    ["-h" "--help" "Print this help text"]])
 
 (defmulti task (fn [{:keys [options errors]}]
@@ -47,10 +48,32 @@
                    (seq errors)                    :help
                    :else                           :goto-scm)))
 
-(def aliased-users
-  {"l" {:user "localshred" :scm :github}
-   "c" {:user "crxdev" :scm :github}
-   "s" {:user "spiffinc" :scm :github}})
+(def user-aliases
+  {"l" {:repos {"d" "dotfiles"}
+        :scm   :github
+        :user  "localshred"}
+   "c" {:repos {"a"   "hostpro-api"
+                "api" "hostpro-api"
+                "u"   "hostpro-ui"
+                "ui"  "hostpro-ui"}
+        :scm   :github
+        :user  "crxdev"}
+   "s" {:repos {"a"    "auditorium"
+                "aud"  "auditorium"
+                "ex"   "spiff_ex"
+                "m"    "mcfeely"
+                "mcf"  "mcfeely"
+                "p"    "permiso"
+                "perm" "permiso"
+                "rb"   "spiff_rb"
+                "rn"   "spiff_rn"}
+        :scm   :github
+        :user  "spiffinc"}})
+
+(def repo-aliases
+  (->> user-aliases
+    (map (fn [[_ {:keys [user repos]}]] [user repos]))
+    (into {})))
 
 (def github-base-url "https://github.com")
 
@@ -70,7 +93,8 @@
   [options]
   (binding [*out* *err*]
     (println "Invalid options given:")
-    (println options)))
+    (println options)
+    nil))
 
 (defmethod build-url [:github :user]
   [{:keys [user]}]
@@ -100,12 +124,18 @@
   "Fetches the aliased user (if present) and updates the :user and :scm keys.
   Will not overwrite the incoming :scm key if present."
   [options]
-  (if-let [aliased-user (get aliased-users (:user options))]
+  (if-let [aliased-user (get user-aliases (:user options))]
     (cond-> options
       (:user aliased-user)   (assoc :user (:user aliased-user))
       (and
         (not (provider? (:scm options)))
         (:scm aliased-user)) (assoc :scm (:scm aliased-user)))
+    options))
+
+(defn- update-repo-from-user-aliases
+  [{:keys [user repo] :as options}]
+  (if-let [full-repo (get-in repo-aliases [user repo])]
+    (assoc options :repo full-repo)
     options))
 
 (defn- parse-from-args
@@ -124,13 +154,19 @@
   (let [url (-> options
               (parse-from-args arguments)
               (update-user-from-alias)
+              (update-repo-from-user-aliases)
               (build-url))]
-    (when url
-      (println (format "Opening %s" url))
-      (let [{:keys [exit out err]} (shell/sh "open" url)]
-        (when (not-blank? out) (println out))
-        (when (not-blank? err) (stderr err))
-        (System/exit exit)))))
+    (cond
+      (:dry options)
+      (println (format "[DRY] Goto URL %s" url))
+
+      (not (nil? url))
+      (do
+        (println (format "Opening %s" url))
+        (let [{:keys [exit out err]} (shell/sh "open" url)]
+          (when (not-blank? out) (println out))
+          (when (not-blank? err) (stderr err))
+          (System/exit exit))))))
 
 (defmethod task :help
   [{:keys [errors summary]}]
@@ -139,6 +175,8 @@
 
 Usage:
   goto_scm -h
+  goto_scm -y ...                    # Print URL and exit
+  goto-scm -d ...                    # Print Debug info while executing
   goto_scm -u foo                    # navigate to https://github.com/foo
   goto_scm -u foo -s gitlab          # navigate to https://gitlab.com/foo
   goto_scm -u foo -r bar             # navigate to https://github.com/foo/bar

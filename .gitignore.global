@@ -103,7 +103,7 @@ tags
 # Markdown (vmd)
 *.temp
 # Other
-cache/
+# cache/
 .elixir_ls/
 node_modules/
 # clojure
