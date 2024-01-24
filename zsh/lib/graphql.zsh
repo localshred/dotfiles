@@ -51,6 +51,7 @@ function print_graph() {
 
   curl \
     "$graphql_host" \
+    -v \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
     --compressed \
@@ -64,6 +65,7 @@ function print_graph() {
 
   errors=$(jq .errors "$result_file")
   if [[ "$errors" != "null" ]]; then
+    print_error "Failed to parse file, see ${result_file} for raw results"
     print_error $errors
     return 4
   fi

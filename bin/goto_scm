@@ -58,15 +58,25 @@
                 "ui"  "hostpro-ui"}
         :scm   :github
         :user  "crxdev"}
-   "s" {:repos {"a"    "auditorium"
-                "aud"  "auditorium"
-                "ex"   "spiff_ex"
-                "m"    "mcfeely"
-                "mcf"  "mcfeely"
-                "p"    "permiso"
-                "perm" "permiso"
-                "rb"   "spiff_rb"
-                "rn"   "spiff_rn"}
+   "s" {:repos {"a"     "auditorium"
+                "aud"   "auditorium"
+                "b"     "biff"
+                "e"     "spiff_ex"
+                "ex"    "spiff_ex"
+                "m"     "mcfeely"
+                "mcf"   "mcfeely"
+                "p"     "permiso"
+                "perm"  "permiso"
+                "r"     "spiff_React"
+                "react" "spiff_react"
+                "sdke"  "spiff_sdk_elixir"
+                "sdkex" "spiff_sdk_elixir"
+                "sdkr"  "spiff_sdk_ruby"
+                "sdkrb" "spiff_sdk_ruby"
+                "sdkt"  "spiff_sdk_ts"
+                "sdkts" "spiff_sdk_ts"
+                "rb"    "spiff_rb"
+                "rn"    "spiff_rn"}
         :scm   :github
         :user  "spiffinc"}})
 

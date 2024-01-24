@@ -4,6 +4,29 @@ alias git='hub'
 alias g='git'
 alias gti='git'
 
+# gbm == git branch master/main
+# Checkout master or main on a git repo
+function gbm() {
+  if [[ ! -d .git ]]; then
+    echo "Not in a git repo"
+    return
+  fi
+
+  git branch | grep -E "\* (main|master)" > /dev/null
+  on_main_exit=$?
+  if [[ $on_main_exit -eq 0 ]]; then
+    return
+  fi
+
+  git branch -r | grep origin/main
+  repo_uses_main_exit=$?
+  if [[ $repo_uses_main_exit -eq 0 ]]; then
+    git checkout main
+  else
+    git checkout master
+  fi
+}
+
 function pgpkeygen() {
   echo "Generating your pgp key..."
   keybase login

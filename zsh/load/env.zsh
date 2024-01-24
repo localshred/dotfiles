@@ -13,7 +13,9 @@ if hash go 2> /dev/null; then
   export GOVERSION=$(go version | awk -Fgo '{print $3}' | awk '{print $1}')
 fi
 export GPG_TTY=$(tty)
+# export JAVA_HOME=/opt/homebrew/Caskroom/zulu17/17.0.9,17.46.19 # $(/usr/libexec/java_home)
 export JAVA_HOME=$(/usr/libexec/java_home)
+export ANDROID_HOME=$HOME/Library/Android/sdk
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8

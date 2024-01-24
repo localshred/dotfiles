@@ -22,5 +22,11 @@ PATH=$PATH:$HOME/.pyenv/bin
 PATH=$PATH:$HOME/Library/Python/3.8/bin
 PATH=$PATH:/usr/local/opt/mysql-client/bin
 PATH=$PATH:/Applications/Docker.app/Contents/Resources/bin
+
+if [[ -d "$ANDROID_HOME" ]]; then
+    PATH=$PATH:$ANDROID_HOME/emulator
+    PATH=$PATH:$ANDROID_HOME/platform-tools
+fi
+
 export PATH
 
