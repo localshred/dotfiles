@@ -48,9 +48,9 @@
                         :repo "tabfugnic/asdf.el"
                         :files ("asdf.el")))
 (package! aggressive-indent)
-(package! copilot :recipe (:host github
-                           :repo "zerolfx/copilot.el"
-                           :files ("*.el" "dist")))
+;; (package! copilot :recipe (:host github
+;;                            :repo "zerolfx/copilot.el"
+;;                            :files ("*.el" "dist")))
 (package! docker)
 (package! docker-compose-mode)
 (package! dockerfile-mode)
