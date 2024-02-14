@@ -14,6 +14,7 @@ PATH=$PATH:/usr/sbin
 PATH=$PATH:/sbin
 PATH=$PATH:/usr/X11/bin
 PATH=$PATH:$CODE/src/utilities/ephemer/bin
+PATH=$PATH:$CODE/lib/google-cloud-sdk/bin
 PATH=$PATH:$HOME/node_modules/.bin
 PATH=$PATH:$HOME/.yarn/bin
 PATH=$PATH:/usr/local/opt/go/libexec/bin

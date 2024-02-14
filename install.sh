@@ -245,20 +245,20 @@ install_brew() {
   print_info "Installing brew taps, casks, and bottles from Brewfile..."
   brew bundle install --file Brewfile
 
-  # print_info "Tapping kegs..."
-  # for keg in $brew_kegs; do
-  #   run_command "brew tap $keg"
-  # done
+  print_info "Tapping kegs..."
+  for keg in $brew_kegs; do
+    run_command "brew tap $keg"
+  done
 
-  # print_info "Installing casks..."
-  # for cask in $brew_casks; do
-  #   run_command "brew install --cask $cask"
-  # done
+  print_info "Installing casks..."
+  for cask in $brew_casks; do
+    run_command "brew install --cask $cask"
+  done
 
-  # print_info "Installing bottles..."
-  # for bottle in $brew_bottles; do
-  #   run_command "brew install $bottle"
-  # done
+  print_info "Installing bottles..."
+  for bottle in $brew_bottles; do
+    run_command "brew install $bottle"
+  done
 }
 
 install_vim_bundles() {
@@ -297,5 +297,10 @@ uninstall() {
 
 case "$1" in
   uninstall) uninstall ;;
+  files) install_files ;;
+  dirs) install_dirs ;;
+  vim) install_vim_biundles ;;
+  brew) install_brew ;;
+  other) install_non_brew_libs ;;
   *) install ;;
 esac

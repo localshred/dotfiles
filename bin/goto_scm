@@ -1,6 +1,6 @@
 #!/usr/bin/env bb
 
-(ns goto_scm
+(ns goto-scm
   (:require
    [clojure.java.shell :as shell]
    [clojure.string :as string]

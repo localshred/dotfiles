@@ -7,7 +7,7 @@
  display-line-numbers-type t ;; For relative line numbers, set this to `relative'.
  doom-font (font-spec :family "Fira Code" :size 16)
  doom-theme 'doom-one
- org-directory "~/org/"
+ org-directory "~/code/org/"
  user-full-name "BJ Neilsen"
  user-mail-address "bj.neilsen@gmail.com"
  )

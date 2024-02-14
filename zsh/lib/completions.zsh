@@ -41,5 +41,7 @@ __load_completion() {
     zstyle ':completion:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
     zstyle ':completion:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm -w -w"
 
+    if -f $CODE/lib/google-cloud-sdk/completion.zsh.inc ; then
+      source $CODE/lib/google-cloud-sdk/completion.zsh.inc
+    fi
 }
-
