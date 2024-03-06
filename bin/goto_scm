@@ -37,7 +37,7 @@
    ["-s" "--scm" "SCM Provider. Currently supported providers: github"
     :parse-fn keyword
     :validate [provider? (format "Invalid SCM provider. Should be one of: %s"
-                           (string/join ", " (map name provider?)))]]
+                                 (string/join ", " (map name provider?)))]]
    ["-d" "--debug" "Enable debug logging"]
    ["-y" "--dry" "Debug and exit without opening the URL"]
    ["-h" "--help" "Print this help text"]])
@@ -82,10 +82,14 @@
 
 (def repo-aliases
   (->> user-aliases
-    (map (fn [[_ {:keys [user repos]}]] [user repos]))
-    (into {})))
+       (map (fn [[_ {:keys [user repos]}]] [user repos]))
+       (into {})))
 
-(def github-base-url "https://github.com")
+(defmulti scm-host :scm)
+
+(defmethod scm-host :github
+  [options]
+  (get-in options [:user :host] "https://github.com"))
 
 (defmulti build-url
   (fn [{:keys [scm user repo issues pull-requests number]
@@ -93,11 +97,11 @@
     (cond
       (and issues number)        [scm :issue]
       (and pull-requests number) [scm :pull]
-      issues                [scm :issues]
-      pull-requests         [scm :pulls]
-      repo                  [scm :repo]
-      user                  [scm :user]
-      :else                 :invalid-url)))
+      issues                     [scm :issues]
+      pull-requests              [scm :pulls]
+      repo                       [scm :repo]
+      user                       [scm :user]
+      :else                      :invalid-url)))
 
 (defmethod build-url :invalid-url
   [options]
@@ -107,28 +111,28 @@
     nil))
 
 (defmethod build-url [:github :user]
-  [{:keys [user]}]
-  (format "%s/%s" github-base-url user))
+  [{:keys [user] :as opts}]
+  (format "%s/%s" (scm-host opts) (:user user)))
 
 (defmethod build-url [:github :repo]
-  [{:keys [user repo]}]
-  (format "%s/%s/%s" github-base-url user repo))
+  [{:keys [user repo] :as opts}]
+  (format "%s/%s/%s" (scm-host opts) (:user user) repo))
 
 (defmethod build-url [:github :issues]
-  [{:keys [user repo]}]
-  (format "%s/%s/%s/issues" github-base-url user repo))
+  [{:keys [user repo] :as opts}]
+  (format "%s/%s/%s/issues" (scm-host opts) (:user user) repo))
 
 (defmethod build-url [:github :issue]
-  [{:keys [user repo number]}]
-  (format "%s/%s/%s/issues/%d" github-base-url user repo number))
+  [{:keys [user repo number] :as opts}]
+  (format "%s/%s/%s/issues/%d" (scm-host opts) (:user user) repo number))
 
 (defmethod build-url [:github :pulls]
-  [{:keys [user repo]}]
-  (format "%s/%s/%s/pulls" github-base-url user repo))
+  [{:keys [user repo] :as opts}]
+  (format "%s/%s/%s/pulls" (scm-host opts) (:user user) repo))
 
 (defmethod build-url [:github :pull]
-  [{:keys [user repo number]}]
-  (format "%s/%s/%s/pull/%d" github-base-url user repo number))
+  [{:keys [user repo number] :as opts}]
+  (format "%s/%s/%s/pull/%d" (scm-host opts) (:user user) repo number))
 
 (defn- update-user-from-alias
   "Fetches the aliased user (if present) and updates the :user and :scm keys.
@@ -136,15 +140,15 @@
   [options]
   (if-let [aliased-user (get user-aliases (:user options))]
     (cond-> options
-      (:user aliased-user)   (assoc :user (:user aliased-user))
+      (:user aliased-user)   (assoc :user aliased-user)
       (and
-        (not (provider? (:scm options)))
-        (:scm aliased-user)) (assoc :scm (:scm aliased-user)))
+       (not (provider? (:scm options)))
+       (:scm aliased-user)) (assoc :scm (:scm aliased-user)))
     options))
 
 (defn- update-repo-from-user-aliases
   [{:keys [user repo] :as options}]
-  (if-let [full-repo (get-in repo-aliases [user repo])]
+  (if-let [full-repo (get-in repo-aliases [(:user user) repo])]
     (assoc options :repo full-repo)
     options))
 
@@ -162,10 +166,10 @@
   (when (:debug options)
     (stderr cli-parsed))
   (let [url (-> options
-              (parse-from-args arguments)
-              (update-user-from-alias)
-              (update-repo-from-user-aliases)
-              (build-url))]
+                (parse-from-args arguments)
+                (update-user-from-alias)
+                (update-repo-from-user-aliases)
+                (build-url))]
     (cond
       (:dry options)
       (println (format "[DRY] Goto URL %s" url))
@@ -186,7 +190,7 @@
 Usage:
   goto_scm -h
   goto_scm -y ...                    # Print URL and exit
-  goto-scm -d ...                    # Print Debug info while executing
+  goto_scm -d ...                    # Print Debug info while executing
   goto_scm -u foo                    # navigate to https://github.com/foo
   goto_scm -u foo -s gitlab          # navigate to https://gitlab.com/foo
   goto_scm -u foo -r bar             # navigate to https://github.com/foo/bar
