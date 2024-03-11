@@ -2,6 +2,8 @@
 
 (ns goto-scm
   (:require
+   [cheshire.core :as json]
+   [clojure.java.io :as io]
    [clojure.java.shell :as shell]
    [clojure.string :as string]
    [clojure.tools.cli :as cli]))
@@ -23,7 +25,7 @@
   (not (string/blank? s)))
 
 (def provider?
-  #{:github})
+  #{"github"})
 
 (def cli-opts
   [["-u" "--user USER" "User or org to open"
@@ -48,52 +50,39 @@
                    (seq errors)                    :help
                    :else                           :goto-scm)))
 
+;; {
+;;   "l": {
+;;     "repos": { "d": "dotfiles" },
+;;     "scm": "github",
+;;     "host": "https://some.other.github.com", # optional, defaults to github.com
+;;     "user": "localshred"
+;;   },
+;; }
 (def user-aliases
-  {"l" {:repos {"d" "dotfiles"}
-        :scm   :github
-        :user  "localshred"}
-   "c" {:repos {"a"   "hostpro-api"
-                "api" "hostpro-api"
-                "u"   "hostpro-ui"
-                "ui"  "hostpro-ui"}
-        :scm   :github
-        :user  "crxdev"}
-   "s" {:repos {"a"     "auditorium"
-                "aud"   "auditorium"
-                "b"     "biff"
-                "e"     "spiff_ex"
-                "ex"    "spiff_ex"
-                "m"     "mcfeely"
-                "mcf"   "mcfeely"
-                "p"     "permiso"
-                "perm"  "permiso"
-                "r"     "spiff_React"
-                "react" "spiff_react"
-                "sdke"  "spiff_sdk_elixir"
-                "sdkex" "spiff_sdk_elixir"
-                "sdkr"  "spiff_sdk_ruby"
-                "sdkrb" "spiff_sdk_ruby"
-                "sdkt"  "spiff_sdk_ts"
-                "sdkts" "spiff_sdk_ts"
-                "rb"    "spiff_rb"
-                "rn"    "spiff_rn"}
-        :scm   :github
-        :user  "spiffinc"}})
+  (-> "/Users/bneilsen/code/src/utilities/dotfiles/.goto_scmrc.gitignore.json"
+    (io/reader)
+    (json/parse-stream true)))
 
 (def repo-aliases
   (->> user-aliases
-       (map (fn [[_ {:keys [user repos]}]] [user repos]))
-       (into {})))
+    (map (fn [[_ {:keys [user repos]}]] [user repos]))
+    (into {})))
 
 (defmulti scm-host :scm)
 
-(defmethod scm-host :github
+(defmethod scm-host "github"
   [options]
   (get-in options [:user :host] "https://github.com"))
 
+(defmethod scm-host :default
+  [options]
+  (when (:debug options)
+    (stderr repo-aliases))
+  "https://github.com")
+
 (defmulti build-url
   (fn [{:keys [scm user repo issues pull-requests number]
-        :or   {scm :github}}]
+        :or   {scm "github"}}]
     (cond
       (and issues number)        [scm :issue]
       (and pull-requests number) [scm :pull]
@@ -110,27 +99,27 @@
     (println options)
     nil))
 
-(defmethod build-url [:github :user]
+(defmethod build-url ["github" :user]
   [{:keys [user] :as opts}]
   (format "%s/%s" (scm-host opts) (:user user)))
 
-(defmethod build-url [:github :repo]
+(defmethod build-url ["github" :repo]
   [{:keys [user repo] :as opts}]
   (format "%s/%s/%s" (scm-host opts) (:user user) repo))
 
-(defmethod build-url [:github :issues]
+(defmethod build-url ["github" :issues]
   [{:keys [user repo] :as opts}]
   (format "%s/%s/%s/issues" (scm-host opts) (:user user) repo))
 
-(defmethod build-url [:github :issue]
+(defmethod build-url ["github" :issue]
   [{:keys [user repo number] :as opts}]
   (format "%s/%s/%s/issues/%d" (scm-host opts) (:user user) repo number))
 
-(defmethod build-url [:github :pulls]
+(defmethod build-url ["github" :pulls]
   [{:keys [user repo] :as opts}]
   (format "%s/%s/%s/pulls" (scm-host opts) (:user user) repo))
 
-(defmethod build-url [:github :pull]
+(defmethod build-url ["github" :pull]
   [{:keys [user repo number] :as opts}]
   (format "%s/%s/%s/pull/%d" (scm-host opts) (:user user) repo number))
 
@@ -142,8 +131,8 @@
     (cond-> options
       (:user aliased-user)   (assoc :user aliased-user)
       (and
-       (not (provider? (:scm options)))
-       (:scm aliased-user)) (assoc :scm (:scm aliased-user)))
+        (not (provider? (:scm options)))
+        (:scm aliased-user)) (assoc :scm (:scm aliased-user)))
     options))
 
 (defn- update-repo-from-user-aliases
@@ -156,7 +145,7 @@
   [options arguments]
   (let [[user repo number] (string/split (string/join " " arguments) #"[\s\/#]+")]
     (cond-> options
-      (some? user)     (assoc :user user)
+      (some? user)     (assoc :user (keyword user))
       (some? repo)     (assoc :repo repo)
       (some? number)   (assoc :number (Integer/parseInt number) :issues (not (:pull-requests options)))
       (:debug options) (tap))))

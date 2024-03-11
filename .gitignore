@@ -1,3 +1,2 @@
 # Any lib file that we don't want included
-zsh/lib/*.gitignore.zsh
-
+*.gitignore.*
