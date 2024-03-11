@@ -91,7 +91,7 @@ diff-so-fancy
 difftastic
 direnv
 elixir
-\"emacs-plus@28 --with-native-comp --without-cocoa\"
+\"emacs-plus --with-native-comp --without-cocoa\"
 exercism
 fd
 fortune
