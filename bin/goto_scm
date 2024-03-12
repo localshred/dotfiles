@@ -127,6 +127,8 @@
   "Fetches the aliased user (if present) and updates the :user and :scm keys.
   Will not overwrite the incoming :scm key if present."
   [options]
+  (when (:debug options)
+    (stderr {:user-aliases user-aliases}))
   (if-let [aliased-user (get user-aliases (:user options))]
     (cond-> options
       (:user aliased-user)   (assoc :user aliased-user)
@@ -137,6 +139,8 @@
 
 (defn- update-repo-from-user-aliases
   [{:keys [user repo] :as options}]
+  (when (:debug options)
+    (stderr {:repo-aliases repo-aliases}))
   (if-let [full-repo (get-in repo-aliases [(:user user) repo])]
     (assoc options :repo full-repo)
     options))
@@ -146,7 +150,7 @@
   (let [[user repo number] (string/split (string/join " " arguments) #"[\s\/#]+")]
     (cond-> options
       (some? user)     (assoc :user (keyword user))
-      (some? repo)     (assoc :repo repo)
+      (some? repo)     (assoc :repo (keyword repo))
       (some? number)   (assoc :number (Integer/parseInt number) :issues (not (:pull-requests options)))
       (:debug options) (tap))))
 
