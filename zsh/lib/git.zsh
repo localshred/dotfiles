@@ -4,6 +4,12 @@ alias git='hub'
 alias g='git'
 alias gti='git'
 
+export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+function ssh-agent-add() {
+  vim ~/.config/1Password/ssh/agent.toml
+}
+
 # gbm == git branch master/main
 # Checkout master or main on a git repo
 function gbm() {
