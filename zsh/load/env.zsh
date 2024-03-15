@@ -4,8 +4,9 @@ function zshenv() { vim $DOTFILES/zsh/load/env.zsh }
 
 ## export CODE, DOTFILES from .zshrc
 
-export ECTO_EDITOR=emacs
-export EDITOR=emacs
+export ECTO_EDITOR="emacsclient -t"
+export EDITOR="emacsclient -t"
+export VISUAL="emacsclient -c -a /opt/homebrew/bin/emacs"
 export ERL_AFLAGS="-kernel shell_history enabled"
 export GOBIN=$GOPATH/bin
 export GOPATH=$CODE/src/go

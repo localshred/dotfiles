@@ -2,7 +2,8 @@
 
 listeners() {
     port=$1
-    lsof -t -i :$port
+    pid=$(lsof -t -i :$port)
+    ps aux | grep "$pid"
 }
 
 portkill() {
