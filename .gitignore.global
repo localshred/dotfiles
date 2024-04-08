@@ -96,6 +96,7 @@ Sessionx.vim
 # Temporary
 .netrwhist
 *~
+dump.rdb
 # Auto-generated tag files
 tags
 # Persistent undo
