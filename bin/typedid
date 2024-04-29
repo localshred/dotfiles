@@ -1,0 +1,21 @@
+#!/usr/bin/env bash -e
+
+case "$1" in
+    "decode" | "d" | "dec")
+        val=$2
+        decoded=$(echo "$val" | base64 --decode | sed 's/-/ /')
+        echo "$decoded"
+        ;;
+
+    "encode" | "e" | "enc")
+        type=$2
+        id=$3
+        echo "$type-$id" | base64
+        ;;
+
+    *)
+        echo "Unknown command '$1'"
+        echo "Valid commands are 'decode' and 'encode'"
+        ;;
+
+esac
