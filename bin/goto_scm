@@ -141,9 +141,9 @@
   [{:keys [user repo] :as options}]
   (when (:debug options)
     (stderr {:repo-aliases repo-aliases}))
-  (if-let [full-repo (get-in repo-aliases [(:user user) repo])]
-    (assoc options :repo full-repo)
-    options))
+  (if-let [aliased-repo (get-in repo-aliases [(:user user) repo])]
+    (assoc options :repo aliased-repo)
+    (update options :repo name)))
 
 (defn- parse-from-args
   [options arguments]

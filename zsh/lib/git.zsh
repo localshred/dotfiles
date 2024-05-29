@@ -106,14 +106,7 @@ function reposyncdirs()
   for dir in $(ls -d */); do
     echo "${color_yellow}>>> Dir: $dir${color_reset}"
     pushd $dir > /dev/null
-
-    has_main=$(git branch -a | grep origin/main)
-    if [[ has_main != "" ]]; then
-      git checkout main
-    else
-      git checkout master
-    fi
-
+    gbm
     reposync
     popd > /dev/null
     echo "${color_green}>>> Done${color_reset}"
