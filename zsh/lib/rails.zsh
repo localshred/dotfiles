@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 
+alias bundle='nocorrect bundle'
 alias bi='bundle install'
 alias bo='bundle open'
 alias bs='bundle show'

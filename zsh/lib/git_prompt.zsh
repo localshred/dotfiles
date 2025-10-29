@@ -1,9 +1,29 @@
 #!/usr/bin/env zsh
 
+ZSH_THEME_GIT_PROMPT_PREFIX=" \uf418 "
+ZSH_THEME_GIT_PROMPT_CLEAN=""
+ZSH_THEME_GIT_PROMPT_DIRTY=" \ueb43"
+ZSH_THEME_GIT_PROMPT_SUFFIX=""
+
+function git_branch_name() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+  ref="${ref#refs/heads/}"
+  echo "$ref"
+}
+
 # get the name of the branch we are on
 function git_prompt_info() {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-  echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+  ref="${ref#refs/heads/}"
+
+  case "$ref" in
+  moratorium | falcon-release) branch_color="yellow" ;;
+  master | main | falcon-main) branch_color="red" ;;
+  falcon-dev)                  branch_color="blue" ;;
+  *)                           branch_color="blue" ;;
+  esac
+
+  echo "%{$fg[$branch_color]%}$ZSH_THEME_GIT_PROMPT_PREFIX${ref}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX%{$reset_color%}"
 }
 
 
@@ -14,7 +34,7 @@ parse_git_dirty() {
         SUBMODULE_SYNTAX="--ignore-submodules=dirty"
   fi
   if [[ -n $(git status -s ${SUBMODULE_SYNTAX}  2> /dev/null) ]]; then
-    echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
+    echo "%{$fg[red]%}$ZSH_THEME_GIT_PROMPT_DIRTY%{$reset_color%}"
   else
     echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
   fi

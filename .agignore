@@ -8,3 +8,5 @@ doc/
 node_modules/
 priv/static/
 vendor/
+coverage/
+test-results/

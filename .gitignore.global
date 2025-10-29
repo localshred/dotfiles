@@ -42,7 +42,7 @@ logs
 log
 tmp
 *.tmp
-.envrc
+.envrc*
 # Editors #
 ###########
 # Emacs #

@@ -34,12 +34,12 @@
        ;;indent-guides     ; highlighted indent columns
        modeline          ; snazzy, Atom-inspired modeline, plus API
        nav-flash         ; blink the current line after jumping
-       ;; neotree           ; a project drawer, like NERDTree for vim
+       neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
-       ; ligatures
+                                        ; ligatures
        tabs              ; an tab bar for Emacs
-       treemacs          ; a project drawer, like neotree but cooler
+       ;; treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
        ;;vc-gutter         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
@@ -76,7 +76,7 @@
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
-       spell               ; tasing you for misspelling mispelling
+       (spell +aspell)     ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistaery you make
 
        :os
@@ -100,6 +100,7 @@
        ;;prodigy           ; FIXME managing external services & code builders
        ;;rgb               ; creating color strings
        terraform           ; infrastructure as code
+       tree-sitter
        ;;tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
 
@@ -127,7 +128,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
        (java +meghanada)   ; the poster child for carpal tunnel syndrome
-       (javascript +lsp)          ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript +lsp +tree-sitter)          ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;(kotlin +lsp)            ; a better, slicker Java(Script)
        ;;latex             ; writing papers in Emacs has never been so fun
@@ -149,14 +150,14 @@
        ;;racket            ; a DSL for DSLs
        rest                ; Emacs as a REST client
        ;;rst               ; ReST in peace
-       (ruby +rails +lsp)       ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+       (ruby +rails)       ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        ;;rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        ;;scheme            ; a fully conniving family of lisps
-       (sh +lsp)                  ; she sells {ba,z,fi}sh shells on the C xor
+       (sh +lsp)           ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
-       ;;swift             ; who asked for emoji variables?
+       swift               ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
        web                 ; the tubes
 
@@ -169,7 +170,7 @@
        calendar
        ;;irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
-       twitter           ; twitter client https://twitter.com/vnought
+       ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config
        ;;literate

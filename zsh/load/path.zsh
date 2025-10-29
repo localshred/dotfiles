@@ -10,6 +10,7 @@ PATH=$PATH:/usr/bin
 PATH=$PATH:/bin
 PATH=$PATH:$HOME/bin
 PATH=$PATH:$HOME/.config/emacs/bin
+PATH=$PATH:/Library/TeX/texbin
 PATH=$PATH:/usr/sbin
 PATH=$PATH:/sbin
 PATH=$PATH:/usr/X11/bin
@@ -21,6 +22,7 @@ PATH=$PATH:/usr/local/opt/go/libexec/bin
 PATH=$PATH:$GOBIN
 PATH=$PATH:$HOME/.pyenv/bin
 PATH=$PATH:$HOME/Library/Python/3.8/bin
+PATH=$PATH:$HOME/.local/bin
 PATH=$PATH:/usr/local/opt/mysql-client/bin
 PATH=$PATH:/Applications/Docker.app/Contents/Resources/bin
 

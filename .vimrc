@@ -283,6 +283,10 @@ cnoremap Wa wa
 cnoremap WA wa
 cnoremap Wq wq
 cnoremap WQ wq
+cnoreabbrev Wq wq
+cnoreabbrev WQ wq
+cnoreabbrev W w
+cnoreabbrev Q q
 imap <down> <nop>
 imap <left> <nop>
 imap <right> <nop>

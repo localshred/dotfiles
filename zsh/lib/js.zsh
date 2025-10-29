@@ -16,7 +16,7 @@ function npmver() {
 
 function js_prompt() {
   if [[ -s package.json ]]; then
-    version=$(asdf current nodejs | awk '{print $2}')
+    version=$(asdf current nodejs | grep nodejs | awk '{print $2}')
     echo "js:${version}"
   fi
 }

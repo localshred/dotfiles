@@ -4,26 +4,30 @@ function zshenv() { vim $DOTFILES/zsh/load/env.zsh }
 
 ## export CODE, DOTFILES from .zshrc
 
-export ECTO_EDITOR="emacsclient -t"
+export ANDROID_HOME=$HOME/Library/Android/sdk
 export EDITOR="emacsclient -t"
-export VISUAL="emacsclient -c -a /opt/homebrew/bin/emacs"
+export ECTO_EDITOR=$EDITOR
 export ERL_AFLAGS="-kernel shell_history enabled"
-export GOBIN=$GOPATH/bin
 export GOPATH=$CODE/src/go
+export GOBIN=$GOPATH/bin
 if hash go 2> /dev/null; then
   export GOVERSION=$(go version | awk -Fgo '{print $3}' | awk '{print $1}')
 fi
 export GPG_TTY=$(tty)
-# export JAVA_HOME=/opt/homebrew/Caskroom/zulu17/17.0.9,17.46.19 # $(/usr/libexec/java_home)
-export JAVA_HOME=$(/usr/libexec/java_home)
-export ANDROID_HOME=$HOME/Library/Android/sdk
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export REACT_EDITOR=emacs
+export MANPAGER='nvim +Man!'
+export REACT_EDITOR=$EDITOR
+export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 export TERM=xterm-24bit
 export VISIONBOARD=~/Dropbox/BJ/vision/vision.md
+export VISUAL="emacsclient -c -a /opt/homebrew/bin/emacs"
+
+# Salesforce things
+export NODE_EXTRA_CA_CERTS=~/.sfdc-c360-ai-suite/conf/npm-sfdc-certs.pem
 
 cdpath=(~ ~/Documents ~/Desktop
-  $CODE $CODE/src $CODE/src/localshred $CODE/src/crx $CODE/src/utilities
-  $CODE/src/spiff $CODE/src/nuid $GOPATH/src/github.com $GOPATH/src/gitlab.com)
+  $CODE $CODE/src $CODE/src/spiff $CODE/src/localshred $CODE/src/crx $CODE/src/utilities
+  $GOPATH/src/github.com $GOPATH/src/gitlab.com)

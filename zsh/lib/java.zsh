@@ -1,10 +1,10 @@
 function clojure_prompt() {
   if [[ -s deps.edn || -s project.clj ]]; then
     version=""
-    if command -v clj > /dev/null; then
+    if command -v clj >/dev/null; then
       version=$(clj --version | awk '{ print $4 }')
     else
-      version=$(asdf current clojure | awk '{print $2}')
+      version=$(asdf current clojure | grep clojure | awk '{print $2}')
     fi
     if [ -n "$version" ]; then
       echo "clj:$version"

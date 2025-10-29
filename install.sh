@@ -13,6 +13,7 @@ dirs="
 .vim
 .vim/autload
 .vim/bundle
+.config/doom
 "
 
 files="
@@ -91,10 +92,11 @@ diff-so-fancy
 difftastic
 direnv
 elixir
-\"emacs-plus --with-native-comp --without-cocoa\"
+\"emacs-plus@29 --with-native-comp --without-cocoa\"
 exercism
 fd
 fortune
+fzf
 git-delta
 glib
 gnupg
@@ -202,7 +204,6 @@ install_files() {
 }
 
 install_non_brew_libs() {
-  echo "WTF"
   if ! hash ~/.config/emacs/bin/doom 2>/dev/null; then
     print_info "Installing Doom Emacs (https://github.com/doomemacs/doomemacs#install)..."
     run_command "git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs"
@@ -236,7 +237,7 @@ install_brew() {
     print_info "Installing brew..."
     run_command '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
     if [[ -d /opt/homebrew ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+      eval "$(/opt/homebrew/bin/brew shellenv)"
     else
       eval "$(brew shellenv)"
     fi
@@ -262,8 +263,10 @@ install_brew() {
 }
 
 install_vim_bundles() {
-  print_info "Linking neovim config"
-  run_command "ln -s $dotfiles/.vim ~/.config/nvim"
+  if [[ ! -d ~/.config/nvim ]]; then
+    print_info "Linking neovim config"
+    run_command "ln -s $dotfiles/.vim/ ~/.config/nvim"
+  fi
 
   print_info "Installing vim bundles"
   for repo_url in $(awk '{print $2}' "$DOTFILES/data/vim-plugins.txt"); do
@@ -296,11 +299,11 @@ uninstall() {
 }
 
 case "$1" in
-  uninstall) uninstall ;;
-  files) install_files ;;
-  dirs) install_dirs ;;
-  vim) install_vim_biundles ;;
-  brew) install_brew ;;
-  other) install_non_brew_libs ;;
-  *) install ;;
+uninstall) uninstall ;;
+files) install_files ;;
+dirs) install_dirs ;;
+vim) install_vim_bundles ;;
+brew) install_brew ;;
+other) install_non_brew_libs ;;
+*) install ;;
 esac

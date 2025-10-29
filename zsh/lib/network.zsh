@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+alias speedtest='networkQuality -v'
+
 listeners() {
     port=$1
     pid=$(lsof -t -i :$port)

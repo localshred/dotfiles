@@ -7,6 +7,8 @@ alias history='fc -l 1'
 alias la='ls -lAh'
 alias ll='ls -l'
 alias lst="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
+alias slack='killall Slack;sleep 3;open /Applications/Slack.app --args --force-color-profile=srgb'
+
 alias tree1='tree -L 1'
 alias tree2='tree -L 2'
 alias tree3='tree -L 3'
@@ -163,6 +165,7 @@ function bigfiles() {
 }
 
 
+color_blue='\033[0;36m'
 color_orange='\033[0;35m'
 color_red='\033[0;31m'
 color_green='\033[0;32m'
@@ -174,6 +177,10 @@ print_error() {
 }
 
 print_info() {
+  echo -e "${color_blue}==> $*${color_reset}"
+}
+
+print_success() {
   echo -e "${color_green}==> $*${color_reset}"
 }
 
