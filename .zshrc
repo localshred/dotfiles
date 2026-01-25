@@ -1,3 +1,3 @@
-export CODE=~/code
-export DOTFILES=$CODE/src/utilities/dotfiles
-source $DOTFILES/zsh/bootstrap.zsh
+export code=~/code
+export dotfiles=$code/src/utilities/dotfiles
+source "$dotfiles/zsh/bootstrap.zsh"

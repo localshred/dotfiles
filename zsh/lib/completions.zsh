@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-has_brew() { [[ -n ${commands[brew]} ]] }
+has_brew() { [[ -n ${commands[brew]} ]]; }
 
 __load_completion() {
     # http://www.reddit.com/r/commandline/comments/kbeoe/you_can_make_readline_and_bash_much_more_user/
@@ -40,8 +40,4 @@ __load_completion() {
     zstyle ':completion:*:ogg123:*' file-patterns '*.(ogg|OGG):ogg\ files *(-/):directories'
     zstyle ':completion:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
     zstyle ':completion:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm -w -w"
-
-    if [[ -f $CODE/lib/google-cloud-sdk/completion.zsh.inc ]]; then
-      source $CODE/lib/google-cloud-sdk/completion.zsh.inc
-    fi
 }

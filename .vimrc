@@ -46,7 +46,6 @@ set nojoinspaces
 set noshowmode
 set nowrap
 set number
-set pastetoggle=<F5>
 set scrolljump=5
 set scrolloff=5
 set secure

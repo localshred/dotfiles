@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 
-function zshenv() { vim $DOTFILES/zsh/load/env.zsh }
+function zshenv() { vim $dotfiles/zsh/load/env.zsh }
 
-## export CODE, DOTFILES from .zshrc
+## export code, dotfiles from .zshrc
 
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export EDITOR="emacsclient -t"
 export ECTO_EDITOR=$EDITOR
 export ERL_AFLAGS="-kernel shell_history enabled"
-export GOPATH=$CODE/src/go
+export GOPATH=$code/src/go
 export GOBIN=$GOPATH/bin
 if hash go 2> /dev/null; then
   export GOVERSION=$(go version | awk -Fgo '{print $3}' | awk '{print $1}')
@@ -29,5 +29,5 @@ export VISUAL="emacsclient -c -a /opt/homebrew/bin/emacs"
 export NODE_EXTRA_CA_CERTS=~/.sfdc-c360-ai-suite/conf/npm-sfdc-certs.pem
 
 cdpath=(~ ~/Documents ~/Desktop
-  $CODE $CODE/src $CODE/src/spiff $CODE/src/localshred $CODE/src/crx $CODE/src/utilities
+  $code $code/src $code/src/spiff $code/src/localshred $code/src/crx $code/src/utilities
   $GOPATH/src/github.com $GOPATH/src/gitlab.com)

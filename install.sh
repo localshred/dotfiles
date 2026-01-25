@@ -17,6 +17,7 @@ dirs="
 "
 
 files="
+.aprc
 .clojure
 .default-npm-packages
 .doom.d
@@ -25,6 +26,7 @@ files="
 .gitconfig
 .gitignore.global
 .gnupg/pgp-agent.conf
+.irbrc
 .spacemacs
 .tmux.conf
 .vim/autoload
@@ -92,7 +94,7 @@ diff-so-fancy
 difftastic
 direnv
 elixir
-\"emacs-plus@29 --with-native-comp --without-cocoa\"
+\"emacs-plus@30 --without-cocoa\"
 exercism
 fd
 fortune
@@ -204,10 +206,10 @@ install_files() {
 }
 
 install_non_brew_libs() {
-  if ! hash ~/.config/emacs/bin/doom 2>/dev/null; then
+  if ! hash $HOME/.config/emacs/bin/doom 2>/dev/null; then
     print_info "Installing Doom Emacs (https://github.com/doomemacs/doomemacs#install)..."
-    run_command "git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs"
-    run_command "~/.config/emacs/bin/doom install"
+    run_command "git clone --depth 1 https://github.com/doomemacs/doomemacs $HOME/.config/emacs"
+    run_command "$HOME/.config/emacs/bin/doom install"
   fi
 
   if ! hash bb 2>/dev/null; then
@@ -215,9 +217,9 @@ install_non_brew_libs() {
     run_command "bash <(curl -s https://raw.githubusercontent.com/borkdude/babashka/master/install)"
   fi
 
-  # if [ ! -f ~/.terminfo ]; then
+  # if [ ! -f $HOME/.terminfo ]; then
   #   print_info "Building xterm-24 \$SHELL"
-  #   /usr/bin/tic -x -o ~/.terminfo terminfo-24bit.src
+  #   /usr/bin/tic -x -o $HOME/.terminfo terminfo-24bit.src
   # fi
 
   libdir="${HOME}/code/src/lib"
@@ -263,22 +265,22 @@ install_brew() {
 }
 
 install_vim_bundles() {
-  if [[ ! -d ~/.config/nvim ]]; then
+  if [[ ! -d $HOME/.config/nvim ]]; then
     print_info "Linking neovim config"
-    run_command "ln -s $dotfiles/.vim/ ~/.config/nvim"
+    run_command "ln -s $dotfiles/.vim/ $HOME/.config/nvim"
   fi
 
   print_info "Installing vim bundles"
-  for repo_url in $(awk '{print $2}' "$DOTFILES/data/vim-plugins.txt"); do
+  for repo_url in $(awk '{print $2}' "$dotfiles/data/vim-plugins.txt"); do
     repo_name=$(echo "$repo_url" | awk -F/ '{print ($NF)}' | sed 's/\.git$//')
     if [ -d "$HOME/.vim/bundle/$repo_name" ]; then
       print_info "Pulling latest $repo_name from $repo_url..."
-      run_command "pushd ~/.vim/bundle/$repo_name > /dev/null"
+      run_command "pushd $HOME/.vim/bundle/$repo_name > /dev/null"
       run_command "git pull"
       run_command "popd > /dev/null"
     else
       print_info "Cloning $repo_name from $repo_url..."
-      run_command "git clone $repo_url ~/.vim/bundle/$repo_name"
+      run_command "git clone $repo_url $HOME/.vim/bundle/$repo_name"
     fi
   done
 }

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-if [[ -z "$DOTFILES" ]]; then
-  echo '$DOTFILES is empty'
+if [[ -z "$dotfiles" ]]; then
+  echo '$dotfiles is empty'
   exit 1
 fi
 
-cd $DOTFILES
-brew_formulae_file=$DOTFILES/data/brew-formulae.txt
-mkdir -p $DOTFILES/data
+cd $dotfiles
+brew_formulae_file=$dotfiles/data/brew-formulae.txt
+mkdir -p $dotfiles/data
 touch $brew_formulae_file
 brew list --versions | sort > $brew_formulae_file
 

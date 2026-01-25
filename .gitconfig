@@ -9,7 +9,7 @@
   brc         = rev-parse --abbrev-ref HEAD
   brd         = branch -d
   brdf        = branch -D
-  ch          = cherry
+  ch          = cherry -v
   ci          = commit
   cia         = commit -a
   co          = checkout
@@ -24,6 +24,8 @@
   logp        = log --oneline --abbrev-commit --graph --decorate
   ls          = ls-remote .
   mine        = !git log --author=`git config user.email`
+  pu          = push
+  puf         = push -f
   rba         = rebase --abort
   rbc         = rebase --continue
   recent      = log --oneline -10

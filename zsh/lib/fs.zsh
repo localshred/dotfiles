@@ -2,7 +2,7 @@
 
 alias ..='cd ..'
 alias ...='cd ../..'
-alias ag="ag -p $DOTFILES/.agignore"
+alias ag="ag -p $dotfiles/.agignore"
 alias history='fc -l 1'
 alias la='ls -lAh'
 alias ll='ls -l'
@@ -196,4 +196,12 @@ run_command() {
   local command=$@
   print_command "$command"
   eval "$command"
+}
+
+# _trunc - truncate lines with ellipsis if they exceed specified width
+# Usage: some_command | _trunc [width]
+# Default width is 80 characters
+_trunc() {
+  local width=${1:-80}
+  awk -v w="$width" '{print (length($0) > w) ? substr($0,1,w-3) "..." : $0}'
 }
