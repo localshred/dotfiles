@@ -68,11 +68,6 @@ __load_work_dotfiles() {
     source "$dotfiles_work/env.zsh"
   fi
 
-  local work_gitconfig="$dotfiles_work/git/config"
-  if [[ -f "$work_gitconfig" ]]; then
-    ln -sf "$work_gitconfig" ~/.gitconfig-work
-  fi
-
   if [[ -d "$dotfiles_work/zsh/lib" ]]; then
     __load_zsh_libs "$dotfiles_work/zsh/lib"
   fi

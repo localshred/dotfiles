@@ -58,6 +58,15 @@ install() {
   install_vim_bundles
   install_non_brew_libs
   install_global_npm
+  install_work
+}
+
+install_work() {
+  local work_installer="${dotfiles_work:-$HOME/code/src/spiff/dotfiles}/install.sh"
+  if [[ -f "$work_installer" ]]; then
+    print_info "Running work dotfiles installer..."
+    "$work_installer"
+  fi
 }
 
 install_stow() {
@@ -131,5 +140,6 @@ stow) install_stow ;;
 vim) install_vim_bundles ;;
 brew) install_brew ;;
 other) install_non_brew_libs ;;
+work) install_work ;;
 *) install ;;
 esac
