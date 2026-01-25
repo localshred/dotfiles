@@ -1,0 +1,336 @@
+#!/bin/bash
+
+ALERT_IF_IN_NEXT_MINUTES=120
+ALERT_POPUP_BEFORE_SECONDS=65
+NERD_FONT_FREE="󱁕"
+NERD_FONT_MEETING="󰤙"
+
+get_attendees() {
+    attendees=$(
+        icalBuddy \
+            --includeEventProps "attendees" \
+            --propertyOrder "datetime,title" \
+            --noCalendarNames \
+            --dateFormat "%A" \
+            --includeOnlyEventsFromNowOn \
+            --limitItems 1 \
+            --excludeAllDayEvents \
+            --separateByDate \
+            --excludeEndDates \
+            --bullet "" \
+            eventsToday
+    )
+}
+
+parse_attendees() {
+    attendees_array=()
+    for line in $attendees; do
+        attendees_array+=("$line")
+    done
+    number_of_attendees=$((${#attendees_array[@]} - 3))
+}
+
+# Check if we're currently in a meeting based on parsed meeting data
+is_currently_in_meeting() {
+    local start_time="$1"
+    local end_time="$2"
+    local current_minutes start_minutes end_minutes
+
+    current_minutes=$(current_time_minutes)
+    start_minutes=$(time_to_minutes "$start_time")
+    end_minutes=$(time_to_minutes "$end_time")
+
+    if [[ $current_minutes -ge $start_minutes && $current_minutes -lt $end_minutes ]]; then
+        return 0 # true - currently in meeting
+    else
+        return 1 # false - not in meeting
+    fi
+}
+
+# Get all meetings from now on (not just next 1)
+get_all_upcoming_meetings() {
+    all_meetings=$(icalBuddy \
+        --includeEventProps "title,datetime" \
+        --propertyOrder "datetime,title" \
+        --noCalendarNames \
+        --dateFormat "%A" \
+        --includeOnlyEventsFromNowOn \
+        --excludeAllDayEvents \
+        --separateByDate \
+        --bullet "" \
+        eventsToday)
+}
+
+get_next_meeting() {
+    next_meeting=$(icalBuddy \
+        --includeEventProps "title,datetime" \
+        --propertyOrder "datetime,title" \
+        --noCalendarNames \
+        --dateFormat "%A" \
+        --includeOnlyEventsFromNowOn \
+        --limitItems 1 \
+        --excludeAllDayEvents \
+        --separateByDate \
+        --bullet "" \
+        eventsToday)
+}
+
+get_next_next_meeting() {
+    end_timestamp=$(date +"%Y-%m-%d ${end_time}:01 %z")
+    tonight=$(date +"%Y-%m-%d 23:59:00 %z")
+    next_next_meeting=$(
+        icalBuddy \
+            --includeEventProps "title,datetime" \
+            --propertyOrder "datetime,title" \
+            --noCalendarNames \
+            --dateFormat "%A" \
+            --limitItems 1 \
+            --excludeAllDayEvents \
+            --separateByDate \
+            --bullet "" \
+            eventsFrom:"${end_timestamp}" to:"${tonight}"
+    )
+}
+
+# Parse a single meeting result
+parse_result() {
+    array=()
+    for line in $1; do
+        array+=("$line")
+    done
+    time="${array[2]}"
+    end_time="${array[4]}"
+    title="${array[*]:5:30}"
+}
+
+
+# Count meetings at the same time
+count_concurrent_meetings() {
+    local target_time="$1"
+    local meetings_data="$2"
+    local count=0
+
+    # Parse icalBuddy format: look for time lines that match our target
+    while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+
+        # Skip header lines
+        [[ "$line" == "today:" ]] && continue
+        [[ "$line" == *"----"* ]] && continue
+
+        # Check if this is a time line (format: HH:MM - HH:MM)
+        if [[ "$line" =~ ^[0-9]{1,2}:[0-9]{2}[[:space:]]+-[[:space:]]+[0-9]{1,2}:[0-9]{2}$ ]]; then
+            # Extract start time (first part before " - ")
+            local start_time=$(echo "$line" | cut -d' ' -f1)
+            if [[ "$start_time" == "$target_time" ]]; then
+                count=$((count + 1))
+            fi
+        fi
+    done <<< "$meetings_data"
+
+    echo $count
+}
+
+calculate_times() {
+    epoch_meeting=$(date -j -f "%T" "$time:00" +%s)
+    epoch_now=$(date +%s)
+    epoch_diff=$((epoch_meeting - epoch_now))
+    minutes_till_meeting=$((epoch_diff / 60))
+}
+
+tmux_alert_next_event() {
+    tmux display-popup \
+        -S "fg=#eba0ac" \
+        -w50% \
+        -h50% \
+        -d '#{pane_current_path}' \
+        -T "Next Meeting" \
+        icalBuddy \
+        --propertyOrder "datetime,title" \
+        --noCalendarNames \
+        --formatOutput \
+        --includeEventProps "title,datetime,notes,url,attendees" \
+        --includeOnlyEventsFromNowOn \
+        --limitItems 1 \
+        --excludeAllDayEvents \
+        eventsToday
+}
+
+################################################################################
+# ENHANCED ICALBUDDY FUNCTIONS
+# These functions provide enhanced formatting for meeting times with status info
+################################################################################
+
+# Function to convert time to minutes since midnight
+time_to_minutes() {
+    local hour
+    local minute
+    local time_str="$1"
+    hour=$(echo "$time_str" | cut -d':' -f1)
+    minute=$(echo "$time_str" | cut -d':' -f2)
+    echo $((hour * 60 + minute))
+}
+
+# Function to get current time in minutes since midnight
+current_time_minutes() {
+    local now
+    now=$(date +"%H:%M")
+    time_to_minutes "$now"
+}
+
+# Function to format time (convert to hours if > 59 minutes)
+format_time() {
+    local minutes="$1"
+    if [[ $minutes -gt 59 ]]; then
+        local hours=$((minutes / 60))
+        local remaining_minutes=$((minutes % 60))
+        if [[ $remaining_minutes -eq 0 ]]; then
+            echo "${hours}h"
+        else
+            echo "${hours}h${remaining_minutes}m"
+        fi
+    else
+        echo "${minutes}min"
+    fi
+}
+
+# Function to calculate time difference and format status
+format_meeting_status() {
+    local current_minutes
+    local start_minutes
+    local end_minutes
+    local duration
+    local start_time="$1"
+    local end_time="$2"
+    current_minutes=$(current_time_minutes)
+    start_minutes=$(time_to_minutes "$start_time")
+    end_minutes=$(time_to_minutes "$end_time")
+    duration=$((end_minutes - start_minutes))
+
+    if [[ $current_minutes -ge $start_minutes && $current_minutes -lt $end_minutes ]]; then
+        # Meeting is currently happening
+        local remaining=$((end_minutes - current_minutes))
+        echo "[CURRENT, $(format_time $remaining) remaining]"
+    else
+        # Meeting is in the future
+        local until_start=$((start_minutes - current_minutes))
+        echo "[in $(format_time $until_start), $(format_time $duration) long]"
+    fi
+}
+
+# Enhanced function to process icalBuddy output with timing information
+process_icalbuddy_output() {
+    icalBuddy \
+        -iep "title,datetime" \
+        -po "datetime,title" \
+        --excludeAllDayEvents \
+        --noCalendarNames \
+        --includeOnlyEventsFromNowOn \
+        -f \
+        eventsToday | while IFS= read -r line; do
+
+        # Skip empty lines
+        [[ -z "$line" ]] && continue
+
+        # Check if this is a time line (contains bullet after any color codes)
+        if [[ "$line" =~ •[[:space:]] ]]; then
+            # Extract time range (remove color codes and bullet)
+            time_range=$(echo "$line" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/^[[:space:]]*•[[:space:]]*//')
+            start_time=$(echo "$time_range" | cut -d' ' -f1)
+            end_time=$(echo "$time_range" | cut -d' ' -f3)
+
+            # Read the next line for the title
+            read -r title_line
+            event_title=$(echo "$title_line" | sed 's/\x1b\[[0-9;]*m//g' | sed 's/^[[:space:]]*//')
+
+            # Format the status
+            status=$(format_meeting_status "$start_time" "$end_time")
+
+            # Output the formatted line with colors preserved
+            printf "\033[1m•\033[0m \033[33m%s\033[0m \033[96m%s\033[0m " "$time_range" "$event_title"
+
+            # Color the status based on whether it's current or upcoming
+            if [[ "$status" == *"CURRENT"* ]]; then
+                printf "\033[32m%s\033[0m\n" "$status" # Green for current
+            else
+                printf "\033[34m%s\033[0m\n" "$status" # Blue for upcoming
+            fi
+        fi
+    done
+}
+
+################################################################################
+# END ENHANCED ICALBUDDY FUNCTIONS
+################################################################################
+
+tmux_alert_upcoming_events() {
+    tmux display-popup \
+        -S "fg=#eba0ac" \
+        -w50% \
+        -h50% \
+        -d '#{pane_current_path}' \
+        -T "Upcoming Meetings" \
+        calmux nested
+}
+
+print_tmux_status() {
+    if [[ -n "$time" && $minutes_till_meeting -lt $ALERT_IF_IN_NEXT_MINUTES &&
+        $minutes_till_meeting -gt -60 ]]; then
+
+        if [[ $meeting_count_at_time -gt 1 ]]; then
+            # Multiple meetings at the same time
+            echo -n "$NERD_FONT_MEETING $time $meeting_count_at_time meetings are scheduled ($minutes_till_meeting min)"
+        else
+            # Single meeting
+            echo -n "$NERD_FONT_MEETING $time $title ($minutes_till_meeting min)"
+        fi
+    else
+        echo -n "$NERD_FONT_FREE"
+    fi
+
+    if [[ -n "$epoch_diff" && $epoch_diff -gt $ALERT_POPUP_BEFORE_SECONDS && $epoch_diff -lt $ALERT_POPUP_BEFORE_SECONDS+10 ]]; then
+        tmux_alert_next_event
+    fi
+
+}
+
+main() {
+    get_attendees
+    parse_attendees
+
+    # Get the next meeting (original logic)
+    get_next_meeting
+    parse_result "$next_meeting"
+
+    # Check if the current next meeting is actually happening now
+    if [[ -n "$time" && "$time" =~ ^[0-9]{1,2}:[0-9]{2}$ ]] && is_currently_in_meeting "$time" "$end_time"; then
+        # Current meeting is happening, get the next one after it
+        get_next_next_meeting
+        parse_result "$next_next_meeting"
+    fi
+
+    # Calculate times for the meeting we found
+    if [[ -n "$time" ]]; then
+        calculate_times
+
+        # Count concurrent meetings at this time
+        get_all_upcoming_meetings
+        meeting_count_at_time=$(count_concurrent_meetings "$time" "$all_meetings")
+
+        # If meeting has fewer than 2 attendees, try to get the next one
+        if [[ $number_of_attendees -lt 2 ]]; then
+            get_next_next_meeting
+            parse_result "$next_next_meeting"
+            calculate_times
+        fi
+    fi
+
+    print_tmux_status
+}
+
+case "$1" in
+t | today) tmux_alert_upcoming_events ;;
+p | pn | popup_next) tmux_alert_next_event ;;
+nested) process_icalbuddy_output ;;
+*) main ;;
+esac

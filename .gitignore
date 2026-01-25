@@ -1,2 +1,4 @@
 # Any lib file that we don't want included
 *.gitignore.*
+.irb_history
+cache/

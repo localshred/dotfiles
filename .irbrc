@@ -1,20 +1,12 @@
-require 'rubygems'
-require 'pp'
+require "rubygems"
+require "pp"
+
 begin
-  require 'wirble'
-  require 'hirb'
+  require "amazing_print"
+  AmazingPrint.irb!
 rescue LoadError
-  puts 'ignoring wirble and hirb, load error'
 end
 
-if defined? Wirble
-  Wirble.init
-  Wirble.colorize
-end
-
-if defined? Hirb
-  Hirb::View.enable
-end
 
 class Object
   def methods_with_sort(filter = nil)
@@ -28,10 +20,9 @@ class Object
   alias_method :methods_without_sort, :methods
   alias_method :methods, :methods_with_sort
 
-	def local_methods
-	 (methods - Object.instance_methods).sort
-	end
-
+  def local_methods
+    (methods - Object.instance_methods).sort
+  end
 end
 
 IRB.conf[:PROMPT_MODE] = :SIMPLE
@@ -40,6 +31,7 @@ IRB.conf[:SAVE_HISTORY] = 1000
 IRB.conf[:EVAL_HISTORY] = 200
 
 if defined? Rails
-  Rails.logger = Logger.new(STDOUT)
+  # Rails.logger = Logger.new(STDOUT)
   Rails.logger.level = Logger::DEBUG
 end
+
