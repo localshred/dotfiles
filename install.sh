@@ -105,7 +105,6 @@ gnupg
 gnutls
 heroku
 htop-osx
-hub
 jira-cli
 jpeg
 jq
@@ -206,13 +205,13 @@ install_files() {
 }
 
 install_non_brew_libs() {
-  if ! hash $HOME/.config/emacs/bin/doom 2>/dev/null; then
+  if ! command -v $HOME/.config/emacs/bin/doom 2>/dev/null; then
     print_info "Installing Doom Emacs (https://github.com/doomemacs/doomemacs#install)..."
     run_command "git clone --depth 1 https://github.com/doomemacs/doomemacs $HOME/.config/emacs"
     run_command "$HOME/.config/emacs/bin/doom install"
   fi
 
-  if ! hash bb 2>/dev/null; then
+  if ! command -v bb 2>/dev/null; then
     print_info "Installing Babashka (https://github.com/borkdude/babashka)..."
     run_command "bash <(curl -s https://raw.githubusercontent.com/borkdude/babashka/master/install)"
   fi
@@ -233,7 +232,7 @@ install_non_brew_libs() {
 }
 
 install_brew() {
-  if ! hash brew 2>/dev/null; then
+  if ! command -v brew 2>/dev/null; then
     print_info "Installing command XCode line tools..."
     run_command "xcode-select --install"
     print_info "Installing brew..."

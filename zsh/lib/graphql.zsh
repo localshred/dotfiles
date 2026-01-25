@@ -20,7 +20,7 @@ function print_graph() {
     return 1
   fi
 
-  if ! hash node 2>/dev/null; then
+  if ! command -v node &>/dev/null; then
     print_error "You need node/npm on your path"
     return 2
   fi

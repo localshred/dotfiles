@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-alias git='hub'
 alias g='git'
 alias gti='git'
 
@@ -76,25 +75,6 @@ function co {
     git checkout "$branch"
     ;;
   esac
-}
-
-function pgpkeygen() {
-  echo "Generating your pgp key..."
-  keybase login
-  keybase pgp gen --multi
-
-  echo "Getting key id"
-  key_id=$(gpg --list-secret-keys --keyid-format LONG | grep sec | awk -F/ '{print $2}' | awk '{print $1}')
-
-  echo "Setting git signing key"
-  git config --global user.signingkey $key_id
-
-  echo "Getting pgp key armor format"
-  keybase pgp export -q $key_id | pbcopy
-  pbpaste
-
-  echo "Added public key to pasteboard"
-  open https://github.com/settings/keys
 }
 
 function reposync() {

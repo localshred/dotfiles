@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-autoload colors
-colors
+autoload -Uz colors && colors
 
 __bootstrap() {
   source "$dotfiles/zsh/load/env.zsh"
@@ -12,6 +11,7 @@ __bootstrap() {
   __load_work_dotfiles
   __load_completion /usr/local/share/zsh-completions
   __load_correction
+  __load_syntax_highlighting
 
   __say_hello
 }
@@ -24,7 +24,7 @@ __load_defaults() {
   setopt no_beep
   setopt auto_cd
   setopt multios
-  setopt cdablevarS
+  setopt cdablevars
   setopt transient_rprompt
   setopt extended_glob
   autoload -U url-quote-magic
@@ -33,17 +33,21 @@ __load_defaults() {
   autoload -Uz add-zsh-hook
   bindkey "^[m" copy-prev-shell-word
   HISTFILE=$HOME/.zsh_history
-  HISTSIZE=10000
-  export SAVEHIST=10000
-  setopt hist_ignore_dups
-  setopt hist_reduce_blanks
-  setopt share_history
+  HISTSIZE=100000
+  export SAVEHIST=100000
   setopt append_history
-  setopt hist_verify
-  setopt inc_append_history
   setopt extended_history
   setopt hist_expire_dups_first
+  setopt hist_find_no_dups
+  setopt hist_ignore_dups
   setopt hist_ignore_space
+  setopt hist_reduce_blanks
+  setopt hist_save_no_dups
+  setopt hist_verify
+  setopt inc_append_history
+  setopt interactive_comments
+  setopt glob_dots
+  setopt share_history
 }
 
 __load_brew() {
@@ -80,6 +84,11 @@ __load_zsh_libs() {
   for lib in "$libs_dir"/*.zsh; do
     source "$lib"
   done
+}
+
+__load_syntax_highlighting() {
+  local hl="$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  [[ -f "$hl" ]] && source "$hl"
 }
 
 __say_hello() {

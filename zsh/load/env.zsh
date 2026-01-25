@@ -10,7 +10,7 @@ export ECTO_EDITOR=$EDITOR
 export ERL_AFLAGS="-kernel shell_history enabled"
 export GOPATH=$code/src/go
 export GOBIN=$GOPATH/bin
-if hash go 2> /dev/null; then
+if command -v go &>/dev/null; then
   export GOVERSION=$(go version | awk -Fgo '{print $3}' | awk '{print $1}')
 fi
 export GPG_TTY=$(tty)
