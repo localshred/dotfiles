@@ -26,5 +26,5 @@ export VISIONBOARD=~/Dropbox/BJ/vision/vision.md
 export VISUAL="emacsclient -c -a /opt/homebrew/bin/emacs"
 
 cdpath=(~ ~/Documents ~/Desktop
-  $code $code/src $code/src/localshred $code/src/crx $code/src/utilities
+  $code $code/src $code/src/localshred $code/src/crx $code/src/utils
   $GOPATH/src/github.com $GOPATH/src/gitlab.com)

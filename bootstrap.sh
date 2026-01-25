@@ -17,10 +17,10 @@ print_error() { echo -e "${color_red}!!> $*${color_reset}"; }
 # Directory structure
 code_dir="$HOME/code"
 src_dir="$code_dir/src"
-utilities_dir="$src_dir/utilities"
+utils_dir="$src_dir/utils"
 localshred_dir="$src_dir/localshred"
 
-dotfiles_dir="$utilities_dir/dotfiles"
+dotfiles_dir="$utils_dir/dotfiles"
 dotfiles_repo="git@github.com:localshred/dotfiles.git"
 
 # Work dotfiles (set via prompts or detected)
@@ -80,7 +80,7 @@ prompt_directories() {
   print_info "Directory structure setup"
   echo ""
   echo "Default directories to create under $src_dir:"
-  echo "  - utilities (for dotfiles)"
+  echo "  - utils (for dotfiles)"
   echo "  - localshred (personal projects)"
   echo "  - go (Go workspace)"
   echo "  - lib (libraries)"
@@ -88,7 +88,7 @@ prompt_directories() {
 
   read -p "Additional directories to create (space-separated, or Enter to skip): " extra_dirs
 
-  mkdir -p "$utilities_dir"
+  mkdir -p "$utils_dir"
   mkdir -p "$localshred_dir"
   mkdir -p "$src_dir/go"
   mkdir -p "$src_dir/lib"

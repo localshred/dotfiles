@@ -120,7 +120,7 @@
   autoCorrect = prompt
 
 [include]
-  path = ~/code/src/utilities/dotfiles/delta-themes.gitconfig
+  path = ~/code/src/utils/dotfiles/delta-themes.gitconfig
 
 [init]
   defaultBranch = main

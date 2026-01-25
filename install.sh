@@ -55,10 +55,10 @@ run_command() {
 install() {
   install_brew
   install_stow
+  install_work
   install_vim_bundles
   install_non_brew_libs
   install_global_npm
-  install_work
 }
 
 install_work() {
