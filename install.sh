@@ -11,7 +11,7 @@ dotfiles="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 dirs="
 .gnupg
 .vim
-.vim/autload
+.vim/autoload
 .vim/bundle
 .config/doom
 "
@@ -34,118 +34,6 @@ files="
 .vim/spell
 .vimrc
 .zshrc
-"
-
-# Taps
-brew_kegs="
-ankitpokhrel/jira-cli
-homebrew/cask-fonts
-heroku/brew
-mike-engel/jwt-cli
-d12frosted/emacs-plus
-"
-
-brew_casks="
-1password
-1password-cli
-alfred
-brave-browser
-dash
-docker
-dropbox
-discord
-font-fira-code
-gcloud
-github
-gpg-suite
-graalvm/tap/graalvm-ce-lts-java11
-insomnia
-iterm2
-java
-keybase
-kindle
-licecap
-omnifocus
-reactotron
-signal
-temurin
-visual-studio-code
-zoom
-"
-
-brew_bottles="
-asdf
-awscli
-awslogs
-babashka/brew/neil
-blueutil
-candid82/brew/joker
-clj-kondo
-cloc
-clojure
-clojure-lsp/brew/clojure-lsp-native
-cmake
-colordiff
-coreutils
-ctags
-curl-openssl
-dep
-diff-so-fancy
-difftastic
-direnv
-elixir
-\"emacs-plus@30 --without-cocoa\"
-exercism
-fd
-fortune
-fzf
-git-delta
-glib
-gnupg
-gnutls
-heroku
-htop-osx
-jira-cli
-jpeg
-jq
-leiningen
-libpng
-libpq
-libssh
-libssh2
-libtiff
-jwt-cli
-maven
-ncurses
-neovim
-openldap
-openssl
-openssl@1.1
-pcre
-pcre2
-pinentry-mac
-ponysay
-protobuf
-python
-python@2
-readline
-ripgrep
-rlwrap
-shellcheck
-switchaudio-osx
-task
-telnet
-tfenv
-the_silver_searcher
-tmux
-tree
-unixodbc
-watchman
-wget
-wireshark
-yarn
-zsh
-zsh-completions
 "
 
 npm_global_packages="
@@ -181,7 +69,6 @@ install() {
   install_files
   install_brew
   install_vim_bundles
-  # install_crontab
   install_non_brew_libs
   install_global_npm
 }
@@ -205,35 +92,22 @@ install_files() {
 }
 
 install_non_brew_libs() {
-  if ! command -v $HOME/.config/emacs/bin/doom 2>/dev/null; then
+  if ! command -v "$HOME/.config/emacs/bin/doom" &>/dev/null; then
     print_info "Installing Doom Emacs (https://github.com/doomemacs/doomemacs#install)..."
     run_command "git clone --depth 1 https://github.com/doomemacs/doomemacs $HOME/.config/emacs"
     run_command "$HOME/.config/emacs/bin/doom install"
   fi
 
-  if ! command -v bb 2>/dev/null; then
-    print_info "Installing Babashka (https://github.com/borkdude/babashka)..."
-    run_command "bash <(curl -s https://raw.githubusercontent.com/borkdude/babashka/master/install)"
-  fi
-
+  # Uncomment for older Macs that need better 24-bit color support
   # if [ ! -f $HOME/.terminfo ]; then
-  #   print_info "Building xterm-24 \$SHELL"
+  #   print_info "Building xterm-24bit terminfo"
   #   /usr/bin/tic -x -o $HOME/.terminfo terminfo-24bit.src
   # fi
-
-  libdir="${HOME}/code/src/lib"
-  dest="${libdir}/icons-in-terminal"
-  if [ ! -d "${dest}" ]; then
-    print_info "Installing sebastiencs/icons-in-terminal"
-    run_command "mkdir -p ${libdir}"
-    run_command "git clone https://github.com/sebastiencs/icons-in-terminal.git ${dest}"
-    run_command "source ${dest}/install-autodetect.sh"
-  fi
 }
 
 install_brew() {
-  if ! command -v brew 2>/dev/null; then
-    print_info "Installing command XCode line tools..."
+  if ! command -v brew &>/dev/null; then
+    print_info "Installing XCode command line tools..."
     run_command "xcode-select --install"
     print_info "Installing brew..."
     run_command '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
@@ -244,23 +118,8 @@ install_brew() {
     fi
   fi
 
-  print_info "Installing brew taps, casks, and bottles from Brewfile..."
-  brew bundle install --file Brewfile
-
-  print_info "Tapping kegs..."
-  for keg in $brew_kegs; do
-    run_command "brew tap $keg"
-  done
-
-  print_info "Installing casks..."
-  for cask in $brew_casks; do
-    run_command "brew install --cask $cask"
-  done
-
-  print_info "Installing bottles..."
-  for bottle in $brew_bottles; do
-    run_command "brew install $bottle"
-  done
+  print_info "Installing from Brewfile..."
+  brew bundle install --file "$dotfiles/Brewfile"
 }
 
 install_vim_bundles() {
