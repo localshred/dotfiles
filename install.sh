@@ -8,32 +8,20 @@ color_reset='\033[0;39m'
 
 dotfiles="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-dirs="
-.gnupg
-.vim
-.vim/autoload
-.vim/bundle
-.config/doom
-"
-
-files="
-.aprc
-.clojure
-.default-npm-packages
-.doom.d
-.gemrc
-.git_template
-.gitconfig
-.gitignore.global
-.gnupg/pgp-agent.conf
-.irbrc
-.spacemacs
-.tmux.conf
-.vim/autoload
-.vim/ftplugin
-.vim/spell
-.vimrc
-.zshrc
+stow_packages="
+asdf
+claude
+clojure
+emacs
+git
+gnupg
+misc
+npm
+ruby
+task
+tmux
+vim
+zsh
 "
 
 npm_global_packages="
@@ -65,29 +53,17 @@ run_command() {
 }
 
 install() {
-  install_dirs
-  install_files
   install_brew
+  install_stow
   install_vim_bundles
   install_non_brew_libs
   install_global_npm
 }
 
-install_dirs() {
-  print_info "Ensuring dirs..."
-  for dir in $dirs; do
-    run_command "mkdir -p $HOME/$dir"
-  done
-}
-
-install_files() {
-  print_info "Linking files..."
-  for file in $files; do
-    if [[ (-d $dotfiles/$file && ! -d $HOME/$file) || ! -s $HOME/$file ]]; then
-      run_command "ln -s $dotfiles/$file $HOME/$file"
-    else
-      print_warn "$HOME/$file exists, skipping"
-    fi
+install_stow() {
+  print_info "Stowing dotfile packages..."
+  for package in $stow_packages; do
+    run_command "stow -v -t $HOME -d $dotfiles $package"
   done
 }
 
@@ -123,11 +99,6 @@ install_brew() {
 }
 
 install_vim_bundles() {
-  if [[ ! -d $HOME/.config/nvim ]]; then
-    print_info "Linking neovim config"
-    run_command "ln -s $dotfiles/.vim/ $HOME/.config/nvim"
-  fi
-
   print_info "Installing vim bundles"
   for repo_url in $(awk '{print $2}' "$dotfiles/data/vim-plugins.txt"); do
     repo_name=$(echo "$repo_url" | awk -F/ '{print ($NF)}' | sed 's/\.git$//')
@@ -148,20 +119,15 @@ install_global_npm() {
 }
 
 uninstall() {
-  print_info "Uninstall..."
-  for file in $files; do
-    if [[ -L $HOME/$file ]]; then
-      run_command "rm $HOME/$file"
-    else
-      print_warn "$HOME/$file missing, skipping"
-    fi
+  print_info "Unstowing dotfile packages..."
+  for package in $stow_packages; do
+    run_command "stow -v -D -t $HOME -d $dotfiles $package"
   done
 }
 
 case "$1" in
 uninstall) uninstall ;;
-files) install_files ;;
-dirs) install_dirs ;;
+stow) install_stow ;;
 vim) install_vim_bundles ;;
 brew) install_brew ;;
 other) install_non_brew_libs ;;

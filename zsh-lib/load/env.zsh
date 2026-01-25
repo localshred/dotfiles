@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-function zshenv() { vim $dotfiles/zsh/load/env.zsh }
+function zshenv() { vim $dotfiles/zsh-lib/load/env.zsh }
 
 ## export code, dotfiles from .zshrc
 

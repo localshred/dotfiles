@@ -3,11 +3,11 @@
 autoload -Uz colors && colors
 
 __bootstrap() {
-  source "$dotfiles/zsh/load/env.zsh"
-  source "$dotfiles/zsh/load/path.zsh"
+  source "$dotfiles/zsh-lib/load/env.zsh"
+  source "$dotfiles/zsh-lib/load/path.zsh"
   __load_brew
   __load_defaults
-  __load_zsh_libs "$dotfiles/zsh/lib"
+  __load_zsh_libs "$dotfiles/zsh-lib/lib"
   __load_work_dotfiles
   __load_completion /usr/local/share/zsh-completions
   __load_correction
@@ -96,7 +96,7 @@ __say_hello() {
 }
 
 zshbootstrap() {
-  vim "$dotfiles/zsh/bootstrap.zsh"
+  vim "$dotfiles/zsh-lib/bootstrap.zsh"
 }
 
 __bootstrap

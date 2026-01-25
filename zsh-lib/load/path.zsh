@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 
 pathadd() { PATH="$PATH:${1}"; }
-pathedit() { emc "$dotfiles/zsh/load/path.zsh"; }
-pathrebuild() { source "$dotfiles/zsh/load/path.zsh"; }
+pathedit() { emc "$dotfiles/zsh-lib/load/path.zsh"; }
+pathrebuild() { source "$dotfiles/zsh-lib/load/path.zsh"; }
 
 # Define path directories in order of priority
 path_dirs=(
