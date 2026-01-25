@@ -68,8 +68,8 @@ __load_work_dotfiles() {
     source "$dotfiles_work/env.zsh"
   fi
 
-  if [[ -d "$dotfiles_work/zsh/lib" ]]; then
-    __load_zsh_libs "$dotfiles_work/zsh/lib"
+  if [[ -d "$dotfiles_work/zsh-lib/lib" ]]; then
+    __load_zsh_libs "$dotfiles_work/zsh-lib/lib"
   fi
 }
 

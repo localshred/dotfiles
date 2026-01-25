@@ -4,4 +4,4 @@
 cache/
 
 # Emacs custom settings (auto-generated)
-.doom.d/custom.el
+emacs/.doom.d/custom.el

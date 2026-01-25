@@ -12,7 +12,6 @@ path_dirs=(
   "$HOME/.config/emacs/bin"
   "$HOME/.local/bin"
   "$HOME/.yarn/bin"
-  "$code/src/spiff/yak/bin"
   "$GOBIN"
   /usr/local/bin
   /usr/bin

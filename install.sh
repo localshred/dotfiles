@@ -62,7 +62,8 @@ install() {
 }
 
 install_work() {
-  local work_installer="${dotfiles_work:-$HOME/code/src/spiff/dotfiles}/install.sh"
+  [[ -z "$dotfiles_work" ]] && return
+  local work_installer="$dotfiles_work/install.sh"
   if [[ -f "$work_installer" ]]; then
     print_info "Running work dotfiles installer..."
     "$work_installer"
