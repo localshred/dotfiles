@@ -58,10 +58,22 @@
 ;;     "user": "localshred"
 ;;   },
 ;; }
+(def personal-config-path
+  (when-let [dotfiles (System/getenv "dotfiles")]
+    (str dotfiles "/.goto_scmrc.json")))
+
+(def work-config-path
+  (when-let [work-dotfiles (System/getenv "dotfiles_work")]
+    (str work-dotfiles "/goto_scmrc.json")))
+
+(defn- load-config [path]
+  (when (and path (.exists (io/file path)))
+    (-> path (io/reader) (json/parse-stream true))))
+
 (def user-aliases
-  (-> "/Users/bneilsen/code/src/utilities/dotfiles/.goto_scmrc.gitignore.json"
-    (io/reader)
-    (json/parse-stream true)))
+  (or (load-config work-config-path)
+      (load-config personal-config-path)
+      {}))
 
 (def repo-aliases
   (->> user-aliases

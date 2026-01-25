@@ -181,6 +181,12 @@
   :config
   (asdf-enable)
   (setq asdf-binary "/opt/homebrew/bin/asdf"))
+
+(use-package browse-at-remote
+  :config
+  (add-to-list 'browse-at-remote-remote-type-regexps
+               '(:host "^localshred" :type "github" :actual-host "github.com")))
+
 (use-package cider
   :config
   (map! (:localleader
@@ -220,12 +226,8 @@
   (setq mode-require-final-newline nil)
   (rassq-delete-all 'prettify-symbols-mode auto-mode-alist))
 
-  :config
 ;; (after! go-mode
 ;;   (add-hook 'go-mode-hook 'lsp-deferred))
-
-
-  :config
 
 (use-package jest-test-mode
   :commands jest-test-mode
@@ -418,6 +420,7 @@
    web-mode-markup-indent-offset 2
    web-mode-sql-indent-offset 2
    ))
+
 ;;
 ;; Mode Hooks & Custom Functions
 ;;
@@ -454,3 +457,12 @@
 (defun u/ansi-color-apply-on-region (begin end)
   (interactive "r")
   (ansi-color-apply-on-region begin end t))
+
+;;
+;; Load work config if $dotfiles_work is set
+;;
+(let ((work-dotfiles (getenv "dotfiles_work")))
+  (when work-dotfiles
+    (let ((work-config (expand-file-name "doom/work-config.el" work-dotfiles)))
+      (when (file-exists-p work-config)
+        (load work-config)))))

@@ -1,21 +1,22 @@
 #!/usr/bin/env zsh
 
-autoload colors; colors;
+autoload colors
+colors
 
-function __bootstrap() {
-  source $dotfiles/zsh/load/env.zsh
-  source $dotfiles/zsh/load/path.zsh
+__bootstrap() {
+  source "$dotfiles/zsh/load/env.zsh"
+  source "$dotfiles/zsh/load/path.zsh"
   __load_brew
   __load_defaults
-
-  __load_zsh_libs $dotfiles/zsh/lib
+  __load_zsh_libs "$dotfiles/zsh/lib"
+  __load_work_dotfiles
   __load_completion /usr/local/share/zsh-completions
   __load_correction
 
   __say_hello
 }
 
-function __load_defaults() {
+__load_defaults() {
   bindkey -e
   setopt auto_name_dirs
   setopt pushd_ignore_dups
@@ -33,7 +34,7 @@ function __load_defaults() {
   bindkey "^[m" copy-prev-shell-word
   HISTFILE=$HOME/.zsh_history
   HISTSIZE=10000
-  SAVEHIST=10000
+  export SAVEHIST=10000
   setopt hist_ignore_dups
   setopt hist_reduce_blanks
   setopt share_history
@@ -45,7 +46,7 @@ function __load_defaults() {
   setopt hist_ignore_space
 }
 
-function __load_brew() {
+__load_brew() {
   # Homebrew shellenv
   # Set PATH, MANPATH, etc.
   if [[ -d /opt/homebrew ]]; then
@@ -55,17 +56,38 @@ function __load_brew() {
   fi
 }
 
-function __load_zsh_libs() {
-  libs_dir=$1
-  for lib in $(find $libs_dir -type f -iname '*.zsh' -maxdepth 1); do
-    source $lib
+__load_work_dotfiles() {
+  [[ -z "$dotfiles_work" ]] && return
+  [[ ! -d "$dotfiles_work" ]] && return
+
+  if [[ -f "$dotfiles_work/env.zsh" ]]; then
+    source "$dotfiles_work/env.zsh"
+  fi
+
+  local work_gitconfig="$dotfiles_work/git/config"
+  if [[ -f "$work_gitconfig" ]]; then
+    ln -sf "$work_gitconfig" ~/.gitconfig-work
+  fi
+
+  if [[ -d "$dotfiles_work/zsh/lib" ]]; then
+    __load_zsh_libs "$dotfiles_work/zsh/lib"
+  fi
+}
+
+__load_zsh_libs() {
+  local libs_dir=$1
+  local lib
+  for lib in "$libs_dir"/*.zsh; do
+    source "$lib"
   done
 }
 
-function __say_hello() {
+__say_hello() {
   fortune -s | ponysay
 }
 
-function zshbootstrap() { vim $dotfiles/zsh/bootstrap.zsh }
+zshbootstrap() {
+  vim "$dotfiles/zsh/bootstrap.zsh"
+}
 
 __bootstrap

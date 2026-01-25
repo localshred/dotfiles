@@ -2,3 +2,6 @@
 *.gitignore.*
 .irb_history
 cache/
+
+# Emacs custom settings (auto-generated)
+.doom.d/custom.el

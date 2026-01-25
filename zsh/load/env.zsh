@@ -25,9 +25,6 @@ export TERM=xterm-24bit
 export VISIONBOARD=~/Dropbox/BJ/vision/vision.md
 export VISUAL="emacsclient -c -a /opt/homebrew/bin/emacs"
 
-# Salesforce things
-export NODE_EXTRA_CA_CERTS=~/.sfdc-c360-ai-suite/conf/npm-sfdc-certs.pem
-
 cdpath=(~ ~/Documents ~/Desktop
-  $code $code/src $code/src/spiff $code/src/localshred $code/src/crx $code/src/utilities
+  $code $code/src $code/src/localshred $code/src/crx $code/src/utilities
   $GOPATH/src/github.com $GOPATH/src/gitlab.com)

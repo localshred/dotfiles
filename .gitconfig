@@ -154,7 +154,6 @@
 [url "git@github.com:"]
   insteadOf = https://github.com/
 
-
 [tag]
   gpgsign = true
   sort = version:refname
@@ -163,5 +162,10 @@
   name = BJ Neilsen
   email = bj.neilsen@gmail.com
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiZrJmwtdHkKYQ+tnxXvuL+N9XPINq0lOL3ttTRz8aE
-[pull]
-	rebase = true
+
+[includeIf "hasconfig:remote.*.url:*:localshred/*"]
+    path = ~/.gitconfig_localshred
+
+# Work config (symlinked by zsh bootstrap if $dotfiles_work is set)
+[include]
+    path = ~/.gitconfig-work

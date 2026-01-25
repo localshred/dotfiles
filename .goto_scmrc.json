@@ -1,0 +1,17 @@
+{
+  "l": {
+    "repos": { "d": "dotfiles" },
+    "scm": "github",
+    "user": "localshred"
+  },
+  "c": {
+    "repos": {
+      "a": "hostpro-api",
+      "api": "hostpro-api",
+      "u": "hostpro-ui",
+      "ui": "hostpro-ui"
+    },
+    "scm": "github",
+    "user": "crxdev"
+  }
+}
