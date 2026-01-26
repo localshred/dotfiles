@@ -27,6 +27,24 @@
   alphabetical order. When nothing is alphabetized, place the new module at the
   bottom of the section in question.
 
+## Clojure Projects
+
+- Prefer `(ns ...)` blocks over separate `(require ..)`, `(import ..)`, etc.
+- Prefer threading macros (->>, ->, and as->) for building functional
+  pipelines, as opposed to let blocks with lots of intermediate bindings.
+- Prefer map lookups instead of simple case statements.
+- Source files should have specific sections in the following order:
+  1. Require/imports/etc
+  2. Static defs
+  3. public functions
+  4. private functions
+- Items in each section (vars, methods, imports) should always be alphabetized
+  where possible. Pre-define functions if ordering will be problematic for
+  missing functions.
+- `defmulti` with `defmethod` often creates really readable code.
+- For all other style/formatting, use the clojure style guide to guide
+  formatting decisions
+
 ## Ruby/Rails Projects
 
 - When refactoring code that references modules or classes, in general we should
