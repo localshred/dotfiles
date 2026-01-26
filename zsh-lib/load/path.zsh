@@ -8,7 +8,6 @@ pathrebuild() { source "$dotfiles/zsh-lib/load/path.zsh"; }
 path_dirs=(
   "$dotfiles/bin"
   "$HOME/bin"
-  "$code/src/utils/shred/bin"
   "$HOME/.config/emacs/bin"
   "$HOME/.local/bin"
   "$HOME/.yarn/bin"

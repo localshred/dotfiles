@@ -1,17 +1,17 @@
 #!/usr/bin/env bb
 
-(ns shred.bin.shred
+(ns mx.bin.mx
   (:require [babashka.process :as p]))
 
-(def shred-root (str (System/getProperty "user.home") "/code/src/utils/dotfiles/lib/shred"))
+(def mx-root (str (System/getProperty "user.home") "/code/src/utils/dotfiles/lib/mx"))
 
 (declare run-command show-help)
 
 (def available-commands
-  {"prs" (str shred-root "/commands/prs.clj")})
+  {"prs" (str mx-root "/commands/prs.clj")})
 
 (defn main
-  "Main entry point for shred CLI"
+  "Main entry point for mx CLI"
   [& args]
   (if (or (empty? args)
         (contains? #{"-h" "--help"} (first args)))
@@ -25,7 +25,7 @@
   [command args]
   (if-let [script-path (get available-commands command)]
     (do
-      (println (format "🚀 Running shred %s...\n" command))
+      (println (format "🚀 Running mx %s...\n" command))
       (let [result (apply p/process {:inherit true} script-path args)]
         (-> result p/check :exit)))
     (do
@@ -36,16 +36,16 @@
 (defn show-help
   "Display help information"
   []
-  (println "🔧 Shred - Local Development Utils")
+  (println "🔧 mx - Local Development Utils")
   (println)
-  (println "Usage: shred <command> [options]")
+  (println "Usage: mx <command> [options]")
   (println)
   (println "Available commands:")
   (doseq [[cmd desc] [["prs" "Show open PRs with current statuses"]]]
     (println (format "  %-10s %s" cmd desc)))
   (println)
   (println "Examples:")
-  (println "  shred prs          # Show PR status across all repositories")
+  (println "  mx prs             # Show PR status across all repositories")
   (println)
   (println "Options:")
   (println "  -h, --help         # Show this help message"))

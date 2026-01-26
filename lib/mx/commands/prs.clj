@@ -1,6 +1,6 @@
 #!/usr/bin/env bb
 
-(ns shred.commands.prs
+(ns mx.commands.prs
   (:require [babashka.process :as p]
             [cheshire.core :as json]
             [clojure.string :as str]))
