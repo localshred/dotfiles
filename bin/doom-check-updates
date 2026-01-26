@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# Check for Doom Emacs updates and cache the results
+
+set -euo pipefail
+
+DOOM_DIR="${EMACSDIR:-$HOME/.config/emacs}"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/doom"
+CACHE_FILE="$CACHE_DIR/latest.json"
+DOOM_REPO_URL="https://github.com/doomemacs/doomemacs"
+
+# Ensure cache directory exists
+mkdir -p "$CACHE_DIR"
+
+# Get local SHA
+if [[ ! -d "$DOOM_DIR/.git" ]]; then
+  echo "Error: $DOOM_DIR is not a git repository" >&2
+  exit 1
+fi
+
+LOCAL_SHA=$(git -C "$DOOM_DIR" rev-parse HEAD)
+LOCAL_BRANCH=$(git -C "$DOOM_DIR" rev-parse --abbrev-ref HEAD)
+
+# Get local version
+LOCAL_VERSION=$(grep 'doom-version' "$DOOM_DIR/lisp/doom.el" 2>/dev/null | sed -n 's/.*doom-version "\([^"]*\)".*/\1/p' || echo "unknown")
+
+# Fetch latest from remote (quietly)
+git -C "$DOOM_DIR" fetch origin "$LOCAL_BRANCH" --quiet 2>/dev/null || {
+  echo "Warning: Failed to fetch from remote" >&2
+  exit 1
+}
+
+# Get remote SHA and version
+REMOTE_SHA=$(git -C "$DOOM_DIR" rev-parse "origin/$LOCAL_BRANCH")
+REMOTE_VERSION=$(git -C "$DOOM_DIR" show "origin/$LOCAL_BRANCH:lisp/doom.el" 2>/dev/null | grep 'doom-version' | sed -n 's/.*doom-version "\([^"]*\)".*/\1/p' || echo "unknown")
+
+# Check if up to date
+if [[ "$LOCAL_SHA" == "$REMOTE_SHA" ]]; then
+  cat > "$CACHE_FILE" <<EOF
+{
+  "up_to_date": true,
+  "checked_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+  "local_sha": "$LOCAL_SHA",
+  "remote_sha": "$REMOTE_SHA",
+  "local_version": "$LOCAL_VERSION",
+  "remote_version": "$REMOTE_VERSION"
+}
+EOF
+  exit 0
+fi
+
+# Get commit details
+COMMIT_COUNT=$(git -C "$DOOM_DIR" rev-list --count "$LOCAL_SHA..$REMOTE_SHA")
+COMMITS=$(git -C "$DOOM_DIR" log --pretty=format:'%s' "$LOCAL_SHA..$REMOTE_SHA" | head -5)
+
+# Build JSON (escaping newlines and quotes)
+COMMITS_JSON=$(echo "$COMMITS" | jq -Rs 'split("\n")')
+
+cat > "$CACHE_FILE" <<EOF
+{
+  "up_to_date": false,
+  "checked_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+  "local_sha": "$LOCAL_SHA",
+  "remote_sha": "$REMOTE_SHA",
+  "local_version": "$LOCAL_VERSION",
+  "remote_version": "$REMOTE_VERSION",
+  "commit_count": $COMMIT_COUNT,
+  "preview_commits": $COMMITS_JSON
+}
+EOF
+
+# Send macOS notification
+VERSION_INFO=""
+if [[ "$LOCAL_VERSION" != "$REMOTE_VERSION" ]]; then
+  VERSION_INFO="$LOCAL_VERSION → $REMOTE_VERSION\n\n"
+fi
+PREVIEW=$(echo "$COMMITS" | head -3 | sed 's/^/• /')
+osascript -e "display notification \"${VERSION_INFO}$COMMIT_COUNT $([ $COMMIT_COUNT -eq 1 ] && echo "commit" || echo "commits") behind\n\n$PREVIEW\" with title \"Doom Emacs Update Available\" sound name \"default\""

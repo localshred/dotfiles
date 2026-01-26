@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+# Show Doom Emacs update status and optionally update
+
+set -euo pipefail
+
+DOOM_DIR="${EMACSDIR:-$HOME/.config/emacs}"
+CACHE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/doom/latest.json"
+
+# Check if cache exists
+if [[ ! -f "$CACHE_FILE" ]]; then
+  gum style --foreground 212 "No update check has run yet. Checking now..."
+  doom-check-updates
+  if [[ ! -f "$CACHE_FILE" ]]; then
+    gum style --foreground 196 "Failed to check for updates"
+    exit 1
+  fi
+fi
+
+# Read cache
+UP_TO_DATE=$(jq -r '.up_to_date' "$CACHE_FILE")
+CHECKED_AT=$(jq -r '.checked_at' "$CACHE_FILE")
+COMMIT_COUNT=$(jq -r '.commit_count // 0' "$CACHE_FILE")
+
+# Convert timestamp to relative time
+if command -v gdate &>/dev/null; then
+  CHECKED_AGO=$(gdate -d "$CHECKED_AT" +'%s')
+  NOW=$(gdate +%s)
+else
+  CHECKED_AGO=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$CHECKED_AT" +%s)
+  NOW=$(date +%s)
+fi
+HOURS_AGO=$(( (NOW - CHECKED_AGO) / 3600 ))
+
+LOCAL_VERSION=$(jq -r '.local_version // "unknown"' "$CACHE_FILE")
+REMOTE_VERSION=$(jq -r '.remote_version // "unknown"' "$CACHE_FILE")
+
+if [[ "$UP_TO_DATE" == "true" ]]; then
+  gum style \
+    --foreground 10 --bold \
+    "✓ Doom Emacs is up to date"
+  echo
+  echo "Version: $LOCAL_VERSION"
+  echo "Last checked: ${HOURS_AGO}h ago"
+  exit 0
+fi
+
+# Show update available
+VERSION_LINE=""
+if [[ "$LOCAL_VERSION" != "$REMOTE_VERSION" ]]; then
+  VERSION_LINE=" ($LOCAL_VERSION → $REMOTE_VERSION)"
+fi
+
+gum style \
+  --foreground 11 --bold \
+  "🔔 Doom Emacs: $COMMIT_COUNT $([ $COMMIT_COUNT -eq 1 ] && echo "commit" || echo "commits") behind${VERSION_LINE}"
+
+echo
+gum style --foreground 14 "Recent changes:"
+
+# Show preview commits
+jq -r '.preview_commits[]' "$CACHE_FILE" | while IFS= read -r commit; do
+  echo "   • $commit"
+done
+
+echo
+echo "Last checked: ${HOURS_AGO}h ago"
+echo
+
+# Ask if user wants to see more or update
+ACTION=$(gum choose "View full changelog" "Update now" "Update later" --header "What would you like to do?")
+
+case "$ACTION" in
+  "View full changelog")
+    LOCAL_SHA=$(jq -r '.local_sha' "$CACHE_FILE")
+    REMOTE_SHA=$(jq -r '.remote_sha' "$CACHE_FILE")
+
+    gum style --foreground 14 --bold "Full changelog:"
+    echo
+    git -C "$DOOM_DIR" log --pretty=format:'%C(yellow)%h%C(reset) %s %C(dim)(%cr)%C(reset)' "$LOCAL_SHA..$REMOTE_SHA" | \
+      gum pager
+
+    echo
+    if gum confirm "Update now?"; then
+      ACTION="Update now"
+    else
+      exit 0
+    fi
+    ;;
+esac
+
+case "$ACTION" in
+  "Update now")
+    gum style --foreground 10 "Updating Doom Emacs..."
+    echo
+
+    "$DOOM_DIR/bin/doom" upgrade
+
+    echo
+    gum style --foreground 10 --bold "✓ Doom Emacs updated successfully!"
+
+    # Update cache
+    doom-check-updates 2>/dev/null || true
+    ;;
+
+  "Update later")
+    gum style --foreground 8 "You can update later by running: doom-upgrader"
+    exit 0
+    ;;
+esac

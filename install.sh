@@ -59,6 +59,7 @@ install() {
   install_vim_bundles
   install_non_brew_libs
   install_global_npm
+  install_launchd_agents
 }
 
 install_work() {
@@ -84,11 +85,22 @@ install_non_brew_libs() {
     run_command "$HOME/.config/emacs/bin/doom install"
   fi
 
-  # Uncomment for older Macs that need better 24-bit color support
-  # if [ ! -f $HOME/.terminfo ]; then
-  #   print_info "Building xterm-24bit terminfo"
-  #   /usr/bin/tic -x -o $HOME/.terminfo terminfo-24bit.src
-  # fi
+  if [ ! -d $HOME/.terminfo ]; then
+    print_info "Building xterm-24bit terminfo"
+    /usr/bin/tic -x -o $HOME/.terminfo terminfo-24bit.src
+  fi
+}
+
+install_launchd_agents() {
+  local plist_name="com.localshred.doom-check-updates.plist"
+  local plist_dest="$HOME/Library/LaunchAgents/$plist_name"
+
+  if [ ! -f "$plist_dest" ]; then
+    print_info "Installing Doom Emacs update check launchd agent..."
+    mkdir -p "$HOME/Library/LaunchAgents"
+    sed "s|__HOME__|$HOME|g" "$dotfiles/launchd/$plist_name" > "$plist_dest"
+    launchctl load "$plist_dest"
+  fi
 }
 
 install_brew() {
