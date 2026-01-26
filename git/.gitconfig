@@ -164,7 +164,7 @@
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINiZrJmwtdHkKYQ+tnxXvuL+N9XPINq0lOL3ttTRz8aE
 
 [includeIf "hasconfig:remote.*.url:*:localshred/*"]
-    path = ~/.gitconfig_localshred
+  path = ~/.gitconfig_localshred
 
 # Work config (symlinked by zsh bootstrap if $dotfiles_work is set)
 [include]

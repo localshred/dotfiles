@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Wrapper script for cljfmt to work with Doom Emacs
+clojure -M:cljfmt/fix "$@"

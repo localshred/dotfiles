@@ -3,5 +3,13 @@
 .irb_history
 cache/
 
+claude/.claude/*
+!claude/.claude/CLAUDE.md
+
+gnupg/.gnupg/*
+!gnupg/.gnupg/gpg.conf
+
 # Emacs custom settings (auto-generated)
 emacs/.doom.d/custom.el
+
+vim/.vim/bundle/*
