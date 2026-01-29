@@ -31,7 +31,7 @@
    "IN_PROGRESS" "🔄"
    "QUEUED" "⏳"})
 
-(declare get-pr-checks run-gh sort-checks)
+(declare get-authenticated-user get-pr-checks run-gh sort-checks)
 
 (defn format-check
   "Format a single check result"
@@ -85,6 +85,14 @@
             (doseq [check state-checks]
               (println (format-check check)))))))))
 
+(defn get-authenticated-user
+  "Get the currently authenticated GitHub user"
+  []
+  (-> (p/process "gh" "api" "user" "--jq" ".login")
+      (p/check)
+      :out
+      slurp))
+
 (defn get-open-prs
   "Get all open PRs authored by me across all repositories"
   []
@@ -103,16 +111,17 @@
 (defn main
   "Main function to display PR statuses"
   []
-  (println "🔍 Fetching your open PRs across all repositories...\n")
+  (let [username (str/trim (get-authenticated-user))]
+    (println (format "🔍 Fetching open PRs for @%s...\n" username))
 
-  (let [prs (get-open-prs)]
-    (if (empty? prs)
-      (println "📭 No open PRs found authored by you.")
-      (do
-        (println (format "📋 Found %d open PR(s):" (count prs)))
-        (doseq [pr prs]
-          (format-pr pr))
-        (println)))))
+    (let [prs (get-open-prs)]
+      (if (empty? prs)
+        (println "📭 No open PRs found authored by you.")
+        (do
+          (println (format "📋 Found %d open PR(s):" (count prs)))
+          (doseq [pr prs]
+            (format-pr pr))
+          (println))))))
 
 (defn run-gh
   "Run gh CLI command and return parsed JSON output"
