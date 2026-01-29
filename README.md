@@ -93,5 +93,10 @@ Place config file at:
 Show open pull requests across all repositories with their CI status.
 
 ```bash
+# Show your authored PRs with CI status
 mx prs
+
+# Show PRs requesting your review
+mx prs --reviews
+mx prs -r
 ```

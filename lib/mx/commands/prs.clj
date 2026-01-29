@@ -3,7 +3,26 @@
 (ns mx.commands.prs
   (:require [babashka.process :as p]
             [cheshire.core :as json]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [clojure.tools.cli :as cli]))
+
+;; CLI options
+(def cli-opts
+  [["-r" "--reviews" "Show PRs requesting your review instead of your authored PRs"]
+   ["-h" "--help" "Print this help text"]])
+
+;; ANSI color codes
+(def ansi-reset "\033[0m")
+(def ansi-cyan "\033[36m")
+(def ansi-yellow "\033[33m")
+(def ansi-green "\033[32m")
+(def ansi-blue "\033[34m")
+
+;; Color helper functions
+(defn blue [s] (str ansi-blue s ansi-reset))
+(defn cyan [s] (str ansi-cyan s ansi-reset))
+(defn green [s] (str ansi-green s ansi-reset))
+(defn yellow [s] (str ansi-yellow s ansi-reset))
 
 ;; Regex pattern for checks to ignore
 (def ignored-checks-pattern #"(?i)snyk")
@@ -31,7 +50,7 @@
    "IN_PROGRESS" "🔄"
    "QUEUED" "⏳"})
 
-(declare get-authenticated-user get-pr-checks run-gh sort-checks)
+(declare format-review-request get-authenticated-user get-pr-checks get-review-requests parse-args run-gh sort-checks task)
 
 (defn format-check
   "Format a single check result"
@@ -85,6 +104,18 @@
             (doseq [check state-checks]
               (println (format-check check)))))))))
 
+(defn format-review-request
+  "Format a PR review request"
+  [pr]
+  (let [{:keys [number title author repository url]} pr
+        repo-name (:nameWithOwner repository)
+        repo-id (format "%s#%d" repo-name number)
+        author-name (format "@%s" (:login author))]
+    (println (str/join "\t" [(cyan repo-id)
+                             (yellow author-name)
+                             (green title)
+                             (blue url)]))))
+
 (defn get-authenticated-user
   "Get the currently authenticated GitHub user"
   []
@@ -99,6 +130,12 @@
   (run-gh "search" "prs" "--author=@me" "--state=open"
           "--json" "number,title,author,repository,url" "--limit" "50"))
 
+(defn get-review-requests
+  "Get all open PRs requesting my review across all repositories"
+  []
+  (run-gh "search" "prs" "--review-requested=@me" "--state=open"
+          "--json" "number,title,author,repository,url" "--limit" "50"))
+
 (defn get-pr-checks
   "Get GitHub Actions status for a specific PR in a repository"
   [repo-name pr-number]
@@ -108,12 +145,20 @@
     (catch Exception _
       [])))
 
-(defn main
-  "Main function to display PR statuses"
-  []
-  (let [username (str/trim (get-authenticated-user))]
-    (println (format "🔍 Fetching open PRs for @%s...\n" username))
+(defn parse-args
+  "Parse CLI arguments and return task key"
+  [args]
+  (let [{:keys [options]} (cli/parse-opts args cli-opts)]
+    (cond
+      (:reviews options) :show-review-requests
+      :else              :show-authored-prs)))
 
+(defmulti task identity)
+
+(defmethod task :show-authored-prs
+  [_]
+  (let [username (str/trim (get-authenticated-user))]
+    (println (format "🔍 Fetching open PRs for %s...\n" (cyan (str "@" username))))
     (let [prs (get-open-prs)]
       (if (empty? prs)
         (println "📭 No open PRs found authored by you.")
@@ -122,6 +167,27 @@
           (doseq [pr prs]
             (format-pr pr))
           (println))))))
+
+(defmethod task :show-review-requests
+  [_]
+  (let [username (str/trim (get-authenticated-user))]
+    (println (format "👀 Fetching review requests for %s...\n" (cyan (str "@" username))))
+    (let [prs (get-review-requests)
+          sorted-prs (sort-by (juxt #(str/lower-case (get-in % [:repository :nameWithOwner]))
+                                :number)
+                       prs)]
+      (if (empty? sorted-prs)
+        (println "📭 No review requests found.")
+        (do
+          (println (format "📋 Found %d review request(s):" (count sorted-prs)))
+          (doseq [pr sorted-prs]
+            (format-review-request pr))
+          (println))))))
+
+(defn main
+  "Main function to display PR statuses"
+  [& args]
+  (task (parse-args args)))
 
 (defn run-gh
   "Run gh CLI command and return parsed JSON output"
@@ -138,4 +204,4 @@
   (sort-by (juxt #(get status-priority (:state %) 5) #(str/lower-case (:name %))) checks))
 
 ;; Run the script
-(main)
+(apply main *command-line-args*)

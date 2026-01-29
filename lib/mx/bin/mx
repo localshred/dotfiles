@@ -25,12 +25,9 @@
   "Execute the specified command with given arguments"
   [command args]
   (if-let [script-path (get available-commands command)]
+    (let [result (apply p/process {:inherit true} script-path args)]
+      (-> result p/check :exit))
     (do
-      (println (format "🚀 Running mx %s...\n" command))
-      (let [result (apply p/process {:inherit true} script-path args)]
-        (-> result p/check :exit)))
-    (do
-      (println (format "❌ Unknown command: %s\n" command))
       (show-help)
       1)))
 
@@ -43,12 +40,13 @@
   (println)
   (println "Available commands:")
   (doseq [[cmd desc] [["goto" "Navigate to SCM provider URLs (repos, issues, PRs)"]
-                      ["prs" "Show open PRs with current statuses"]]]
+                      ["prs" "Show open PRs with current statuses or review requests"]]]
     (println (format "  %-10s %s" cmd desc)))
   (println)
   (println "Examples:")
   (println "  mx goto -u foo -r bar    # Navigate to github.com/foo/bar")
   (println "  mx prs                   # Show PR status across all repositories")
+  (println "  mx prs --reviews         # Show PRs requesting your review")
   (println)
   (println "Options:")
   (println "  -h, --help         # Show this help message"))
