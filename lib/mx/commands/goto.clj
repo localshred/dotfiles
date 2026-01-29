@@ -1,6 +1,6 @@
 #!/usr/bin/env bb
 
-(ns goto-scm
+(ns mx.commands.goto
   (:require
    [cheshire.core :as json]
    [clojure.java.io :as io]
@@ -58,24 +58,25 @@
 ;;     "user": "localshred"
 ;;   },
 ;; }
+(defn- config-path
+  [env-var-name]
+  (or (when-let [dir (System/getenv env-var-name)]
+        (str dir "/mx.goto.json"))
+      (str (System/getenv "HOME") "/code/src/utils/" env-var-name "/mx.goto.json")))
+
 (def personal-config-path
-  (or (when-let [dotfiles (System/getenv "dotfiles")]
-        (str dotfiles "/.goto_scmrc.json"))
-      (str (System/getenv "HOME") "/code/src/utils/dotfiles/.goto_scmrc.json")))
+  (config-path "dotfiles"))
 
 (def work-config-path
-  (or (when-let [work-dotfiles (System/getenv "dotfiles_work")]
-        (str work-dotfiles "/goto_scmrc.json"))
-      (str (System/getenv "HOME") "/code/src/utils/dotfiles_work/goto_scmrc.json")))
+  (config-path "dotfiles_work"))
 
 (defn- load-config [path]
   (when (and path (.exists (io/file path)))
     (-> path (io/reader) (json/parse-stream true))))
 
 (def user-aliases
-  (or (load-config work-config-path)
-      (load-config personal-config-path)
-      {}))
+  (merge (load-config personal-config-path)
+         (load-config work-config-path)))
 
 (def repo-aliases
   (->> user-aliases
@@ -143,21 +144,24 @@
   [options]
   (when (:debug options)
     (stderr {:user-aliases user-aliases}))
-  (if-let [aliased-user (get user-aliases (:user options))]
-    (cond-> options
-      (:user aliased-user)   (assoc :user aliased-user)
-      (and
-        (not (provider? (:scm options)))
-        (:scm aliased-user)) (assoc :scm (:scm aliased-user)))
-    options))
+  (let [user-val (:user options)
+        user-key (if (keyword? user-val) user-val (keyword user-val))]
+    (if-let [aliased-user (get user-aliases user-key)]
+      (cond-> options
+        (:user aliased-user)   (assoc :user aliased-user)
+        (and
+          (not (provider? (:scm options)))
+          (:scm aliased-user)) (assoc :scm (:scm aliased-user)))
+      (update options :user #(hash-map :user (if (keyword? %) (name %) (str %)))))))
 
 (defn- update-repo-from-user-aliases
   [{:keys [user repo] :as options}]
   (when (:debug options)
     (stderr {:repo-aliases repo-aliases}))
-  (if-let [aliased-repo (get-in repo-aliases [(:user user) repo])]
-    (assoc options :repo aliased-repo)
-    (update options :repo name)))
+  (let [repo-key (if (keyword? repo) repo (keyword repo))]
+    (if-let [aliased-repo (get-in repo-aliases [(:user user) repo-key])]
+      (assoc options :repo aliased-repo)
+      (update options :repo #(if (keyword? %) (name %) (str %))))))
 
 (defn- parse-from-args
   [options arguments]
@@ -172,8 +176,9 @@
   [{:keys [arguments options] :as cli-parsed}]
   (when (:debug options)
     (stderr cli-parsed))
-  (let [url (-> options
-                (parse-from-args arguments)
+  (let [url (-> (if (seq arguments)
+                  (parse-from-args options arguments)
+                  options)
                 (update-user-from-alias)
                 (update-repo-from-user-aliases)
                 (build-url))]
@@ -191,20 +196,20 @@
 
 (defmethod task :help
   [{:keys [errors summary]}]
-  (println "goto_scm [OPTIONS]
+  (println "mx goto [OPTIONS]
   Navigate to SCM provider URLs for user, repo, issues, prs.
 
 Usage:
-  goto_scm -h
-  goto_scm -y ...                    # Print URL and exit
-  goto_scm -d ...                    # Print Debug info while executing
-  goto_scm -u foo                    # navigate to https://github.com/foo
-  goto_scm -u foo -s gitlab          # navigate to https://gitlab.com/foo
-  goto_scm -u foo -r bar             # navigate to https://github.com/foo/bar
-  goto_scm -u foo -r bar -i          # navigate to https://github.com/foo/bar/issues
-  goto_scm -u foo -r bar -i -n 123   # navigate to https://github.com/foo/bar/issue/123
-  goto_scm -u foo -r bar -p          # navigate to https://github.com/foo/bar/pulls
-  goto_scm -u foo -r bar -p -n 456   # navigate to https://github.com/foo/bar/pull/456
+  mx goto -h
+  mx goto -y ...                    # Print URL and exit
+  mx goto -d ...                    # Print Debug info while executing
+  mx goto -u foo                    # navigate to https://github.com/foo
+  mx goto -u foo -s gitlab          # navigate to https://gitlab.com/foo
+  mx goto -u foo -r bar             # navigate to https://github.com/foo/bar
+  mx goto -u foo -r bar -i          # navigate to https://github.com/foo/bar/issues
+  mx goto -u foo -r bar -i -n 123   # navigate to https://github.com/foo/bar/issue/123
+  mx goto -u foo -r bar -p          # navigate to https://github.com/foo/bar/pulls
+  mx goto -u foo -r bar -p -n 456   # navigate to https://github.com/foo/bar/pull/456
 
 Options:")
   (println summary)
@@ -215,4 +220,11 @@ Options:")
       (println (str "  [!] " error)))
     (System/exit 1)))
 
-(task (cli/parse-opts *command-line-args* cli-opts))
+(defn main
+  "Main entry point for goto command"
+  [& args]
+  (task (cli/parse-opts args cli-opts)))
+
+;; Run the script when called directly
+(when (= *file* (System/getProperty "babashka.file"))
+  (apply main *command-line-args*))

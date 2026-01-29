@@ -1,6 +1,8 @@
 {
   "l": {
-    "repos": { "d": "dotfiles" },
+    "repos": {
+      "d": "dotfiles"
+    },
     "scm": "github",
     "user": "localshred"
   },

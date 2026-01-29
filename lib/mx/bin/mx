@@ -8,7 +8,8 @@
 (declare run-command show-help)
 
 (def available-commands
-  {"prs" (str mx-root "/commands/prs.clj")})
+  {"goto" (str mx-root "/commands/goto.clj")
+   "prs" (str mx-root "/commands/prs.clj")})
 
 (defn main
   "Main entry point for mx CLI"
@@ -41,11 +42,13 @@
   (println "Usage: mx <command> [options]")
   (println)
   (println "Available commands:")
-  (doseq [[cmd desc] [["prs" "Show open PRs with current statuses"]]]
+  (doseq [[cmd desc] [["goto" "Navigate to SCM provider URLs (repos, issues, PRs)"]
+                      ["prs" "Show open PRs with current statuses"]]]
     (println (format "  %-10s %s" cmd desc)))
   (println)
   (println "Examples:")
-  (println "  mx prs             # Show PR status across all repositories")
+  (println "  mx goto -u foo -r bar    # Navigate to github.com/foo/bar")
+  (println "  mx prs                   # Show PR status across all repositories")
   (println)
   (println "Options:")
   (println "  -h, --help         # Show this help message"))
