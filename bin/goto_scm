@@ -59,12 +59,14 @@
 ;;   },
 ;; }
 (def personal-config-path
-  (when-let [dotfiles (System/getenv "dotfiles")]
-    (str dotfiles "/.goto_scmrc.json")))
+  (or (when-let [dotfiles (System/getenv "dotfiles")]
+        (str dotfiles "/.goto_scmrc.json"))
+      (str (System/getenv "HOME") "/code/src/utils/dotfiles/.goto_scmrc.json")))
 
 (def work-config-path
-  (when-let [work-dotfiles (System/getenv "dotfiles_work")]
-    (str work-dotfiles "/goto_scmrc.json")))
+  (or (when-let [work-dotfiles (System/getenv "dotfiles_work")]
+        (str work-dotfiles "/goto_scmrc.json"))
+      (str (System/getenv "HOME") "/code/src/utils/dotfiles_work/goto_scmrc.json")))
 
 (defn- load-config [path]
   (when (and path (.exists (io/file path)))
