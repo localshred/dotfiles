@@ -9,6 +9,7 @@
 ;; CLI options
 (def cli-opts
   [["-r" "--reviews" "Show PRs requesting your review instead of your authored PRs"]
+   ["-v" "--verbose" "Show detailed check status for PRs"]
    ["-h" "--help" "Print this help text"]])
 
 ;; ANSI color codes
@@ -50,7 +51,7 @@
    "IN_PROGRESS" "🔄"
    "QUEUED" "⏳"})
 
-(declare format-review-request get-authenticated-user get-pr-checks get-review-requests parse-args run-gh sort-checks task)
+(declare format-pr-compact format-pr-verbose format-review-request get-authenticated-user get-checks-status get-pr-checks get-review-requests parse-args run-gh sort-checks task)
 
 (defn format-check
   "Format a single check result"
@@ -62,8 +63,33 @@
                         "")]
     (format "  %s %s%s" symbol name workflow-text)))
 
-(defn format-pr
-  "Format a PR with its checks"
+(defn get-checks-status
+  "Get overall status symbol for PR checks"
+  [checks]
+  (let [states (map :state checks)]
+    (cond
+      (empty? states) ""
+      (some #{"ERROR" "FAILURE"} states) "❌"
+      (some #{"PENDING" "IN_PROGRESS" "QUEUED"} states) "🔄"
+      (every? #{"SUCCESS"} states) "✅"
+      :else "")))
+
+(defn format-pr-compact
+  "Format a PR in compact one-line format"
+  [pr]
+  (let [{:keys [number title repository url]} pr
+        repo-name (:nameWithOwner repository)
+        checks (->> (get-pr-checks repo-name number)
+                    (remove #(re-find ignored-checks-pattern (:name %))))
+        status (get-checks-status checks)
+        repo-id (format "%s#%d" repo-name number)]
+    (println (str/join "\t" [(cyan repo-id)
+                             (green title)
+                             (blue url)
+                             status]))))
+
+(defn format-pr-verbose
+  "Format a PR with detailed checks"
   [pr]
   (let [{:keys [number title author repository url]} pr
         repo-name (:nameWithOwner repository)
@@ -103,6 +129,13 @@
           (when-let [state-checks (get grouped-checks state)]
             (doseq [check state-checks]
               (println (format-check check)))))))))
+
+(defn format-pr
+  "Format a PR, choosing compact or verbose based on flag"
+  [pr verbose?]
+  (if verbose?
+    (format-pr-verbose pr)
+    (format-pr-compact pr)))
 
 (defn format-review-request
   "Format a PR review request"
@@ -146,26 +179,33 @@
       [])))
 
 (defn parse-args
-  "Parse CLI arguments and return task key"
+  "Parse CLI arguments and return task key and options"
   [args]
-  (let [{:keys [options]} (cli/parse-opts args cli-opts)]
-    (cond
-      (:reviews options) :show-review-requests
-      :else              :show-authored-prs)))
+  (let [{:keys [options]} (cli/parse-opts args cli-opts)
+        task-key (cond
+                   (:reviews options) :show-review-requests
+                   :else              :show-authored-prs)]
+    {:task task-key :options options}))
 
-(defmulti task identity)
+(defmulti task :task)
 
 (defmethod task :show-authored-prs
-  [_]
-  (let [username (str/trim (get-authenticated-user))]
+  [{:keys [options]}]
+  (let [username (str/trim (get-authenticated-user))
+        verbose? (:verbose options)]
     (println (format "🔍 Fetching open PRs for %s...\n" (cyan (str "@" username))))
-    (let [prs (get-open-prs)]
-      (if (empty? prs)
+    (let [prs (get-open-prs)
+          sorted-prs (if verbose?
+                       prs
+                       (sort-by (juxt #(str/lower-case (get-in % [:repository :nameWithOwner]))
+                                      :number)
+                                prs))]
+      (if (empty? sorted-prs)
         (println "📭 No open PRs found authored by you.")
         (do
-          (println (format "📋 Found %d open PR(s):" (count prs)))
-          (doseq [pr prs]
-            (format-pr pr))
+          (println (format "📋 Found %d open PR(s):" (count sorted-prs)))
+          (doseq [pr sorted-prs]
+            (format-pr pr verbose?))
           (println))))))
 
 (defmethod task :show-review-requests
