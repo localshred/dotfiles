@@ -19,3 +19,4 @@ vim/.vim/bundle/*
 .lsp/
 
 dump.rdb
+.DS_Store
