@@ -80,3 +80,8 @@
   `mix format` to make sure we don't have any lint issues.
 - When writing tests, use `ctx` as the context variable when needed. Do not
   expand the context variable to pull direct keys out.
+
+## Environment
+
+### Doom Emacs Paths
+- My Doom Emacs config lives in `~/.doom.d/` (not `~/.config/emacs` or `~/.emacs.d/`)
