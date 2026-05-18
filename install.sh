@@ -10,7 +10,6 @@ dotfiles="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 stow_packages="
 asdf
-claude
 clojure
 emacs
 git
@@ -55,6 +54,7 @@ run_command() {
 install() {
   install_brew
   install_stow
+  install_claude
   install_work
   install_vim_bundles
   install_non_brew_libs
@@ -76,6 +76,12 @@ install_stow() {
   for package in $stow_packages; do
     run_command "stow -v -t $HOME -d $dotfiles $package"
   done
+}
+
+install_claude() {
+  print_info "Syncing CLAUDE.md..."
+  source "$dotfiles/zsh-lib/lib/claude.zsh"
+  claudesync
 }
 
 install_non_brew_libs() {
@@ -148,6 +154,7 @@ uninstall() {
 }
 
 case "$1" in
+claude) install_claude ;;
 uninstall) uninstall ;;
 stow) install_stow ;;
 vim) install_vim_bundles ;;

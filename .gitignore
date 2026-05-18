@@ -4,7 +4,7 @@
 cache/
 
 claude/.claude/*
-!claude/.claude/CLAUDE.md
+!claude/.claude/CLAUDE.personal.md
 
 gnupg/.gnupg/*
 !gnupg/.gnupg/gpg.conf
