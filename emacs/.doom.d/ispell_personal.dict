@@ -1,3 +1,4 @@
+personal_ws-1.1 en 137
 adhoc
 adrs
 allowedfeatures
@@ -61,6 +62,7 @@ khadir
 kozisek
 kubernetes
 lifecycle
+linter
 lookups
 maxwaiting
 mcfeely
@@ -81,6 +83,7 @@ oauth
 observability
 onboarding
 ops
+param
 perf
 permiso
 permiso's
@@ -122,6 +125,7 @@ standup
 statsd
 submodule
 submodules
+terraform
 threadsafe
 todos
 usr

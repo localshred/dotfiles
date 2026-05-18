@@ -9,7 +9,7 @@ __load_completion() {
     fpath=($* $fpath)
     fignore=(.DS_Store $fignore)
     # Brew completions
-    if type brew &>/dev/null; then
+    if command -v brew &>/dev/null; then
       fpath=($fpath $(brew --prefix)/share/zsh/site-functions)
     fi
     compinit -i

@@ -233,6 +233,25 @@
   :commands jest-test-mode
   :hook (typescript-ts-mode js-ts-mode tsx-ts-mode))
 
+;; Fix display issues with emojis in tree-sitter modes
+(after! typescript-ts-mode
+  ;; Force emoji characters to use consistent width
+  (setq use-default-font-for-symbols nil)
+
+  ;; Disable line-prefix/wrap-prefix which can cause display issues
+  (add-hook 'typescript-ts-mode-hook
+            (lambda ()
+              ;; Force redisplay on cursor movement
+              (setq-local auto-window-vscroll nil)
+              (setq-local redisplay-skip-fontification-on-input nil)
+
+              ;; Fix for emoji display width issues
+              (setq-local display-line-numbers-width-start t)
+
+              ;; Recalculate display properties more frequently
+              (setq-local jit-lock-defer-time nil)
+              (setq-local jit-lock-stealth-time nil))))
+
 (use-package lsp-mode
   :commands lsp
   :config
@@ -285,6 +304,19 @@
 
   :hook
   (sh-mode . lsp))
+
+(after! forge
+  ;; Don't prompt to add repositories automatically at startup
+  (setq forge-add-default-sections nil)
+  ;; Disable forge database notifications
+  (setq forge-database-connector 'sqlite-builtin)
+  (remove-hook 'magit-status-sections-hook 'forge-insert-pullreqs)
+  (remove-hook 'magit-status-sections-hook 'forge-insert-issues))
+
+(after! magit
+  ;; Only scan specific directories for git repos, not entire home directory
+  (setq magit-repository-directories
+        '(("~/code/src" . 2))))
 
 (use-package magit-delta
   :hook (magit-mode . magit-delta-mode)
@@ -431,12 +463,14 @@
 ;; Install tree-sitter grammars
 (when (treesit-available-p)
   (setq treesit-language-source-alist
-        '((typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        '((elixir "https://github.com/elixir-lang/tree-sitter-elixir" "main" "src")
+          (heex "https://github.com/phoenixframework/tree-sitter-heex" "main" "src")
+          (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
           (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
           (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")))
 
   ;; Install grammars if they don't exist
-  (dolist (lang '(typescript tsx javascript))
+  (dolist (lang '(elixir heex typescript tsx javascript))
     (unless (treesit-language-available-p lang)
       (treesit-install-language-grammar lang)))
 
@@ -445,6 +479,14 @@
     "Install JavaScript, TypeScript, and TSX tree-sitter grammars."
     (interactive)
     (dolist (lang '(typescript tsx javascript))
+      (message "Installing %s grammar..." lang)
+      (treesit-install-language-grammar lang)
+      (message "%s grammar installed!" lang)))
+
+  (defun install-elixir-ts-grammars ()
+    "Install Elixir and HEEx tree-sitter grammars."
+    (interactive)
+    (dolist (lang '(elixir heex))
       (message "Installing %s grammar..." lang)
       (treesit-install-language-grammar lang)
       (message "%s grammar installed!" lang)))

@@ -80,15 +80,14 @@
 (package! pbcopy)
 (package! pinentry) ;; be sure to `M-x pinentry-start`
 (package! prettier-js)
+;; Transitive dep (via sqlformat, elm-mode); straight defaults to master but
+;; upstream renamed to main.
+(package! reformatter :recipe (:host github
+                              :repo "purcell/emacs-reformatter"
+                              :branch "main"))
 (package! rubocop)
-(package! sqlformat)
+(package! sqlformat :recipe (:host github
+                                   :repo "purcell/sqlformat"
+                                   :branch "main"
+                                   :files ("sqlformat.el")))
 
-;;;
-;;; sf code-genie + ellama
-;;;
-(package! llm)
-(package! gptel)
-(package! ellama)
-;;;
-;;; end sf code-genie + ellama
-;;;
