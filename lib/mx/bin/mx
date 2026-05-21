@@ -8,7 +8,8 @@
 (declare run-command show-help)
 
 (def available-commands
-  {"goto" (str mx-root "/commands/goto.clj")
+  {"focus" (str mx-root "/commands/focus.clj")
+   "goto" (str mx-root "/commands/goto.clj")
    "prs" (str mx-root "/commands/prs.clj")})
 
 (defn main
@@ -39,7 +40,8 @@
   (println "Usage: mx <command> [options]")
   (println)
   (println "Available commands:")
-  (doseq [[cmd desc] [["goto" "Navigate to SCM provider URLs (repos, issues, PRs)"]
+  (doseq [[cmd desc] [["focus" "Attention dashboard — fetch sources or show next actions"]
+                      ["goto" "Navigate to SCM provider URLs (repos, issues, PRs)"]
                       ["prs" "Show open PRs with current statuses or review requests"]]]
     (println (format "  %-10s %s" cmd desc)))
   (println)

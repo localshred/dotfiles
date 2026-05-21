@@ -1,0 +1,2 @@
+{:deps {io.github.timokramer/charm.clj {:git/tag "v0.2.71"
+                                        :git/sha "38e6823"}}}
