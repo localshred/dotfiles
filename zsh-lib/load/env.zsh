@@ -14,7 +14,7 @@ if command -v go &>/dev/null; then
   export GOVERSION=$(go version | awk -Fgo '{print $3}' | awk '{print $1}')
 fi
 export GPG_TTY=$(tty)
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
+export JAVA_HOME=$(/usr/libexec/java_home 2>/dev/null || echo /Library/Java/JavaVirtualMachines/temurin-26.jdk/Contents/Home)
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8

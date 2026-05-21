@@ -15,6 +15,7 @@ emacs/.doom.d/custom.el
 vim/.vim/bundle/*
 
 .clj-kondo/.cache
+.cpcache/
 
 .lsp/
 
