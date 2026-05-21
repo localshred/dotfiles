@@ -54,6 +54,7 @@ get_all_upcoming_meetings() {
         --propertyOrder "datetime,title" \
         --noCalendarNames \
         --dateFormat "%A" \
+        -tf "%H:%M" \
         --includeOnlyEventsFromNowOn \
         --excludeAllDayEvents \
         --separateByDate \
@@ -67,6 +68,7 @@ get_next_meeting() {
         --propertyOrder "datetime,title" \
         --noCalendarNames \
         --dateFormat "%A" \
+        -tf "%H:%M" \
         --includeOnlyEventsFromNowOn \
         --limitItems 1 \
         --excludeAllDayEvents \
@@ -84,6 +86,7 @@ get_next_next_meeting() {
             --propertyOrder "datetime,title" \
             --noCalendarNames \
             --dateFormat "%A" \
+            -tf "%H:%M" \
             --limitItems 1 \
             --excludeAllDayEvents \
             --separateByDate \
@@ -226,6 +229,7 @@ process_icalbuddy_output() {
         --excludeAllDayEvents \
         --noCalendarNames \
         --includeOnlyEventsFromNowOn \
+        -tf "%H:%M" \
         -f \
         eventsToday | while IFS= read -r line; do
 
