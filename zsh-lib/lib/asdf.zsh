@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-source "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh"
+# source "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh"
 
 # Lazy-load rust path only when needed
 rust_path() {

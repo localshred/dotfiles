@@ -1,0 +1,26 @@
+# List all ghostty configs (600+)
+#   ghostty +show-config --default | sort
+
+# ghostty +list-fonts
+# ghostty +list-themes
+
+background-blur-radius = 40
+background-opacity = 0.96
+font-family = "Fira Code Regular"
+font-family-bold = "Fira Code SemiBold"
+font-family-bold-italic = "Menlo Bold Italic"
+font-family-italic = "Menlo Italic"
+font-size = 16
+font-variation = wdth=100
+font-variation-bold = wght=800
+font-variation-bold-italic = wght=800
+font-variation-italic = wght=200
+macos-option-as-alt = true
+macos-titlebar-proxy-icon = hidden
+macos-titlebar-style = tabs
+mouse-hide-while-typing = true
+tab-inherit-working-directory = false
+theme = dark:/Applications/Ghostty.app/Contents/Resources/ghostty/themes/Atom One Dark,light:/Applications/Ghostty.app/Contents/Resources/ghostty/themes/Atom Light
+window-inherit-working-directory = false
+window-title-font-family = "Fira Code Retina"
+working-directory = ~/code/src

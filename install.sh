@@ -12,6 +12,7 @@ stow_packages="
 asdf
 clojure
 emacs
+ghostty
 git
 gnupg
 misc
@@ -104,7 +105,7 @@ install_launchd_agents() {
   if [ ! -f "$plist_dest" ]; then
     print_info "Installing Doom Emacs update check launchd agent..."
     mkdir -p "$HOME/Library/LaunchAgents"
-    sed "s|__HOME__|$HOME|g" "$dotfiles/launchd/$plist_name" > "$plist_dest"
+    sed "s|__HOME__|$HOME|g" "$dotfiles/launchd/$plist_name" >"$plist_dest"
     launchctl load "$plist_dest"
   fi
 }

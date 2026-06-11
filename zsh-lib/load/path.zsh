@@ -8,6 +8,8 @@ pathrebuild() { source "$dotfiles/zsh-lib/load/path.zsh"; }
 path_dirs=(
   "$dotfiles/bin"
   "$HOME/bin"
+  "${ASDF_DATA_DIR:-$HOME/.asdf}/shims"
+  "$GHOSTTY_BIN_DIR"
   "$HOME/.config/emacs/bin"
   "$HOME/.local/bin"
   "$HOME/.yarn/bin"
