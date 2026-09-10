@@ -1,58 +1,112 @@
 #!/usr/bin/env bb
 
 (ns mx.bin.mx
-  (:require [babashka.process :as p]))
+  (:require [babashka.fs :as fs]
+            [babashka.process :as p]
+            [clojure.string :as str]))
+
+;;
+;; Static defs
+;;
 
 (def mx-root (str (System/getProperty "user.home") "/code/src/utils/dotfiles/lib/mx"))
 
-(declare run-command show-help)
+(def builtin-commands
+  "Commands shipped with the public dotfiles repo."
+  {"focus" {:path (str mx-root "/commands/focus.clj")
+            :desc "Attention dashboard — fetch sources or show next actions"}
+   "goto"  {:path (str mx-root "/commands/goto.clj")
+            :desc "Navigate to SCM provider URLs (repos, issues, PRs)"}
+   "prs"   {:path (str mx-root "/commands/prs.clj")
+            :desc "Show open PRs with current statuses or review requests"}})
 
-(def available-commands
-  {"focus" (str mx-root "/commands/focus.clj")
-   "goto" (str mx-root "/commands/goto.clj")
-   "prs" (str mx-root "/commands/prs.clj")})
+(declare all-commands main plugin-commands plugin-dirs read-desc run-command show-help)
+
+;;
+;; Public functions
+;;
+
+(defn all-commands
+  "Merged command registry. Built-ins win over plugins on name conflict."
+  []
+  (merge (plugin-commands) builtin-commands))
 
 (defn main
-  "Main entry point for mx CLI"
+  "Entry point for the mx CLI."
   [& args]
   (if (or (empty? args)
         (contains? #{"-h" "--help"} (first args)))
     (do (show-help) 0)
-    (let [command (first args)
-          cmd-args (rest args)]
-      (run-command command cmd-args))))
+    (run-command (first args) (rest args))))
 
 (defn run-command
-  "Execute the specified command with given arguments"
+  "Execute the named command with the given args, or show help on miss.
+
+  Exposes MX_ROOT so commands can locate the shared `mx.ui` lib regardless
+  of the working directory they were launched from."
   [command args]
-  (if-let [script-path (get available-commands command)]
-    (let [result (apply p/process {:inherit true} script-path args)]
-      (-> result p/check :exit))
-    (do
-      (show-help)
-      1)))
+  (if-let [script-path (get-in (all-commands) [command :path])]
+    (-> (apply p/process {:inherit true :extra-env {"MX_ROOT" mx-root}} script-path args)
+        p/check
+        :exit)
+    (do (show-help) 1)))
 
 (defn show-help
-  "Display help information"
+  "Display help, listing built-in and discovered plugin commands."
   []
-  (println "🔧 mx - Local Development Utils")
-  (println)
-  (println "Usage: mx <command> [options]")
-  (println)
-  (println "Available commands:")
-  (doseq [[cmd desc] [["focus" "Attention dashboard — fetch sources or show next actions"]
-                      ["goto" "Navigate to SCM provider URLs (repos, issues, PRs)"]
-                      ["prs" "Show open PRs with current statuses or review requests"]]]
-    (println (format "  %-10s %s" cmd desc)))
-  (println)
-  (println "Examples:")
-  (println "  mx goto -u foo -r bar    # Navigate to github.com/foo/bar")
-  (println "  mx prs                   # Show PR status (compact format)")
-  (println "  mx prs --reviews         # Show PRs requesting your review")
-  (println "  mx prs --verbose         # Show detailed check status")
-  (println)
-  (println "Options:")
-  (println "  -h, --help         # Show this help message"))
+  (let [plugins (plugin-commands)]
+    (println "🔧 mx - Local Development Utils")
+    (println)
+    (println "Usage: mx <command> [options]")
+    (println)
+    (println "Available commands:")
+    (doseq [[cmd {:keys [desc]}] (sort-by key builtin-commands)]
+      (println (format "  %-10s %s" cmd desc)))
+    (when (seq plugins)
+      (println)
+      (println "Plugin commands (MX_PLUGIN_PATH):")
+      (doseq [[cmd {:keys [desc]}] (sort-by key plugins)]
+        (println (format "  %-10s %s" cmd desc))))
+    (println)
+    (println "Examples:")
+    (println "  mx goto -u foo -r bar    # Navigate to github.com/foo/bar")
+    (println "  mx prs                   # Show PR status (compact format)")
+    (println "  mx prs --reviews         # Show PRs requesting your review")
+    (println "  mx prs --verbose         # Show detailed check status")
+    (println)
+    (println "Options:")
+    (println "  -h, --help         # Show this help message")))
 
-;; Run the CLI
+;;
+;; Private functions
+;;
+
+(defn- plugin-commands
+  "Discover `*.clj` commands under each MX_PLUGIN_PATH dir.
+
+  Command name is the file basename; the description is read from a
+  leading `;; mx-desc: ...` line in the file."
+  []
+  (->> (plugin-dirs)
+       (mapcat #(fs/glob % "*.clj"))
+       (map (fn [path]
+              [(str (fs/strip-ext (fs/file-name path)))
+               {:path (str path)
+                :desc (or (read-desc path) "(plugin command)")}]))
+       (into {})))
+
+(defn- plugin-dirs
+  "Existing directories listed in the colon-separated MX_PLUGIN_PATH env."
+  []
+  (->> (str/split (or (System/getenv "MX_PLUGIN_PATH") "") #":")
+       (remove str/blank?)
+       (filter fs/directory?)))
+
+(defn- read-desc
+  "Extract the `;; mx-desc:` description line from a command file, if present."
+  [path]
+  (->> (fs/read-all-lines path)
+       (keep #(second (re-find #"^;;\s*mx-desc:\s*(.*)$" %)))
+       first))
+
 (System/exit (apply main *command-line-args*))

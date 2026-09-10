@@ -26,7 +26,9 @@
 (def journal-dir (str org-root "/journals"))
 (def todos-path (str org-root "/pages/Focus TODOs.edn"))
 (def archive-path (str org-root "/pages/Focus Archive.edn"))
+(def staleness-path (str org-root "/pages/Focus Staleness.edn"))
 (def refresh-interval-ms (* 5 60 1000))
+(def stale-threshold-days 3)
 
 ;; ---------------------------------------------------------------------------
 ;; Styles
@@ -60,7 +62,7 @@
    "?" "help"
    "q" "quit"))
 
-(declare load-archive filter-archived build-tab-list)
+(declare load-archive filter-archived build-tab-list load-promotions)
 
 ;; ---------------------------------------------------------------------------
 ;; Time helpers
@@ -95,8 +97,13 @@
 (defn item-time-bucket
   "Assign an item to a time bucket based on its age/schedule."
   [item]
-  (let [{:keys [age-days due-date source]} item]
-    (cond
+  (let [{:keys [age-days due-date source]} item
+        promotions (load-promotions)
+        key (or (:url item) (:text item))
+        promoted-to (get promotions key)]
+    (if promoted-to
+      promoted-to
+      (cond
       ;; TODOs with explicit due dates
       due-date
       (let [days-until (.between ChronoUnit/DAYS today due-date)]
@@ -142,14 +149,19 @@
       (= source :email)
       :today
 
+      ;; GUS work items
+      (= source :gus)
+      :today
+
       ;; TODOs without due date but with priority
       (= source :todo)
       (case (:priority item)
         :high :today
         :medium :soon
+        :low :later
         :later)
 
-      :else :later)))
+      :else :later))))
 
 ;; ---------------------------------------------------------------------------
 ;; Dashboard Parsing -> Unified Items
@@ -212,11 +224,17 @@
 
       (re-find #"(?i)calendar" section-title)
       {:text clean :url url :source :calendar
-       :is-today (str/includes? clean (str (.format today (DateTimeFormatter/ofPattern "yyyy-MM-dd"))))
+       :is-today (not (str/starts-with? clean "tomorrow"))
        :icon "[ ]"}
 
       (re-find #"(?i)email" section-title)
       {:text clean :url url :source :email :icon "[ ]"}
+
+      (re-find #"(?i)slack" section-title)
+      {:text clean :url url :source :slack-mention :icon "[ ]"}
+
+      (re-find #"(?i)gus" section-title)
+      {:text clean :url url :source :gus :icon "[ ]"}
 
       :else
       {:text clean :url url :source :other :icon "[ ]"})))
@@ -235,16 +253,95 @@
 ;; TODO persistence
 ;; ---------------------------------------------------------------------------
 
+(defn serialize-todo [todo]
+  (cond-> todo
+    (:due-date todo) (update :due-date #(.toString %))))
+
+(defn deserialize-todo [todo]
+  (cond-> todo
+    (:due-date todo) (update :due-date parse-date)))
+
 (defn load-todos []
   (if (.exists (java.io.File. todos-path))
-    (read-string (slurp todos-path))
+    (mapv deserialize-todo (read-string (slurp todos-path)))
     []))
 
 (defn save-todos! [todos]
-  (spit todos-path (pr-str todos)))
+  (spit todos-path (pr-str (mapv serialize-todo todos))))
 
 (defn todo->item [todo]
-  (assoc todo :source :todo :icon (if (:done todo) "[x]" "[ ]")))
+  (let [icon (cond
+               (:done todo) "[x]"
+               (:important todo) "[!]"
+               :else "[ ]")]
+    (assoc todo :source :todo :icon icon)))
+
+;; ---------------------------------------------------------------------------
+;; Promotions (override item time buckets)
+;; ---------------------------------------------------------------------------
+
+(def promotions-path (str org-root "/pages/Focus Promotions.edn"))
+
+(defn load-promotions []
+  (if (.exists (java.io.File. promotions-path))
+    (read-string (slurp promotions-path))
+    {}))
+
+(defn save-promotions! [promotions]
+  (spit promotions-path (pr-str promotions)))
+
+(defn promote-item! [item target-tab]
+  (let [promotions (load-promotions)
+        key (or (:url item) (:text item))]
+    (save-promotions! (assoc promotions key target-tab))))
+
+(defn demote-item! [item]
+  (let [promotions (load-promotions)
+        key (or (:url item) (:text item))]
+    (save-promotions! (dissoc promotions key))))
+
+;; ---------------------------------------------------------------------------
+;; Staleness tracking
+;; ---------------------------------------------------------------------------
+
+(defn load-staleness []
+  (if (.exists (java.io.File. staleness-path))
+    (read-string (slurp staleness-path))
+    {}))
+
+(defn save-staleness! [staleness]
+  (spit staleness-path (pr-str staleness)))
+
+(defn item-key [item]
+  (or (:url item) (:text item)))
+
+(defn touch-item! [item]
+  (let [staleness (load-staleness)
+        key (item-key item)]
+    (save-staleness! (assoc staleness key (.toString today)))))
+
+(defn days-stale [item]
+  (let [staleness (load-staleness)
+        key (item-key item)
+        first-seen (get staleness key)]
+    (if first-seen
+      (.between ChronoUnit/DAYS (parse-date first-seen) today)
+      0)))
+
+(defn record-now-items! [items]
+  (let [staleness (load-staleness)
+        today-str (.toString today)
+        updated (reduce (fn [s item]
+                          (let [key (item-key item)]
+                            (if (contains? s key)
+                              s
+                              (assoc s key today-str))))
+                        staleness
+                        items)]
+    (save-staleness! updated)))
+
+(defn stale? [item]
+  (>= (days-stale item) stale-threshold-days))
 
 ;; ---------------------------------------------------------------------------
 ;; Archive
@@ -287,10 +384,15 @@
   (let [archive (load-archive)
         all-items (concat dashboard-items (map todo->item todos))
         visible (filter-archived all-items archive)
-        bucketed (group-by item-time-bucket visible)]
+        bucketed (group-by item-time-bucket visible)
+        now-items (concat (get bucketed :overdue []) (get bucketed :today []))
+        _ (record-now-items! now-items)
+        ;; Auto-demote stale Now items to Soon
+        {stale-now true fresh-now false} (group-by stale? (get bucketed :today []))
+        soon-with-demoted (concat (get bucketed :soon []) stale-now)]
     {:overdue (get bucketed :overdue [])
-     :today (get bucketed :today [])
-     :soon (get bucketed :soon [])
+     :today (vec fresh-now)
+     :soon (vec soon-with-demoted)
      :later (get bucketed :later [])
      :unscheduled (->> (get bucketed :later [])
                        (filter #(and (= :todo (:source %))
@@ -306,13 +408,29 @@
     :done "COMPLETED"
     (name key)))
 
+(defn sort-items [items]
+  (sort-by (fn [item]
+             [(if (:important item) 0 1)
+              (if (= :todo (:source item)) 0 1)
+              (or (:age-days item) 999)])
+           items))
+
+(defn staleness-indicator [item]
+  (let [days (days-stale item)]
+    (cond
+      (>= days stale-threshold-days) (str " [" days "d stale]")
+      (>= days 2) (str " [" days "d]")
+      :else "")))
+
 (defn items->list-entries [items]
   (map (fn [item]
-         {:title (str (:icon item) " " (:text item))
+         {:title (str (:icon item) " " (:text item) (staleness-indicator item))
           :data {:type :item :item item}})
-       items))
+       (sort-items items)))
 
-(defn build-tab-list [tab bucketed done-items]
+(def chrome-lines 6)
+
+(defn build-tab-list [tab bucketed done-items height]
   (let [sections (case tab
                    :now [[:overdue (:overdue bucketed)]
                          [:today (:today bucketed)]]
@@ -330,11 +448,39 @@
                                         :data {:type :header}}
                                        (items->list-entries items)))))
                      (remove nil?)
-                     vec)]
+                     vec)
+        list-height (max 10 (- (or height 40) chrome-lines))]
     (item-list/item-list (if (empty? entries)
                            [{:title "Nothing here." :data {:type :empty}}]
                            entries)
-                         :height 20
+                         :height list-height
+                         :cursor-prefix "> "
+                         :item-prefix "  ")))
+
+;; ---------------------------------------------------------------------------
+;; Migration mode (morning review of stale Now items)
+;; ---------------------------------------------------------------------------
+
+(defn get-migration-items [bucketed]
+  (let [staleness (load-staleness)]
+    (->> (concat (:overdue bucketed) (:today bucketed))
+         (filter (fn [item]
+                   (let [key (item-key item)
+                         seen (get staleness key)]
+                     (and seen
+                          (> (.between ChronoUnit/DAYS (parse-date seen) today) 0)))))
+         vec)))
+
+(defn build-migration-list [items height]
+  (let [entries (mapv (fn [item]
+                        {:title (str "[ ] " (:text item) (staleness-indicator item))
+                         :data {:type :item :item item}})
+                      items)
+        list-height (max 5 (- (or height 40) 10))]
+    (item-list/item-list (if (empty? entries)
+                           [{:title "Nothing to review." :data {:type :empty}}]
+                           entries)
+                         :height list-height
                          :cursor-prefix "> "
                          :item-prefix "  ")))
 
@@ -353,6 +499,8 @@
 
 (defn init []
   (let [{:keys [updated bucketed todos done-items]} (load-state)
+        migration-items (get-migration-items bucketed)
+        show-migration (seq migration-items)
         t (timer/timer :timeout refresh-interval-ms
                        :interval refresh-interval-ms
                        :running true)
@@ -362,11 +510,15 @@
       :bucketed bucketed
       :todos todos
       :done-items done-items
-      :list (build-tab-list :now bucketed done-items)
+      :term-height 40
+      :list (if show-migration
+              (build-migration-list migration-items 40)
+              (build-tab-list :now bucketed done-items 40))
+      :mode (if show-migration :migration :browse)
+      :migration-items (vec migration-items)
       :input (text-input/text-input :prompt "Add: "
-                                    :placeholder "text [@due:YYYY-MM-DD] [!high|!med]"
+                                    :placeholder "text [@today|@tomorrow|@due:YYYY-MM-DD] [!high|!med|!important]"
                                     :focused false)
-      :mode :browse
       :refresh-timer t
       :help (help/help help-bindings :width 60)
       :show-help false}
@@ -382,12 +534,12 @@
         (assoc :updated updated
                :bucketed bucketed
                :todos todos)
-        (as-> s (assoc s :list (build-tab-list (:tab s) bucketed (:done-items s)))))))
+        (as-> s (assoc s :list (build-tab-list (:tab s) bucketed (:done-items s) (:term-height s)))))))
 
 (defn switch-tab [state tab]
   (assoc state
          :tab tab
-         :list (build-tab-list tab (:bucketed state) (:done-items state))))
+         :list (build-tab-list tab (:bucketed state) (:done-items state) (:term-height state))))
 
 (defn next-tab [state]
   (let [idx (.indexOf tabs (:tab state))
@@ -412,18 +564,25 @@
 
 (defn parse-todo-input [text]
   (let [due-match (re-find #"@due:(\d{4}-\d{2}-\d{2})" text)
-        due-date (when due-match (parse-date (second due-match)))
+        due-date (cond
+                   due-match (parse-date (second due-match))
+                   (re-find #"@today" text) today
+                   (re-find #"@tomorrow" text) (.plusDays today 1)
+                   :else nil)
         priority (cond
                    (re-find #"!high" text) :high
                    (re-find #"!med" text) :medium
                    :else nil)
+        important? (boolean (re-find #"!important" text))
         clean (-> text
                   (str/replace #"\s*@due:\d{4}-\d{2}-\d{2}\s*" " ")
-                  (str/replace #"\s*!(high|med)\s*" " ")
+                  (str/replace #"\s*@(today|tomorrow)\s*" " ")
+                  (str/replace #"\s*!(high|med|important)\s*" " ")
                   str/trim)]
     {:text clean
      :due-date due-date
      :priority priority
+     :important important?
      :done false}))
 
 (defn add-item [state]
@@ -462,6 +621,29 @@
             (assoc :todos new-todos)
             refresh)))))
 
+(def promote-order [:later :soon :today :overdue])
+
+(defn promote-selected [state]
+  (let [selected (item-list/selected-item (:list state))
+        data (:data selected)]
+    (when (= :item (:type data))
+      (let [item (:item data)
+            current-bucket (item-time-bucket item)
+            idx (.indexOf promote-order current-bucket)
+            target (when (< idx (dec (count promote-order)))
+                     (nth promote-order (inc idx)))]
+        (when target
+          (promote-item! item target)
+          (refresh state))))))
+
+(defn demote-selected [state]
+  (let [selected (item-list/selected-item (:list state))
+        data (:data selected)]
+    (when (= :item (:type data))
+      (let [item (:item data)]
+        (demote-item! item)
+        (refresh state)))))
+
 (defn open-selected [state]
   (let [selected (item-list/selected-item (:list state))
         data (:data selected)
@@ -482,11 +664,64 @@
       [(exit-add-mode state) nil]
       [state program/quit-cmd])
 
+    ;; Window resize
+    (msg/window-size? msg)
+    (let [new-height (:height msg)
+          new-state (-> state
+                        (assoc :term-height new-height)
+                        (assoc :list (build-tab-list (:tab state) (:bucketed state) (:done-items state) new-height)))]
+      [new-state nil])
+
     ;; Timer tick
     (timer/for-timer? (:refresh-timer state) msg)
     (let [[new-timer cmd] (timer/timer-update (:refresh-timer state) msg)
           new-state (-> state (assoc :refresh-timer new-timer) refresh)]
       [new-state cmd])
+
+    ;; Migration mode
+    (= (:mode state) :migration)
+    (let [selected (item-list/selected-item (:list state))
+          item (get-in selected [:data :item])]
+      (cond
+        ;; Keep in Now (reset staleness)
+        (or (msg/key-match? msg "enter")
+            (msg/key-match? msg "k"))
+        (do (when item (touch-item! item))
+            (let [remaining (vec (remove #(= (item-key %) (item-key item)) (:migration-items state)))]
+              (if (empty? remaining)
+                [(-> state (assoc :mode :browse) refresh) nil]
+                [(assoc state
+                        :migration-items remaining
+                        :list (build-migration-list remaining (:term-height state))) nil])))
+
+        ;; Demote to Soon
+        (msg/key-match? msg "d")
+        (do (when item (promote-item! item :soon))
+            (let [remaining (vec (remove #(= (item-key %) (item-key item)) (:migration-items state)))]
+              (if (empty? remaining)
+                [(-> state (assoc :mode :browse) refresh) nil]
+                [(assoc state
+                        :migration-items remaining
+                        :list (build-migration-list remaining (:term-height state))) nil])))
+
+        ;; Drop (archive)
+        (msg/key-match? msg "x")
+        (do (when item (archive-item! item))
+            (let [remaining (vec (remove #(= (item-key %) (item-key item)) (:migration-items state)))]
+              (if (empty? remaining)
+                [(-> state (assoc :mode :browse) refresh) nil]
+                [(assoc state
+                        :migration-items remaining
+                        :list (build-migration-list remaining (:term-height state))) nil])))
+
+        ;; Skip migration entirely
+        (msg/key-match? msg "s")
+        [(-> state (assoc :mode :browse) refresh) nil]
+
+        ;; Navigation
+        :else
+        (let [[new-list cmd] (item-list/list-update (:list state) msg)]
+          [(assoc state :list new-list) cmd])))
 
     ;; Add mode
     (= (:mode state) :add)
@@ -502,10 +737,12 @@
     (msg/key-match? msg "enter")
     [(open-selected state) nil]
 
-    (msg/key-match? msg "tab")
+    (or (msg/key-match? msg "tab")
+        (msg/key-match? msg "l"))
     [(next-tab state) nil]
 
-    (msg/key-match? msg :backtab)
+    (or (msg/key-match? msg :backtab)
+        (msg/key-match? msg "h"))
     [(prev-tab state) nil]
 
     (msg/key-match? msg "r")
@@ -516,6 +753,12 @@
 
     (msg/key-match? msg "x")
     [(or (mark-done state) state) nil]
+
+    (msg/key-match? msg "p")
+    [(or (promote-selected state) state) nil]
+
+    (msg/key-match? msg "P")
+    [(or (demote-selected state) state) nil]
 
     (msg/key-match? msg "d")
     [(or (delete-selected state) state) nil]
@@ -548,20 +791,29 @@
                  tabs)))
 
 (defn view [state]
-  (let [{:keys [tab updated bucketed done-items list input mode show-help help]} state]
-    (str (style/render title-style "Focus") "  "
-         (style/render timestamp-style (str "synced: " (or updated "never")))
-         "\n"
-         (render-tabs tab bucketed done-items)
-         "\n\n"
-         (item-list/list-view list)
-         (when (= mode :add)
-           (str "\n\n" (text-input/text-input-view input)))
-         "\n\n"
-         (if show-help
-           (str (help/full-help-view help) "\n"
-                (style/render hint-style "Press ? to hide"))
-           (style/render hint-style "j/k:move  Enter:open  Tab:tab  a:add  x:done  d:del  r:refresh  ?:help  q:quit")))))
+  (let [{:keys [tab updated bucketed done-items list input mode show-help help migration-items]} state]
+    (if (= mode :migration)
+      (str (style/render title-style "Morning Review") "  "
+           (style/render timestamp-style (str (count migration-items) " items carried over"))
+           "\n"
+           (style/render overdue-style "These sat in Now without action. Keep, demote, or drop each:")
+           "\n\n"
+           (item-list/list-view list)
+           "\n\n"
+           (style/render hint-style "Enter/k:keep in Now  d:demote to Soon  x:drop  s:skip all"))
+      (str (style/render title-style "Focus") "  "
+           (style/render timestamp-style (str "synced: " (or updated "never")))
+           "\n"
+           (render-tabs tab bucketed done-items)
+           "\n\n"
+           (item-list/list-view list)
+           (when (= mode :add)
+             (str "\n\n" (text-input/text-input-view input)))
+           "\n\n"
+           (if show-help
+             (str (help/full-help-view help) "\n"
+                  (style/render hint-style "Press ? to hide"))
+             (style/render hint-style "j/k:move  h/l:tab  Enter:open  a:add  x:done  p/P:promote/demote  d:del  r:refresh  q:quit"))))))
 
 ;; ---------------------------------------------------------------------------
 ;; Main

@@ -4,26 +4,19 @@
   (:require [babashka.process :as p]
             [cheshire.core :as json]
             [clojure.string :as str]
-            [clojure.tools.cli :as cli]))
+            [clojure.tools.cli :as cli])
+  (:import [java.time Duration Instant]))
+
+(load-file (str (or (System/getenv "MX_ROOT")
+                    (str (System/getProperty "user.home") "/code/src/utils/dotfiles/lib/mx"))
+                "/lib/ui.clj"))
+(require '[mx.ui :as ui])
 
 ;; CLI options
 (def cli-opts
   [["-r" "--reviews" "Show PRs requesting your review instead of your authored PRs"]
    ["-v" "--verbose" "Show detailed check status for PRs"]
    ["-h" "--help" "Print this help text"]])
-
-;; ANSI color codes
-(def ansi-reset "\033[0m")
-(def ansi-cyan "\033[36m")
-(def ansi-yellow "\033[33m")
-(def ansi-green "\033[32m")
-(def ansi-blue "\033[34m")
-
-;; Color helper functions
-(defn blue [s] (str ansi-blue s ansi-reset))
-(defn cyan [s] (str ansi-cyan s ansi-reset))
-(defn green [s] (str ansi-green s ansi-reset))
-(defn yellow [s] (str ansi-yellow s ansi-reset))
 
 ;; Regex pattern for checks to ignore
 (def ignored-checks-pattern #"(?i)snyk")
@@ -51,7 +44,13 @@
    "IN_PROGRESS" "🔄"
    "QUEUED" "⏳"})
 
-(declare format-pr-compact format-pr-verbose format-review-request get-authenticated-user get-checks-status get-pr-checks get-review-requests parse-args run-gh sort-checks task)
+(declare age-cell format-pr-compact format-pr-verbose format-review-request get-authenticated-user
+         get-checks-status get-pr-checks get-review-requests parse-args run-gh sort-checks task)
+
+(defn age-cell
+  "Colored age label for a PR's open time, from a gh ISO-8601 timestamp."
+  [iso]
+  (ui/age-cell (Duration/between (Instant/parse iso) (Instant/now))))
 
 (defn format-check
   "Format a single check result"
@@ -75,32 +74,30 @@
       :else "")))
 
 (defn format-pr-compact
-  "Format a PR in compact one-line format"
+  "Build a compact table row: repo#num (linked), age, check status, title."
   [pr]
-  (let [{:keys [number title repository url]} pr
+  (let [{:keys [number title repository url createdAt]} pr
         repo-name (:nameWithOwner repository)
         checks (->> (get-pr-checks repo-name number)
                     (remove #(re-find ignored-checks-pattern (:name %))))
         status (get-checks-status checks)
         repo-id (format "%s#%d" repo-name number)]
-    (println (str/join "\t" [(cyan repo-id)
-                             (green title)
-                             (blue url)
-                             status]))))
+    [(ui/hyperlink url (ui/cyan repo-id)) (age-cell createdAt) status (ui/green title)]))
 
 (defn format-pr-verbose
   "Format a PR with detailed checks"
   [pr]
-  (let [{:keys [number title author repository url]} pr
+  (let [{:keys [number title author repository url createdAt]} pr
         repo-name (:nameWithOwner repository)
         checks (->> (get-pr-checks repo-name number)
                     (remove #(re-find ignored-checks-pattern (:name %)))
                     (sort-checks))
         grouped-checks (group-by :state checks)]
-    (println (format "\n🔀 PR #%d: %s" number title))
+    (println (format "\n🔀 %s" (ui/hyperlink url (format "PR #%d: %s" number title))))
     (println (format "   📦 %s" repo-name))
     (println (format "   👤 %s" (:login author)))
-    (println (format "   🔗 %s" url))
+    (println (format "   🕐 opened %s ago" (age-cell createdAt)))
+    (println (format "   🔗 %s" (ui/hyperlink url url)))
 
     (if (empty? checks)
       (println "   ℹ️  No checks found")
@@ -130,24 +127,14 @@
             (doseq [check state-checks]
               (println (format-check check)))))))))
 
-(defn format-pr
-  "Format a PR, choosing compact or verbose based on flag"
-  [pr verbose?]
-  (if verbose?
-    (format-pr-verbose pr)
-    (format-pr-compact pr)))
-
 (defn format-review-request
-  "Format a PR review request"
+  "Build a review-request table row: repo#num (linked), age, author, title."
   [pr]
-  (let [{:keys [number title author repository url]} pr
+  (let [{:keys [number title author repository url createdAt]} pr
         repo-name (:nameWithOwner repository)
         repo-id (format "%s#%d" repo-name number)
         author-name (format "@%s" (:login author))]
-    (println (str/join "\t" [(cyan repo-id)
-                             (yellow author-name)
-                             (green title)
-                             (blue url)]))))
+    [(ui/hyperlink url (ui/cyan repo-id)) (age-cell createdAt) (ui/yellow author-name) (ui/green title)]))
 
 (defn get-authenticated-user
   "Get the currently authenticated GitHub user"
@@ -161,13 +148,13 @@
   "Get all open PRs authored by me across all repositories"
   []
   (run-gh "search" "prs" "--author=@me" "--state=open"
-          "--json" "number,title,author,repository,url" "--limit" "50"))
+          "--json" "number,title,author,repository,url,createdAt" "--limit" "50"))
 
 (defn get-review-requests
   "Get all open PRs requesting my review across all repositories"
   []
   (run-gh "search" "prs" "--review-requested=@me" "--state=open"
-          "--json" "number,title,author,repository,url" "--limit" "50"))
+          "--json" "number,title,author,repository,url,createdAt" "--limit" "50"))
 
 (defn get-pr-checks
   "Get GitHub Actions status for a specific PR in a repository"
@@ -193,35 +180,29 @@
   [{:keys [options]}]
   (let [username (str/trim (get-authenticated-user))
         verbose? (:verbose options)]
-    (println (format "🔍 Fetching open PRs for %s...\n" (cyan (str "@" username))))
+    (println (format "🔍 Fetching open PRs for %s...\n" (ui/cyan (str "@" username))))
     (let [prs (get-open-prs)
-          sorted-prs (if verbose?
-                       prs
-                       (sort-by (juxt #(str/lower-case (get-in % [:repository :nameWithOwner]))
-                                      :number)
-                                prs))]
+          sorted-prs (sort-by :createdAt prs)]
       (if (empty? sorted-prs)
         (println "📭 No open PRs found authored by you.")
         (do
           (println (format "📋 Found %d open PR(s):" (count sorted-prs)))
-          (doseq [pr sorted-prs]
-            (format-pr pr verbose?))
+          (if verbose?
+            (doseq [pr sorted-prs] (format-pr-verbose pr))
+            (ui/print-table (map format-pr-compact sorted-prs)))
           (println))))))
 
 (defmethod task :show-review-requests
   [_]
   (let [username (str/trim (get-authenticated-user))]
-    (println (format "👀 Fetching review requests for %s...\n" (cyan (str "@" username))))
+    (println (format "👀 Fetching review requests for %s...\n" (ui/cyan (str "@" username))))
     (let [prs (get-review-requests)
-          sorted-prs (sort-by (juxt #(str/lower-case (get-in % [:repository :nameWithOwner]))
-                                :number)
-                       prs)]
+          sorted-prs (sort-by :createdAt prs)]
       (if (empty? sorted-prs)
         (println "📭 No review requests found.")
         (do
           (println (format "📋 Found %d review request(s):" (count sorted-prs)))
-          (doseq [pr sorted-prs]
-            (format-review-request pr))
+          (ui/print-table (map format-review-request sorted-prs))
           (println))))))
 
 (defn main

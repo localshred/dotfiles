@@ -116,22 +116,31 @@
       (every? #{"SUCCESS"} states) "passing"
       :else "mixed")))
 
+(defn pr-verb [review-decision ci-status is-draft]
+  (cond
+    (= review-decision "CHANGES_REQUESTED") "Fix"
+    (and (= review-decision "APPROVED") (= ci-status "passing")) "Merge"
+    (= ci-status "failing") "Fix CI for"
+    is-draft "Continue"
+    :else "Check on"))
+
 (defn format-authored-pr [pr]
   (let [{:keys [number title repository url createdAt reviewDecision statusCheckRollup isDraft]} pr
         repo (:nameWithOwner repository)
         age (pr-age-label createdAt)
         review (review-status-label reviewDecision)
         ci (ci-status-label statusCheckRollup)
-        draft (if isDraft " DRAFT" "")]
-    (format "  - [%s#%d](%s) — %s `%s` `%s` `%s`%s"
-            repo number url title age review ci draft)))
+        draft (if isDraft " DRAFT" "")
+        verb (pr-verb reviewDecision ci isDraft)]
+    (format "  - [%s#%d](%s) — %s: %s `%s` `%s` `%s`%s"
+            repo number url verb title age review ci draft)))
 
 (defn format-review-request [pr]
   (let [{:keys [number title author repository url createdAt]} pr
         repo (:nameWithOwner repository)
         age (pr-age-label createdAt)
         author-name (:login author)]
-    (format "  - [%s#%d](%s) — %s (by @%s, %s old)"
+    (format "  - [%s#%d](%s) — Review: %s (by @%s, %s old)"
             repo number url title author-name age)))
 
 ;; ---------------------------------------------------------------------------
@@ -248,38 +257,50 @@
     (format "  - %s%s — %s" prefix time-part title)))
 
 ;; ---------------------------------------------------------------------------
-;; Email Fetcher (amail)
+;; GUS Fetcher (sf cli)
 ;; ---------------------------------------------------------------------------
 
-(defn fetch-unread-emails []
+(def gus-user-id "005EE00000MEwp3YAD")
+(def gus-base-url "https://gus.lightning.force.com/lightning/r/ADM_Work__c/")
+
+(defn fetch-gus-work-items []
   (try
-    (let [result (p/process {:out :string :err :string}
-                            "amail" "messages" "list"
-                            "--account" "Google"
-                            "--mailbox" "INBOX"
-                            "--unread"
-                            "--limit" "20"
-                            "--format" "json")
+    (let [query (str "SELECT Id, Name, Subject__c, Status__c, Priority__c "
+                     "FROM ADM_Work__c "
+                     "WHERE Assignee__c = '" gus-user-id "' "
+                     "AND Status__c IN ('New', 'In Progress', 'Triaged', 'Ready for Review') "
+                     "ORDER BY Priority__c, LastModifiedDate DESC "
+                     "LIMIT 15")
+          result (p/process {:out :string :err :string}
+                            "sf" "data" "query"
+                            "--query" query
+                            "--target-org" "GusProduction"
+                            "--json")
           body (json/parse-string (str/trim (:out (p/check result))) true)
-          messages (get body :data [])]
-      (->> messages
-           (remove #(re-find #"(?i)notifications?@github\.com"
-                             (or (:sender %) "")))
-           (map (fn [msg]
-                  {:from (or (:senderName msg) (:sender msg) "")
-                   :subject (or (:subject msg) "")
-                   :date (or (:dateReceived msg) "")
-                   :id (:id msg)}))))
+          records (get-in body [:result :records] [])]
+      (map (fn [r]
+             {:id (:Name r)
+              :subject (or (:Subject__c r) "")
+              :status (:Status__c r)
+              :priority (:Priority__c r)
+              :url (str gus-base-url (:Id r) "/view")})
+           records))
     (catch Exception _ [])))
 
-(defn format-email [{:keys [from subject]}]
-  (let [short-from (if (> (count from) 20)
-                     (str (subs from 0 17) "...")
-                     from)
-        short-subj (if (> (count subject) 60)
-                     (str (subs subject 0 57) "...")
-                     subject)]
-    (format "  - **%s** — %s" short-from short-subj)))
+(defn gus-verb [status]
+  (case status
+    "New" "Triage"
+    "Triaged" "Start"
+    "In Progress" "Work on"
+    "Ready for Review" "Submit"
+    "Work on"))
+
+(defn format-gus-item [{:keys [id subject status url]}]
+  (let [short-subj (if (> (count subject) 65)
+                     (str (subs subject 0 62) "...")
+                     subject)
+        verb (gus-verb status)]
+    (format "  - [%s](%s) — %s: %s `%s`" id url verb short-subj status)))
 
 ;; ---------------------------------------------------------------------------
 ;; Dashboard Writer
@@ -291,17 +312,17 @@
         unreads (fetch-slack-unreads)
         mentions (fetch-slack-mentions)
         cal-events (fetch-calendar-events)
-        emails (fetch-unread-emails)
+        gus-items (fetch-gus-work-items)
         sections [(str "# Focus Dashboard\n")
                   (str "Last updated: " (today-str) " " (now-timestamp) "\n")
                   ;; Calendar
                   (when (seq cal-events)
                     (str "## Calendar\n"
                          (str/join "\n" (map format-calendar-event cal-events))))
-                  ;; Email
-                  (when (seq emails)
-                    (str "\n\n## Email — Unread\n"
-                         (str/join "\n" (map format-email emails))))
+                  ;; GUS
+                  (when (seq gus-items)
+                    (str "\n\n## GUS — Active Work\n"
+                         (str/join "\n" (map format-gus-item gus-items))))
                   ;; PRs needing action
                   (str "\n\n## Review Requests\n")
                   (if (seq reviews)
@@ -380,8 +401,10 @@
       {:raw content
        :sections (map parse-section sections)})))
 
-(defn strip-md-links [s]
-  (str/replace s #"\[([^\]]+)\]\([^\)]+\)" "$1"))
+(defn linkify-md [s]
+  (str/replace s #"\[([^\]]+)\]\(([^\)]+)\)"
+               (fn [[_ text url]]
+                 (str "\033]8;;" url "\033\\" text "\033]8;;\033\\"))))
 
 (defn prioritize-items [dashboard]
   (let [sections (:sections dashboard)
@@ -400,31 +423,31 @@
         stale-reviews (->> review-reqs
                            (remove #(re-find #"today|1d|2d|3d" (or % ""))))]
     {:act-now (concat
-               (map #(hash-map :type "review" :text (strip-md-links %)) recent-reviews)
+               (map #(hash-map :type "review" :text (linkify-md %)) recent-reviews)
                (when (seq unreads)
-                 (map #(hash-map :type "slack-dm" :text (strip-md-links %)) unreads))
+                 (map #(hash-map :type "slack-dm" :text (linkify-md %)) unreads))
                (when (seq mentions)
-                 (map #(hash-map :type "slack-mention" :text (strip-md-links %)) mentions))
+                 (map #(hash-map :type "slack-mention" :text (linkify-md %)) mentions))
                (->> my-prs
                     (filter #(re-find #"`changes-requested`" (or % "")))
-                    (map #(hash-map :type "pr-fix" :text (strip-md-links %))))
+                    (map #(hash-map :type "pr-fix" :text (linkify-md %))))
                (->> my-prs
                     (filter #(and (re-find #"`failing`" (or % ""))
                                   (not (re-find #"DRAFT" (or % "")))))
-                    (map #(hash-map :type "pr-fix" :text (strip-md-links %)))))
+                    (map #(hash-map :type "pr-fix" :text (linkify-md %)))))
      :backlog (when (seq stale-reviews)
-                (map #(hash-map :type "review-stale" :text (strip-md-links %)) stale-reviews))
+                (map #(hash-map :type "review-stale" :text (linkify-md %)) stale-reviews))
      :monitor (->> my-prs
                    (filter #(or (re-find #"`running`|`pending`" (or % ""))
                                 (and (re-find #"`needs-review`" (or % ""))
                                      (re-find #"`passing`" (or % "")))))
-                   (map #(hash-map :type "pr-waiting" :text (strip-md-links %))))
+                   (map #(hash-map :type "pr-waiting" :text (linkify-md %))))
      :healthy (->> my-prs
                    (filter #(re-find #"`approved`.*`passing`" (or % "")))
-                   (map #(hash-map :type "pr-ready" :text (strip-md-links %))))
+                   (map #(hash-map :type "pr-ready" :text (linkify-md %))))
      :drafts (->> my-prs
                   (filter #(re-find #"DRAFT" (or % "")))
-                  (map #(hash-map :type "pr-draft" :text (strip-md-links %))))}))
+                  (map #(hash-map :type "pr-draft" :text (linkify-md %))))}))
 
 (defn print-category [label color items]
   (when (seq items)
