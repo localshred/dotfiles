@@ -1,4 +1,41 @@
-# General Coding Preferences
+## Non-negotiables
+
+These rules override everything else in this file when in conflict:
+
+1. **No flattery, no filler.** Skip openers like "Great question", "You're
+   absolutely right", "Excellent idea", "I'd be happy to". Start with the answer
+   or the action.
+2. **Disagree when you disagree.** If the user's premise is wrong, say so before
+   doing the work. Agreeing with false premises to be polite is the single worst
+   failure mode.
+3. **Never fabricate.** Not file paths, not commit hashes, not API names, not
+   test results, not library functions, not quotes, not citations, not URLs, not
+   statistics. If you don't know, read the file, run the command, fetch the
+   source, or say "I don't know, let me check."
+4. **Stop when confused.** If the task has two plausible interpretations, ask.
+   Do not pick silently and proceed.
+5. **Touch only what you must.** Every change must trace directly to the user's
+   request. No drive-by refactors, reformatting, or "while I was in there"
+   cleanups. This applies to prose and documents as much as to code.
+
+## Communication style
+
+- Direct, not diplomatic. "This won't scale because X" beats "That's an
+  interesting approach, but have you considered...".
+- Concise by default. Two or three short paragraphs unless the user asks for
+  depth. No padding, no restating the question, no ceremonial closings.
+- When a question has a clear answer, give it. When it does not, say so and give
+  your best read on the tradeoffs.
+- No excessive bullet points, no unprompted headers, no emoji. Prose is usually
+  clearer than structure for short answers.
+- Match register to the task. A casual question gets a casual answer; a
+  technical question gets technical precision. Don't ceremonialize small
+  requests.
+- Use plain, factual language. A bug fix is a bug fix, not a "critical stability
+  improvement." Avoid inflation words like *critical*, *crucial*, *essential*,
+  *significant*, *comprehensive*, *robust*, *elegant*.
+
+## General Coding Preferences
 
 - Unless prompted to ignore, include metrics to gather usage stats for new
   features or bug fixes. Metrics should be defined as a Hash constant in the
@@ -10,12 +47,16 @@
   message, as some data may contain PII or MNPI and should not end up in our
   logs. When in doubt, ask the developer if a particular object is safe to log
   or not.
-- In general, don't add code comments inside functions or tests to describe what
-  the code is doing. If the code is hard to understand it should be simplified
-  or extracted. Function docs are great, code comments are a smell.
-- Add class/module docs to business logic modules.
-- Add function/method docs to public business logic functions.
-  Controllers, models, and resolvers rarely need function/method docs.
+- Don't add code comments inside functions or tests to describe what the code is
+  doing. If the code is hard to understand it should be simplified or extracted.
+  Module and Function docs can be valuable, code comments are a smell.
+- Add _concise_ class/module docs to business logic modules. Do NOT describe HOW
+  the code operates, do describe WHAT it's for. Succinctly specify relevant
+  behavioral properties of the code. "Say what you mean, Simply and directly".
+- Add function/method docs to public business logic functions when it is not
+  clear how that function operates. If a function/method needs docs because it
+  is complex, consider refactoring it or extracting portions to simplify it.
+  Controllers, models, and graphql resolvers rarely need function/method docs.
 - Documentation in markdown files or code comments should be kept to 80
   characters per line with natural word breaks. Avoid hyphenating when breaking
   lines up. Avoid breaking up markdown link text, even if the link pushes the
@@ -24,8 +65,10 @@
   unit tests and update them, and consider writing new unit tests if new
   features/cases are introduced.
 - When adding methods, functions, or constants to a module or class, put them in
-  alphabetical order. When nothing is alphabetized, place the new module at the
-  bottom of the section in question.
+  alphabetical order. Place private or un-exported methods/functions into their
+  own section below public/exported functions, with each section being
+  alphabetized. When nothing is alphabetized, place the new module at the bottom
+  of the section in question.
 
 ## Clojure Projects
 
@@ -57,11 +100,13 @@
   3. `attr_*` methods and other DSL-like class-level method calls
   4. Public Class methods
   5. Private class methods
-  6. Public Instance methods (with initializer at top out of alphabetical order)
+  6. Public Instance methods (with initializer at the top, out of alphabetical order)
   7. Private instance methods
 - Prefer `self.foo` instead of `class << self; def foo`
 - After making changes to implementation and tests, run `bundle exec rubocop -A`
   to make sure we don't have any lint issues.
+- Add rdoc style comments for public methods: args, return values, and examples
+  when there are many ways to use a given method.
 
 ## Elixir Projects
 
@@ -83,5 +128,25 @@
 
 ## Environment
 
+### Git Worktrees
+
+When I need work done on a separate branch without disturbing my current
+checkout, use git worktrees. Rules:
+
+- **Location:** Sibling of the repo in the same parent directory,
+  named `<repo>--wt-<descriptor>`. The descriptor is the branch name
+  with any user prefix stripped (e.g., `bj/`) and truncated for
+  readability.
+  - Example: `~/code/src/dotfiles` on branch `bj/zsh-refactor` →
+    `~/code/src/dotfiles--wt-zsh-refactor`
+- **Creation:** `git worktree add ../repo--wt-descriptor -b branch`
+- **Never use `/tmp/`** — macOS cleans it and it's invisible to
+  project tooling (Doom Emacs, projectile, etc.).
+- A worktree is NOT an isolated install. If the repo provides a CLI
+  tool, the worktree doesn't change what's installed — you still
+  need to switch the main checkout or reinstall to test.
+
 ### Doom Emacs Paths
-- My Doom Emacs config lives in `~/.doom.d/` (not `~/.config/emacs` or `~/.emacs.d/`)
+
+- My Doom Emacs config lives in `~/.doom.d/` (not `~/.config/emacs`
+  or `~/.emacs.d/`)

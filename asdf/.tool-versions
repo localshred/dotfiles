@@ -5,6 +5,7 @@ nodejs 18.20.0
 postgres 16.8
 python 3.12.8
 redis 7.2.2
-ruby 3.3.8
+ruby 3.3.10
 rust 1.79.0
 yarn 1.22.19
+rebar 3.5.3

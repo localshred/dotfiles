@@ -160,6 +160,9 @@
  counsel-projectile-org-capture-templates my-org-capture-templates
  )
 
+;; Configure mode overrides
+(add-to-list 'auto-mode-alist '("\\.env\\." . conf-mode))
+
 ;;
 ;; Package Configurations (Alphabetical)
 ;;
@@ -324,6 +327,49 @@
   (add-to-list 'magit-delta-delta-args "magit")
   (add-to-list 'magit-delta-delta-args "--features"))
 
+;; mermaid-mode: edit .mmd/.mermaid files with syntax highlighting and
+;; compile diagrams to PNG via the mmdc CLI
+;; (npm install -g @mermaid-js/mermaid-cli).
+;;
+;; We run Emacs in a terminal (-nw), where `display-graphic-p' is nil, so
+;; the package's default `display-buffer' on the rendered PNG cannot draw
+;; the image. Instead we advise the compile step to hand the output file
+;; to macOS `open' (Preview/Quick Look) whenever the frame is
+;; non-graphical. GUI frames keep the in-buffer behavior.
+(use-package mermaid-mode
+  :mode (("\\.mmd\\'" . mermaid-mode)
+         ("\\.mermaid\\'" . mermaid-mode))
+  :config
+  ;; Absolute path so terminal Emacs finds the binary even without the
+  ;; interactive shell PATH.
+  (setq mermaid-mmdc-location "/opt/homebrew/bin/mmdc"
+        mermaid-output-format ".png"
+        mermaid-tmp-dir "/tmp/")
+
+  ;; mmdc renders via puppeteer, which by default downloads its own
+  ;; Chromium. On this managed device that download is blocked/corrupt,
+  ;; so point puppeteer at the approved system Google Chrome instead.
+  (setenv "PUPPETEER_EXECUTABLE_PATH"
+          "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
+
+  ;; `mermaid-compile-region'/`-buffer' both funnel through
+  ;; `mermaid-compile-file', which opens the PNG in a buffer on success.
+  ;; Advise that buffer-display step for the terminal case.
+  (advice-add 'mermaid-compile-region :after
+              (lambda (&rest _)
+                (unless (display-graphic-p)
+                  (start-process
+                   "mermaid-open" nil "open"
+                   (expand-file-name "current-region.png"
+                                     mermaid-tmp-dir)))))
+  (advice-add 'mermaid-compile-buffer :after
+              (lambda (&rest _)
+                (unless (display-graphic-p)
+                  (start-process
+                   "mermaid-open" nil "open"
+                   (expand-file-name "current-buffer.png"
+                                     mermaid-tmp-dir))))))
+
 (use-package mmm-mode
   :config
   ;; Enable mmm-mode for ruby files
@@ -438,6 +484,10 @@
    (make-lsp-client :new-connection (lsp-stdio-connection '("tilt" "lsp" "start"))
                     :activation-fn (lsp-activate-on "tiltfile")
                     :server-id 'tilt-lsp)))
+
+;;
+;; end Tiltfile config
+;;
 
 (use-package web-mode
   :config

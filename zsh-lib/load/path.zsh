@@ -1,11 +1,12 @@
 #!/usr/bin/env zsh
 
 pathadd() { PATH="$PATH:${1}"; }
-pathedit() { emc "$dotfiles/zsh-lib/load/path.zsh"; }
+pathedit() { em "$dotfiles/zsh-lib/load/path.zsh"; }
 pathrebuild() { source "$dotfiles/zsh-lib/load/path.zsh"; }
 
 # Define path directories in order of priority
 path_dirs=(
+  "${ASDF_DATA_DIR:-$HOME/.asdf}/shims"
   "$dotfiles/bin"
   "$HOME/bin"
   "${ASDF_DATA_DIR:-$HOME/.asdf}/shims"

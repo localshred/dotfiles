@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+#
+# erlfmt-install — build the erlfmt escript against asdf-provided Erlang.
+#
+# Homebrew's erlfmt formula pulls in its own Erlang keg, which ignores the
+# asdf toolchain. This builds erlfmt from source and installs the escript to
+# ~/.local/bin. The produced escript carries a `#!/usr/bin/env escript`
+# shebang, so at runtime it resolves to the asdf `escript` shim (asdf shims
+# are first on PATH) — no brew involved.
+#
+# rebar3 is the build tool. The asdf `rebar` plugin is unmaintained (tops out
+# at 3.5.3, which won't run on OTP 27+), so we fetch the official rebar3
+# escript into the cache dir instead. rebar3 is itself an escript, so it too
+# runs on the asdf Erlang — the asdf-only guarantee still holds.
+#
+# Usage:
+#   erlfmt-install            # install/update erlfmt at ERLFMT_REF (default main)
+#   ERLFMT_REF=v1.8.0 erlfmt-install
+#
+set -euo pipefail
+
+readonly ERLFMT_REPO="https://github.com/WhatsApp/erlfmt"
+readonly ERLFMT_REF="${ERLFMT_REF:-main}"
+readonly REBAR3_URL="https://github.com/erlang/rebar3/releases/latest/download/rebar3"
+readonly CACHE_DIR="${dotfiles:-$HOME/code/src/utils/dotfiles}/cache/erlfmt"
+readonly REBAR3_BIN="$CACHE_DIR/rebar3"
+readonly INSTALL_DIR="$HOME/.local/bin"
+readonly INSTALL_BIN="$INSTALL_DIR/erlfmt"
+
+info() { printf '\033[0;34m==>\033[0m %s\n' "$1"; }
+die()  { printf '\033[0;31merror:\033[0m %s\n' "$1" >&2; exit 1; }
+
+command -v asdf >/dev/null 2>&1 || die "asdf not found on PATH"
+asdf current erlang >/dev/null 2>&1 || die "no asdf erlang configured (see ~/.tool-versions)"
+command -v escript >/dev/null 2>&1 || die "no escript on PATH (asdf erlang not shimmed?)"
+
+info "using erlang $(asdf current erlang | awk 'NR==2 {print $2}') via $(command -v escript)"
+
+# Clone once, then fast-forward on subsequent runs.
+if [[ -d "$CACHE_DIR/.git" ]]; then
+  info "updating erlfmt source in $CACHE_DIR"
+  git -C "$CACHE_DIR" fetch --quiet origin
+  git -C "$CACHE_DIR" checkout --quiet "$ERLFMT_REF"
+  git -C "$CACHE_DIR" pull --quiet --ff-only origin "$ERLFMT_REF" 2>/dev/null || true
+else
+  info "cloning erlfmt into $CACHE_DIR"
+  mkdir -p "$(dirname "$CACHE_DIR")"
+  git clone --quiet "$ERLFMT_REPO" "$CACHE_DIR"
+  git -C "$CACHE_DIR" checkout --quiet "$ERLFMT_REF"
+fi
+
+if [[ ! -x "$REBAR3_BIN" ]]; then
+  info "fetching rebar3 escript"
+  curl -fsSL "$REBAR3_URL" -o "$REBAR3_BIN"
+  chmod +x "$REBAR3_BIN"
+fi
+
+info "building erlfmt escript with rebar3"
+( cd "$CACHE_DIR" && escript "$REBAR3_BIN" as release escriptize )
+
+mkdir -p "$INSTALL_DIR"
+install -m 0755 "$CACHE_DIR/_build/release/bin/erlfmt" "$INSTALL_BIN"
+
+info "installed $("$INSTALL_BIN" --version) -> $INSTALL_BIN"
+info "runtime escript: $(command -v escript)"

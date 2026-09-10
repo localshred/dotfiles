@@ -17,6 +17,7 @@ git
 gnupg
 misc
 npm
+opencode
 ruby
 task
 tmux
@@ -96,6 +97,21 @@ install_non_brew_libs() {
     print_info "Building xterm-24bit terminfo"
     /usr/bin/tic -x -o $HOME/.terminfo terminfo-24bit.src
   fi
+
+  install_apple_mail_cli
+}
+
+install_apple_mail_cli() {
+  if command -v amail &>/dev/null; then
+    print_info "amail already installed."
+    return
+  fi
+
+  print_info "Installing apple-mail-cli (amail + aical)..."
+  local tmp_dir="$(mktemp -d)"
+  run_command "git clone --depth 1 https://github.com/trodemaster/apple-mail-cli.git $tmp_dir"
+  run_command "cd $tmp_dir && make all"
+  rm -rf "$tmp_dir"
 }
 
 install_launchd_agents() {

@@ -8,10 +8,10 @@ __bootstrap() {
   __load_brew
   __load_defaults
   __load_zsh_libs "$dotfiles/zsh-lib/lib"
-  __load_work_dotfiles
   __load_completion /usr/local/share/zsh-completions
   __load_correction
   __load_syntax_highlighting
+  __load_work_dotfiles
 
   __say_hello
 }

@@ -4,6 +4,16 @@ ALERT_IF_IN_NEXT_MINUTES=120
 ALERT_POPUP_BEFORE_SECONDS=65
 NERD_FONT_FREE="󱁕"
 NERD_FONT_MEETING="󰤙"
+MAX_TITLE_LENGTH=30
+
+truncate_title() {
+    local title="$1"
+    if [[ ${#title} -gt $MAX_TITLE_LENGTH ]]; then
+        echo "${title:0:$((MAX_TITLE_LENGTH - 1))}…"
+    else
+        echo "$title"
+    fi
+}
 
 get_attendees() {
     attendees=$(
@@ -286,7 +296,7 @@ print_tmux_status() {
             echo -n "$NERD_FONT_MEETING $time $meeting_count_at_time meetings are scheduled ($minutes_till_meeting min)"
         else
             # Single meeting
-            echo -n "$NERD_FONT_MEETING $time $title ($minutes_till_meeting min)"
+            echo -n "$NERD_FONT_MEETING $time $(truncate_title "$title") ($minutes_till_meeting min)"
         fi
     else
         echo -n "$NERD_FONT_FREE"

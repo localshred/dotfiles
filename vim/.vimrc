@@ -357,4 +357,4 @@ autocmd BufNewFile,BufRead *.es6,*.jsx setlocal filetype=javascript
 autocmd BufNewFile,BufRead *.io set filetype=io
 autocmd BufNewFile,BufRead *.y{,a}ml.sample set ft=yaml
 autocmd BufNewFile,BufRead *.apib set ft=markdown
-autocmd BufNewFile,BufRead .env{,.sample} set ft=bash
+autocmd BufNewFile,BufRead .env,.env.* set ft=conf

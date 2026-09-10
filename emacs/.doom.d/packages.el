@@ -70,6 +70,7 @@
 ;; heex-ts-mode and elixir-ts-mode are handled by Doom's elixir module
 (package! jest-test-mode)
 (package! magit-delta)
+(package! mermaid-mode)
 (package! mmm-mode :recipe (:host github :repo "dgutov/mmm-mode"))
 (package! neil :recipe (:host github
                         :repo "babashka/neil"

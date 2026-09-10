@@ -25,7 +25,7 @@
   ls          = ls-remote .
   mine        = !git log --author=`git config user.email`
   pu          = push
-  puf         = push -f
+  puf         = push --force-with-lease
   rba         = rebase --abort
   rbc         = rebase --continue
   recent      = log --oneline -10
@@ -124,6 +124,7 @@
 
 [init]
   defaultBranch = main
+	templateDir = /Users/bj/.git-templates
 
 [interactive]
   diffFilter = delta --color-only --features=interactive
@@ -175,3 +176,5 @@
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://git.heroku.com"]
+	helper = !heroku git:credentials

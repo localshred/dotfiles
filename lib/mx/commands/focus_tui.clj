@@ -134,6 +134,14 @@
       (#{:slack-dm :slack-mention} source)
       :today
 
+      ;; Calendar events
+      (= source :calendar)
+      (if (:is-today item) :today :soon)
+
+      ;; Email
+      (= source :email)
+      :today
+
       ;; TODOs without due date but with priority
       (= source :todo)
       (case (:priority item)
@@ -201,6 +209,14 @@
 
       (re-find #"(?i)mention" section-title)
       {:text clean :url url :source :slack-mention :icon "[ ]"}
+
+      (re-find #"(?i)calendar" section-title)
+      {:text clean :url url :source :calendar
+       :is-today (str/includes? clean (str (.format today (DateTimeFormatter/ofPattern "yyyy-MM-dd"))))
+       :icon "[ ]"}
+
+      (re-find #"(?i)email" section-title)
+      {:text clean :url url :source :email :icon "[ ]"}
 
       :else
       {:text clean :url url :source :other :icon "[ ]"})))
@@ -545,7 +561,7 @@
          (if show-help
            (str (help/full-help-view help) "\n"
                 (style/render hint-style "Press ? to hide"))
-           (help/short-help-view help)))))
+           (style/render hint-style "j/k:move  Enter:open  Tab:tab  a:add  x:done  d:del  r:refresh  ?:help  q:quit")))))
 
 ;; ---------------------------------------------------------------------------
 ;; Main

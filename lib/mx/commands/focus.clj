@@ -207,6 +207,81 @@
     (format "  - [#%s](%s) @%s — %s" channel (or permalink "") from preview)))
 
 ;; ---------------------------------------------------------------------------
+;; Calendar Fetcher (icalbuddy)
+;; ---------------------------------------------------------------------------
+
+(defn strip-ansi [s]
+  (str/replace s #"\033\[[0-9;]*m" ""))
+
+(defn fetch-calendar-events []
+  (try
+    (let [result (p/process {:out :string :err :string}
+                            "icalbuddy"
+                            "-nc" "-nrd" "-ea"
+                            "-ps" "/ | /"
+                            "-po" "datetime,title"
+                            "-df" "%Y-%m-%d"
+                            "-tf" "%H:%M"
+                            "-b" ""
+                            "-iep" "datetime,title"
+                            "eventsToday+1")
+          output (strip-ansi (str/trim (:out (p/check result))))
+          lines (when (not (str/blank? output))
+                  (str/split-lines output))]
+      (->> lines
+           (map str/trim)
+           (filter #(re-find #"^\d{4}-\d{2}-\d{2}" %))
+           (map (fn [line]
+                  (let [[datetime-part title-part] (str/split line #" \| " 2)
+                        title (or title-part "")]
+                    {:datetime (str/trim datetime-part)
+                     :title (str/trim title)})))
+           (remove #(str/blank? (:title %)))))
+    (catch Exception _ [])))
+
+(defn event-is-today? [event]
+  (str/starts-with? (:datetime event) (today-str)))
+
+(defn format-calendar-event [{:keys [datetime title] :as event}]
+  (let [time-part (last (str/split datetime #" at "))
+        prefix (if (event-is-today? event) "" "tomorrow ")]
+    (format "  - %s%s — %s" prefix time-part title)))
+
+;; ---------------------------------------------------------------------------
+;; Email Fetcher (amail)
+;; ---------------------------------------------------------------------------
+
+(defn fetch-unread-emails []
+  (try
+    (let [result (p/process {:out :string :err :string}
+                            "amail" "messages" "list"
+                            "--account" "Google"
+                            "--mailbox" "INBOX"
+                            "--unread"
+                            "--limit" "20"
+                            "--format" "json")
+          body (json/parse-string (str/trim (:out (p/check result))) true)
+          messages (get body :data [])]
+      (->> messages
+           (remove #(re-find #"(?i)notifications?@github\.com"
+                             (or (:sender %) "")))
+           (map (fn [msg]
+                  {:from (or (:senderName msg) (:sender msg) "")
+                   :subject (or (:subject msg) "")
+                   :date (or (:dateReceived msg) "")
+                   :id (:id msg)}))))
+    (catch Exception _ [])))
+
+(defn format-email [{:keys [from subject]}]
+  (let [short-from (if (> (count from) 20)
+                     (str (subs from 0 17) "...")
+                     from)
+        short-subj (if (> (count subject) 60)
+                     (str (subs subject 0 57) "...")
+                     subject)]
+    (format "  - **%s** — %s" short-from short-subj)))
+
+;; ---------------------------------------------------------------------------
 ;; Dashboard Writer
 ;; ---------------------------------------------------------------------------
 
@@ -215,10 +290,20 @@
         reviews (fetch-review-requests)
         unreads (fetch-slack-unreads)
         mentions (fetch-slack-mentions)
+        cal-events (fetch-calendar-events)
+        emails (fetch-unread-emails)
         sections [(str "# Focus Dashboard\n")
                   (str "Last updated: " (today-str) " " (now-timestamp) "\n")
+                  ;; Calendar
+                  (when (seq cal-events)
+                    (str "## Calendar\n"
+                         (str/join "\n" (map format-calendar-event cal-events))))
+                  ;; Email
+                  (when (seq emails)
+                    (str "\n\n## Email — Unread\n"
+                         (str/join "\n" (map format-email emails))))
                   ;; PRs needing action
-                  (str "## Review Requests\n")
+                  (str "\n\n## Review Requests\n")
                   (if (seq reviews)
                     (str/join "\n" (map format-review-request reviews))
                     "  - None")
