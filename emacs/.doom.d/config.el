@@ -178,7 +178,13 @@
                '(rubocop . ("bundle" "exec" "rubocop" "--autocorrect" "--stdin" file "--format" "quiet" "--stderr")))
 
   ;; Use rubocop for ruby-mode files
-  (add-to-list 'apheleia-mode-alist '(ruby-mode . rubocop)))
+  (add-to-list 'apheleia-mode-alist '(ruby-mode . rubocop))
+
+  ;; Format shell scripts at 2-space indent (shfmt defaults to tabs).
+  ;; `-filename' keeps shfmt's dialect auto-detection (bash/posix/zsh/...)
+  ;; from the file extension, so .zsh formats correctly too.
+  (add-to-list 'apheleia-formatters
+               '(shfmt . ("shfmt" "-i" "2" "-filename" filepath "-"))))
 
 (use-package asdf
   :config
@@ -255,6 +261,18 @@
               (setq-local jit-lock-defer-time nil)
               (setq-local jit-lock-stealth-time nil))))
 
+(defun my/sh-mode-setup ()
+  "Set up an sh-mode buffer, special-casing zsh files.
+No usable zsh LSP exists and ShellCheck lints zsh as bash, flagging
+valid zsh constructs. So for .zsh files, skip `lsp' (bash-language-server
+rejects zsh anyway) and turn off flymake, whose built-in
+`sh-shellcheck-flymake' backend is the source of the SC* warnings.
+Other shells get `lsp' as usual."
+  (if (and buffer-file-name
+           (string-match-p "\\.zsh\\'" buffer-file-name))
+      (flymake-mode -1)
+    (lsp)))
+
 (use-package lsp-mode
   :commands lsp
   :config
@@ -306,7 +324,7 @@
           "[/\\\\]logs$"))
 
   :hook
-  (sh-mode . lsp))
+  (sh-mode . my/sh-mode-setup))
 
 (after! forge
   ;; Don't prompt to add repositories automatically at startup
@@ -549,6 +567,31 @@
 (defun u/ansi-color-apply-on-region (begin end)
   (interactive "r")
   (ansi-color-apply-on-region begin end t))
+
+(defun my/untabify-buffer (&optional width)
+  "Convert all tabs in the current buffer to spaces.
+Each tab expands to WIDTH columns (default 2; pass a numeric prefix
+arg to override, e.g. `C-u 4')."
+  (interactive "P")
+  (let ((tab-width (if width (prefix-numeric-value width) 2)))
+    (untabify (point-min) (point-max))))
+
+;;
+;; reposync: sync all branches of the current project against origin
+;;
+(defun my/reposync ()
+  "Run the `reposync' shell function in the current project's root.
+
+Uses an interactive login zsh so the alias/function is loaded, and
+renders its colored output in a compilation buffer."
+  (interactive)
+  (let ((default-directory (or (projectile-project-root) default-directory)))
+    (compile "zsh -ic reposync")))
+
+(add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
+
+(map! :leader
+      :desc "Reposync (sync all branches)" "g u" #'my/reposync)
 
 ;;
 ;; Load work config if $dotfiles_work is set

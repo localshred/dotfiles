@@ -7,9 +7,13 @@
             [clojure.tools.cli :as cli])
   (:import [java.time Duration Instant]))
 
-(load-file (str (or (System/getenv "MX_ROOT")
-                    (str (System/getProperty "user.home") "/code/src/utils/dotfiles/lib/mx"))
-                "/lib/ui.clj"))
+(def mx-lib-dir
+  "Directory holding shared mx libraries, resolved via MX_ROOT."
+  (str (or (System/getenv "MX_ROOT")
+           (str (System/getProperty "user.home") "/code/src/utils/dotfiles/lib/mx"))
+       "/lib"))
+
+(load-file (str mx-lib-dir "/ui.clj"))
 (require '[mx.ui :as ui])
 
 ;; CLI options
@@ -208,7 +212,11 @@
 (defn main
   "Main function to display PR statuses"
   [& args]
-  (task (parse-args args)))
+  (if (= "watch" (first args))
+    (do
+      (load-file (str mx-lib-dir "/prs_watch.clj"))
+      ((resolve 'mx.prs-watch/main) (rest args)))
+    (task (parse-args args))))
 
 (defn run-gh
   "Run gh CLI command and return parsed JSON output"

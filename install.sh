@@ -115,15 +115,21 @@ install_apple_mail_cli() {
 }
 
 install_launchd_agents() {
-  local plist_name="com.localshred.doom-check-updates.plist"
-  local plist_dest="$HOME/Library/LaunchAgents/$plist_name"
+  mkdir -p "$HOME/Library/LaunchAgents"
 
-  if [ ! -f "$plist_dest" ]; then
-    print_info "Installing Doom Emacs update check launchd agent..."
-    mkdir -p "$HOME/Library/LaunchAgents"
-    sed "s|__HOME__|$HOME|g" "$dotfiles/launchd/$plist_name" >"$plist_dest"
-    launchctl load "$plist_dest"
-  fi
+  for plist_src in "$dotfiles"/launchd/*.plist; do
+    [ -e "$plist_src" ] || continue
+
+    local plist_name plist_dest
+    plist_name="$(basename "$plist_src")"
+    plist_dest="$HOME/Library/LaunchAgents/$plist_name"
+
+    if [ ! -f "$plist_dest" ]; then
+      print_info "Installing launchd agent: $plist_name..."
+      sed "s|__HOME__|$HOME|g" "$plist_src" > "$plist_dest"
+      launchctl load "$plist_dest"
+    fi
+  done
 }
 
 install_brew() {

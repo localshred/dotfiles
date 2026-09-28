@@ -48,6 +48,7 @@
 (package! asdf :recipe (:host github
                         :repo "tabfugnic/asdf.el"
                         :files ("asdf.el")))
+(package! browse-at-remote)
 (package! claude-code-ide :recipe (:host github
                                    :repo "manzaltu/claude-code-ide.el"))
 (package! docker)
