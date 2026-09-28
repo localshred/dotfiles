@@ -13,7 +13,9 @@
 
 (def builtin-commands
   "Commands shipped with the public dotfiles repo."
-  {"focus" {:path (str mx-root "/commands/focus.clj")
+  {"claude" {:path (str mx-root "/commands/claude.clj")
+             :desc "Pick/resume a saved claude session, or start a named new one"}
+   "focus" {:path (str mx-root "/commands/focus.clj")
             :desc "Attention dashboard — fetch sources or show next actions"}
    "goto"  {:path (str mx-root "/commands/goto.clj")
             :desc "Navigate to SCM provider URLs (repos, issues, PRs)"}
